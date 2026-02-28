@@ -10,11 +10,11 @@ namespace Weapons
 
         public override void Attack()
         {
-            if (_projectilePrefab == null || _shootPoint == null || _damageDataList == null || _damageDataList.Count == 0)
+            if (_projectilePrefab == null || _shootPoint == null || _damageDataSO.DamageList == null || _damageDataSO.DamageList.Count == 0)
                 return;
 
             Projectile projectile = Instantiate(_projectilePrefab, _shootPoint.position, _shootPoint.rotation);
-            projectile.Initialize(_damageDataList, _projectileSpeed);
+            projectile.Initialize(_damageDataSO.DamageList, _projectileSpeed);
         }
     }
 }

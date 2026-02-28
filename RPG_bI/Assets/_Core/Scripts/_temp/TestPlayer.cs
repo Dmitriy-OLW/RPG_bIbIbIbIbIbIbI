@@ -1,24 +1,16 @@
-﻿using Health;
+﻿using Weapons;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Testing
 {
     public class TestPlayer : MonoBehaviour
     {
-        [SerializeField] private Weapons.WeaponBase _weapon;
-        [SerializeField] private HealthController _healthController;
+        [SerializeField] private WeaponBase _weapon;
 
-        private void Update()
+        public void OnLook(InputAction.CallbackContext context)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _weapon.Attack();
-            }
-
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                _healthController.Heal(20f);
-            }
+            _weapon.Attack();
         }
     }
 }

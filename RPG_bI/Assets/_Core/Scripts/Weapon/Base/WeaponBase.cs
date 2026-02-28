@@ -6,7 +6,7 @@ namespace Weapons
 {
     public abstract class WeaponBase : MonoBehaviour, IAttackable
     {
-        [SerializeField] protected List<DamageData> _damageDataList;
+        [SerializeField] protected DamageDataSO _damageDataSO;
         
         public abstract void Attack();
     }
