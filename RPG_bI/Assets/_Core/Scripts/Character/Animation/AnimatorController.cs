@@ -45,9 +45,9 @@ namespace Character.AnimationController
 
         private readonly int _locomotionStartDirectionHash = Animator.StringToHash("LocomotionStartDirection");
 
-        private void Awake()
+        public AnimatorController(Animator animator)
         {
-            _animator = GetComponent<Animator>();
+            _animator = animator;
         }
 
         public void UpdateAnimatorParameters(AnimatorData data)
