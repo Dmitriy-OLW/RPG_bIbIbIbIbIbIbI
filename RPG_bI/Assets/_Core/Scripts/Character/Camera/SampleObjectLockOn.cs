@@ -19,21 +19,21 @@ namespace CharacterCamera
         
         private void OnTriggerEnter(Collider otherCollider)
         {
-            SamplePlayerAnimationController playerAnimationController = otherCollider.GetComponent<SamplePlayerAnimationController>();
+            PlayerHandler playerAnimationController = otherCollider.GetComponent<PlayerHandler>();
             
             if (playerAnimationController != null)
             {
-                playerAnimationController.AddTargetCandidate(gameObject);
+                playerAnimationController.PlayerTargeting.AddTargetCandidate(gameObject);
             }
         }
 
         private void OnTriggerExit(Collider otherCollider)
         {
-            SamplePlayerAnimationController playerAnimationController = otherCollider.GetComponent<SamplePlayerAnimationController>();
+            PlayerHandler playerAnimationController = otherCollider.GetComponent<PlayerHandler>();
             
             if (playerAnimationController != null)
             {
-                playerAnimationController.RemoveTarget(gameObject);
+                playerAnimationController.PlayerTargeting.RemoveTarget(gameObject);
                 Highlight(false, false);
             }
         }

@@ -93,5 +93,21 @@ namespace Character.InputController
             onLockOnToggled?.Invoke();
             onSprintDeactivated?.Invoke();
         }
+        
+        public void OnMeleeAttack(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+
+            }
+        }
+        
+        public void OnRangeAttack(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+
+            }
+        }
     }
 }
