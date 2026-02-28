@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 
-namespace Input
+namespace Character.InputController
 {
     public class InputReader : MonoBehaviour
     {
@@ -26,6 +26,12 @@ namespace Input
         public Action onSprintDeactivated;
 
         public Action onWalkToggled;
+        
+        public Vector2 MouseDelta => _mouseDelta;         
+        public Vector2 MoveComposite => _moveComposite;     
+                                           
+        public float MovementInputDuration =>_movementInputDuration;
+        public bool MovementInputDetected => _movementInputDetected; 
 
         public void OnLook(InputAction.CallbackContext context)
         {
