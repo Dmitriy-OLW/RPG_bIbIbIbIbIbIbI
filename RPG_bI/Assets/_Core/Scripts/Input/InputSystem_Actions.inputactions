@@ -263,7 +263,7 @@
                     "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard and Mouse",
+                    "groups": "Keyboard and Mouse;Keyboard&Mouse",
                     "action": "LockOn",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -285,7 +285,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard and Mouse",
+                    "groups": "Keyboard and Mouse;Keyboard&Mouse",
                     "action": "PrimaryAtack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -307,7 +307,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard and Mouse",
+                    "groups": "Keyboard and Mouse;Keyboard&Mouse",
                     "action": "SecondaryAtack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -329,7 +329,7 @@
                     "path": "<Keyboard>/capsLock",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard and Mouse",
+                    "groups": "Keyboard and Mouse;Keyboard&Mouse",
                     "action": "ToggleWalk",
                     "isComposite": false,
                     "isPartOfComposite": false

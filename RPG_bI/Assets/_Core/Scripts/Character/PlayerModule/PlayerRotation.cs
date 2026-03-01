@@ -17,8 +17,6 @@ namespace Character
         private bool _isWalking;
         private bool _isSprinting;
         private Vector3 _cameraForward;
-        private Vector3 _previousRotation;
-        private Vector3 _currentRotation = new Vector3(0f, 0f, 0f);
 
         public float StrafeDirectionX => _strafeDirectionX;
         public float StrafeDirectionZ => _strafeDirectionZ;
@@ -148,23 +146,6 @@ namespace Character
                     _handler.Config.RotationSmoothing * Time.deltaTime
                 );
             }
-        }
-
-        public void StorePreviousRotation()
-        {
-            _previousRotation = _handler.transform.forward;
-        }
-
-        public void UpdateCurrentRotation()
-        {
-            _currentRotation = _handler.transform.forward;
-        }
-
-        public float GetRotationRate()
-        {
-            return _currentRotation != _previousRotation
-                ? Vector3.SignedAngle(_currentRotation, _previousRotation, Vector3.up) / Time.deltaTime * -1f
-                : 0f;
         }
         
         private void UpdateStrafeDirection(float TargetZ, float TargetX)

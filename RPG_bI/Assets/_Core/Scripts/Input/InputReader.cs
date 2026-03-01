@@ -27,6 +27,9 @@ namespace Character.InputController
 
         public Action onWalkToggled;
         
+        public Action onMeleeAttack;
+        public Action onRangeAttack;
+        
         public Vector2 MouseDelta => _mouseDelta;         
         public Vector2 MoveComposite => _moveComposite;     
                                            
@@ -98,7 +101,7 @@ namespace Character.InputController
         {
             if (context.performed)
             {
-
+                onMeleeAttack?.Invoke();
             }
         }
         
@@ -106,7 +109,7 @@ namespace Character.InputController
         {
             if (context.performed)
             {
-
+                onRangeAttack?.Invoke();
             }
         }
     }

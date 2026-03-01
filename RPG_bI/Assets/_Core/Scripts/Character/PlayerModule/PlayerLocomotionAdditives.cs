@@ -23,6 +23,9 @@ namespace Character
         private float _rotationRate;
         private float _initialLeanValue;
         private float _initialTurnValue;
+        
+        private Vector3 _previousRotation;
+        private Vector3 _currentRotation = new Vector3(0f, 0f, 0f);
 
         public float LeanValue => _leanValue;
         public float HeadLookX => _headLookX;
@@ -64,8 +67,8 @@ namespace Character
         {
             if (headLookActivated || leansActivated || bodyLookActivated)
             {
-                _handler.PlayerRotation.UpdateCurrentRotation();
-                _rotationRate = _handler.PlayerRotation.GetRotationRate();
+                UpdateCurrentRotation();
+                _rotationRate = GetRotationRate();
             }
 
             _initialLeanValue = leansActivated ? _rotationRate : 0f;
@@ -125,7 +128,7 @@ namespace Character
             _headLookY = cameraTilt;
             _bodyLookY = cameraTilt;
 
-            _handler.PlayerRotation.StorePreviousRotation();
+            StorePreviousRotation();
         }
 
         private float CalculateSmoothedValue(
@@ -173,6 +176,23 @@ namespace Character
             }
 
             return timeVariable;
+        }
+        
+        private void StorePreviousRotation()
+        {
+            _previousRotation = _handler.transform.forward;
+        }
+
+        private void UpdateCurrentRotation()
+        {
+            _currentRotation = _handler.transform.forward;
+        }
+
+        private float GetRotationRate()
+        {
+            return _currentRotation != _previousRotation
+                ? Vector3.SignedAngle(_currentRotation, _previousRotation, Vector3.up) / Time.deltaTime * -1f
+                : 0f;
         }
     }
 }
