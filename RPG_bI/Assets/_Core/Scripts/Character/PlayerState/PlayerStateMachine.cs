@@ -9,7 +9,9 @@ namespace Character
         Locomotion,
         Jump,
         Fall,
-        Crouch
+        Crouch,
+        Hit,
+        Dead    
     }
 
     public class PlayerStateMachine

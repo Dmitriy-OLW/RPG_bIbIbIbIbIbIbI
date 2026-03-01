@@ -2,21 +2,21 @@ using Character.AnimationController;
 using Character.InputController;
 using CharacterCamera;
 using UnityEngine;
+using Health;
 
 namespace Character
 {
     public class PlayerHandler : MonoBehaviour
     {
         [Header("External Components")]
-        [SerializeField] private Animator _characterAnimator;
+        [SerializeField]  private AnimatorController _animatorController;
         [SerializeField] private CameraController _cameraController;
         [SerializeField] private InputReader _inputReader;
         [SerializeField] private CharacterController _controller;
+        [SerializeField] private HealthController _healthController; 
         [SerializeField] private PlayerConfig _config;
         [SerializeField] private Transform _rearRayPos;
         [SerializeField] private Transform _frontRayPos;
-
-        private AnimatorController _animatorController;
         private PlayerStateMachine _stateMachine;
         private PlayerMovement _playerMovement;
         private PlayerRotation _playerRotation;
@@ -49,7 +49,6 @@ namespace Character
 
         private void InitializeComponents()
         {
-            _animatorController = new AnimatorController(_characterAnimator);
             _playerGroundedChecker = new PlayerGroundedChecker(this);
             _playerMovement = new PlayerMovement(this);
             _playerRotation = new PlayerRotation(this);
@@ -68,12 +67,16 @@ namespace Character
             var jumpState = new PlayerJumpState(_stateMachine, this);
             var fallState = new PlayerFallState(_stateMachine, this);
             var crouchState = new PlayerCrouchState(_stateMachine, this);
+            var hitState = new PlayerHitState(_stateMachine, this); 
+            var deadState = new PlayerDeadState(_stateMachine, this); 
             
             _stateMachine.RegisterState(PlayerState.Base, baseState);
             _stateMachine.RegisterState(PlayerState.Locomotion, locomotionState);
             _stateMachine.RegisterState(PlayerState.Jump, jumpState);
             _stateMachine.RegisterState(PlayerState.Fall, fallState);
             _stateMachine.RegisterState(PlayerState.Crouch, crouchState);
+            _stateMachine.RegisterState(PlayerState.Hit, hitState); 
+            _stateMachine.RegisterState(PlayerState.Dead, deadState);
             
             _stateMachine.SwitchState(PlayerState.Locomotion);
         }

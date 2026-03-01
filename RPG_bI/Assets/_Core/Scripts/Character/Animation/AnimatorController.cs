@@ -4,7 +4,9 @@ namespace Character.AnimationController
 {
     public class AnimatorController : MonoBehaviour
     {
-        private Animator _animator;
+        [SerializeField] private Animator _animator;
+
+        private bool _isCharacterAnimationHit = false;
 
         private readonly int _movementInputTappedHash = Animator.StringToHash("MovementInputTapped");
         private readonly int _movementInputPressedHash = Animator.StringToHash("MovementInputPressed");
@@ -44,11 +46,15 @@ namespace Character.AnimationController
         private readonly int _bodyLookYHash = Animator.StringToHash("BodyLookY");
 
         private readonly int _locomotionStartDirectionHash = Animator.StringToHash("LocomotionStartDirection");
+        
+        private readonly int _hitTriggerHash = Animator.StringToHash("TakeHit");
+        private readonly int _deathHash = Animator.StringToHash("IsDead");
+        private readonly int _deathRandomizerHash = Animator.StringToHash("RandomHit");
 
-        public AnimatorController(Animator animator)
+        /*public AnimatorController(Animator animator)
         {
             _animator = animator;
-        }
+        }*/
 
         public void UpdateAnimatorParameters(AnimatorData data)
         {
@@ -96,6 +102,27 @@ namespace Character.AnimationController
         public void SetLocomotionStartDirection(float value)
         {
             _animator.SetFloat(_locomotionStartDirectionHash, value);
+        }
+
+        public void TriggerHitAnimation()
+        {
+            _isCharacterAnimationHit = true;
+            _animator.SetTrigger(_hitTriggerHash);
+        }
+
+        public void SetHitRandomizer()
+        {
+            bool randomHit = Random.value > 0.5f;
+            _animator.SetBool(_deathRandomizerHash, randomHit);
+        }
+
+        public void SetIsDead(bool value) => _animator.SetBool(_deathHash, value);
+        
+        public bool OnHitAnimationFinished() => _isCharacterAnimationHit = false;
+
+        public bool GetAnimationHitState()
+        {
+            return _isCharacterAnimationHit;
         }
 
         public struct AnimatorData

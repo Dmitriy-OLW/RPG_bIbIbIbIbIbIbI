@@ -12,6 +12,9 @@ namespace Character.InputController
         public float _movementInputDuration;
         public bool _movementInputDetected;
         
+        [SerializeField] private bool _weaponInputBlocked;
+        [SerializeField] private bool _allInputBlocked;
+        
         public Action onAimActivated;
         public Action onAimDeactivated;
 
@@ -30,26 +33,38 @@ namespace Character.InputController
         public Action onMeleeAttack;
         public Action onRangeAttack;
         
-        public Vector2 MouseDelta => _mouseDelta;         
-        public Vector2 MoveComposite => _moveComposite;     
-                                           
-        public float MovementInputDuration =>_movementInputDuration;
-        public bool MovementInputDetected => _movementInputDetected; 
+        public Vector2 MouseDelta => _mouseDelta;
 
+        public void SetAllInputBlock(bool value)
+        {
+            _allInputBlocked = value;
+        }
+        
+        public void SetWeaponBlock(bool value)
+        {
+            _weaponInputBlocked = value;
+        }
+        
         public void OnLook(InputAction.CallbackContext context)
         {
+            if(_allInputBlocked)
+                return;
+            
             _mouseDelta = context.ReadValue<Vector2>();
         }
 
         public void OnMove(InputAction.CallbackContext context)
         {
+            if(_allInputBlocked)
+                return;
+            
             _moveComposite = context.ReadValue<Vector2>();
             _movementInputDetected = _moveComposite.magnitude > 0;
         }
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            if (!context.performed)
+            if (!context.performed || _allInputBlocked)
                 return;
             
             onJumpPerformed?.Invoke();
@@ -57,7 +72,7 @@ namespace Character.InputController
         
         public void OnToggleWalk(InputAction.CallbackContext context)
         {
-            if (!context.performed)
+            if (!context.performed || _allInputBlocked)
                 return;
 
             onWalkToggled?.Invoke();
@@ -65,6 +80,9 @@ namespace Character.InputController
 
         public void OnSprint(InputAction.CallbackContext context)
         {
+            if(_allInputBlocked)
+                return;
+            
             if (context.started)
                 onSprintActivated?.Invoke();
             else if (context.canceled)
@@ -73,6 +91,9 @@ namespace Character.InputController
         
         public void OnCrouch(InputAction.CallbackContext context)
         {
+            if(_allInputBlocked)
+                return;
+            
             if (context.started)
                 onCrouchActivated?.Invoke();
             else if (context.canceled)
@@ -81,6 +102,9 @@ namespace Character.InputController
 
         public void OnAim(InputAction.CallbackContext context)
         {
+            if(_allInputBlocked)
+                return;
+            
             if (context.started)
                 onAimActivated?.Invoke();
 
@@ -90,7 +114,7 @@ namespace Character.InputController
         
         public void OnLockOn(InputAction.CallbackContext context)
         {
-            if (!context.performed) 
+            if (!context.performed || _allInputBlocked) 
                 return;
             
             onLockOnToggled?.Invoke();
@@ -99,18 +123,25 @@ namespace Character.InputController
         
         public void OnMeleeAttack(InputAction.CallbackContext context)
         {
-            if (context.performed)
-            {
-                onMeleeAttack?.Invoke();
-            }
+            if (!context.performed || CanProcessWeaponInput())
+                return;
+               
+            onMeleeAttack?.Invoke();
+            
         }
         
         public void OnRangeAttack(InputAction.CallbackContext context)
         {
-            if (context.performed)
-            {
-                onRangeAttack?.Invoke();
-            }
+            if (!context.performed || CanProcessWeaponInput())
+                return;
+            
+            onRangeAttack?.Invoke();
+            
+        }
+
+        private bool CanProcessWeaponInput()
+        {
+            return _allInputBlocked || _weaponInputBlocked;
         }
     }
 }
