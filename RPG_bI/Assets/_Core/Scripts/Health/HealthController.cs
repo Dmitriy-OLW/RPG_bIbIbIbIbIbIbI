@@ -63,7 +63,6 @@ namespace Health
                 OnDeath?.Invoke();
             else
                 OnHit?.Invoke();
-            
         }
 
         private float CalculateTotalDamage(List<DamageData> damages)

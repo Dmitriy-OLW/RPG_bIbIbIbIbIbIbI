@@ -27,6 +27,7 @@ namespace Character
         private PlayerLocomotionAdditives _playerLocomotionAdditives;
         private PlayerGroundedChecker _playerGroundedChecker;
         private PlayerInputHandler _playerInputHandler;
+        private PlayerHealthHandler _playerHealthHandler;
 
         public CameraController CameraController => _cameraController;
         public InputReader InputReader => _inputReader;
@@ -45,8 +46,8 @@ namespace Character
 
         private void Awake()
         {
-            InitializeComponents();
             InitializeStateMachine();
+            InitializeComponents();
         }
 
         private void InitializeComponents()
@@ -58,6 +59,7 @@ namespace Character
             _playerCrouch = new PlayerCrouch(this);
             _playerLocomotionAdditives = new PlayerLocomotionAdditives(this);
             _playerInputHandler = new PlayerInputHandler(this);
+            _playerHealthHandler = new PlayerHealthHandler(_healthController, _stateMachine);
         }
 
         private void InitializeStateMachine()
@@ -86,7 +88,7 @@ namespace Character
         private void Start()
         {
             _playerInputHandler.SubscribeToInputEvents();
-            SubscribeToHealthEvents();
+            _playerHealthHandler.SubscribeToHealthEvents();
         }
 
         private void Update()
@@ -98,33 +100,7 @@ namespace Character
         private void OnDestroy()
         {
             _playerInputHandler.UnsubscribeFromInputEvents();
-            UnsubscribeFromHealthEvents();
-        }
-        
-        private void SubscribeToHealthEvents()
-        {
-            _healthController.OnHit += HandleHit;
-            _healthController.OnDeath += HandleDeath;
-        }
-        
-        private void UnsubscribeFromHealthEvents()
-        {
-            _healthController.OnHit -= HandleHit;
-            _healthController.OnDeath -= HandleDeath;
-        }
-        
-        private void HandleHit()
-        {
-            if (_stateMachine.CurrentStateType == PlayerState.Dead || 
-                _stateMachine.CurrentStateType == PlayerState.Hit)
-                return;
-            
-            _stateMachine.SwitchState(PlayerState.Hit);
-        }
-
-        private void HandleDeath()
-        {
-            _stateMachine.SwitchState(PlayerState.Dead);
+            _playerHealthHandler.UnsubscribeFromHealthEvents();
         }
     }
 }
