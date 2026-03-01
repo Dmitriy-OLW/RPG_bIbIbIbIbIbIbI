@@ -85,6 +85,7 @@ namespace Character
         {
             _playerInputHandler.SubscribeToInputEvents();
             _playerTargeting.Initialize();
+            SubscribeToHealthEvents();
         }
 
         private void Update()
@@ -96,6 +97,33 @@ namespace Character
         private void OnDestroy()
         {
             _playerInputHandler.UnsubscribeFromInputEvents();
+            UnsubscribeFromHealthEvents();
+        }
+        
+        private void SubscribeToHealthEvents()
+        {
+            _healthController.OnHit += HandleHit;
+            _healthController.OnDeath += HandleDeath;
+        }
+        
+        private void UnsubscribeFromHealthEvents()
+        {
+            _healthController.OnHit -= HandleHit;
+            _healthController.OnDeath -= HandleDeath;
+        }
+        
+        private void HandleHit()
+        {
+            if (_stateMachine.CurrentStateType == PlayerState.Dead || 
+                _stateMachine.CurrentStateType == PlayerState.Hit)
+                return;
+            
+            _stateMachine.SwitchState(PlayerState.Hit);
+        }
+
+        private void HandleDeath()
+        {
+            _stateMachine.SwitchState(PlayerState.Dead);
         }
     }
 }

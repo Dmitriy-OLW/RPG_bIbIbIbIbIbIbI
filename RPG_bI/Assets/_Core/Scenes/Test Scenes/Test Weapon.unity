@@ -1670,6 +1670,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 237345364653438409, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 258810081232198914, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
       propertyPath: _projectileSpeed
       value: 50
@@ -1713,6 +1717,10 @@ PrefabInstance:
     - target: {fileID: 6573700085815661073, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938049986052220598, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7137460280048699206, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
       propertyPath: m_Name

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Damage;
 using Unity.Collections;
+using System;
 
 namespace Health
 {
@@ -15,6 +16,9 @@ namespace Health
         
         [Header("Resist Settings")]
         [SerializeField] private ResistConfig _resistConfig;
+
+        public event Action OnHit;
+        public event Action OnDeath;
 
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _maxHealth;
@@ -54,6 +58,12 @@ namespace Health
             float totalDamage = CalculateTotalDamage(damages);
             
             _currentHealth = Mathf.Max(_currentHealth - totalDamage, 0f);
+
+            if (_currentHealth <= 0f)
+                OnDeath?.Invoke();
+            else
+                OnHit?.Invoke();
+            
         }
 
         private float CalculateTotalDamage(List<DamageData> damages)
