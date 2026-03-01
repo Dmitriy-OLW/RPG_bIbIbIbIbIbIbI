@@ -86,6 +86,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RPGbI_Player_Base_NEW
       objectReference: {fileID: 0}
+    - target: {fileID: 6300321638143805425, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6721040380677126294, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -358,8 +362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 897354b20ce44f328d952c0871c602d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meleeWeapon: {fileID: 5251700697265688029}
-  _rangeWeapon: {fileID: 258810081232198914}
+  _primaryWeapon: {fileID: 5251700697265688029}
+  _secondaryWeapon: {fileID: 258810081232198914}
 --- !u!114 &5251700697265688029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,7 +397,7 @@ MonoBehaviour:
   _damageDataSO: {fileID: 11400000, guid: 2c5a2c53890ca7445ac46c0c7813e9f8, type: 2}
   _projectilePrefab: {fileID: 7215435939982588545, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
   _shootPoint: {fileID: 4742219648283086358}
-  _projectileSpeed: 20
+  _projectileSpeed: 50
 --- !u!114 &7050039176046897368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,7 +616,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8688036903269052271}
         m_TargetAssemblyTypeName: Character.InputController.InputReader, Assembly-CSharp
-        m_MethodName: OnMeleeAttack
+        m_MethodName: OnPrimaryAttack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -628,7 +632,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8688036903269052271}
         m_TargetAssemblyTypeName: Character.InputController.InputReader, Assembly-CSharp
-        m_MethodName: OnRangeAttack
+        m_MethodName: OnSecondaryAttack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

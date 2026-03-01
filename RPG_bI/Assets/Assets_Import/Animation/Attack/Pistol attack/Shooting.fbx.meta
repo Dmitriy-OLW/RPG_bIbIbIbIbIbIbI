@@ -60,7 +60,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.42568505
-        functionName: OnRangeFireFrame
+        functionName: OnDamageFrame
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

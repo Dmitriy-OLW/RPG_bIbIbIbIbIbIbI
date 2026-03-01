@@ -4,13 +4,21 @@ using Character.InputController;
 
 public class WeaponController : MonoBehaviour
 {
+    public enum WeaponStateActive
+    {
+        Deactive,
+        PrimaryActive,
+        SecondaryActive
+    }
+    
     [Header("Weapons")]
-    [SerializeField] private MeleeWeapon _meleeWeapon;
-    [SerializeField] private RangeWeapon _rangeWeapon;
+    [SerializeField] private WeaponBase _primaryWeapon;
+    [SerializeField] private WeaponBase _secondaryWeapon;
     
     private Animator _animator;
     private InputReader _inputReader;
-    
+    private WeaponStateActive _currentWeaponState = WeaponStateActive.Deactive;
+
     private static readonly int PrimaryAttack = Animator.StringToHash("PrimaryAttack");
     private static readonly int SecondaryAttack = Animator.StringToHash("SecondaryAttack");
     private static readonly int RandomAttack = Animator.StringToHash("RandomAttack");
@@ -25,8 +33,8 @@ public class WeaponController : MonoBehaviour
     {
         if (_inputReader != null)
         {
-            _inputReader.onMeleeAttack += OnMeleeAttack;
-            _inputReader.onRangeAttack += OnRangeAttack;
+            _inputReader.onPrimaryAttack += OnPrimaryAttack;
+            _inputReader.onSecondaryAttack += OnSecondaryAttack;
         }
     }
 
@@ -34,29 +42,38 @@ public class WeaponController : MonoBehaviour
     {
         if (_inputReader != null)
         {
-            _inputReader.onMeleeAttack -= OnMeleeAttack;
-            _inputReader.onRangeAttack -= OnRangeAttack;
+            _inputReader.onPrimaryAttack -= OnPrimaryAttack;
+            _inputReader.onSecondaryAttack -= OnSecondaryAttack;
         }
     }
     
-    public void OnMeleeDamageFrame()
+    public void OnDamageFrame()
     {
-        _meleeWeapon.Attack();
-    }
+        if(_currentWeaponState == WeaponStateActive.PrimaryActive)
+            _primaryWeapon.Attack();
+        else if(_currentWeaponState == WeaponStateActive.SecondaryActive)
+            _secondaryWeapon.Attack();
         
-    public void OnRangeFireFrame()
-    {
-        _rangeWeapon.Attack();
+        _currentWeaponState = WeaponStateActive.Deactive;
     }
 
-    private void OnMeleeAttack()
+    private void OnPrimaryAttack()
     {
-        _animator.SetTrigger(PrimaryAttack);
+        if (_currentWeaponState == WeaponStateActive.Deactive)
+        {
+            _animator.SetTrigger(PrimaryAttack);
+            _currentWeaponState = WeaponStateActive.PrimaryActive;
+        }
     }
 
-    private void OnRangeAttack()
+    private void OnSecondaryAttack()
     {
-        _animator.SetTrigger(SecondaryAttack);
+        if (_currentWeaponState == WeaponStateActive.Deactive)
+        {
+            _animator.SetTrigger(SecondaryAttack);
+            _currentWeaponState = WeaponStateActive.SecondaryActive;
+        }
+        
     }
 
     private void SetRandomAnimation()

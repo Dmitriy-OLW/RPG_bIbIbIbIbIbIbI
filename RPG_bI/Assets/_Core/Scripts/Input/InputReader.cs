@@ -30,8 +30,8 @@ namespace Character.InputController
 
         public Action onWalkToggled;
         
-        public Action onMeleeAttack;
-        public Action onRangeAttack;
+        public Action onPrimaryAttack;
+        public Action onSecondaryAttack;
         
         public Vector2 MouseDelta => _mouseDelta;
 
@@ -121,21 +121,21 @@ namespace Character.InputController
             onSprintDeactivated?.Invoke();
         }
         
-        public void OnMeleeAttack(InputAction.CallbackContext context)
+        public void OnPrimaryAttack(InputAction.CallbackContext context)
         {
             if (!context.performed || CanProcessWeaponInput())
                 return;
                
-            onMeleeAttack?.Invoke();
+            onPrimaryAttack?.Invoke();
             
         }
         
-        public void OnRangeAttack(InputAction.CallbackContext context)
+        public void OnSecondaryAttack(InputAction.CallbackContext context)
         {
             if (!context.performed || CanProcessWeaponInput())
                 return;
             
-            onRangeAttack?.Invoke();
+            onSecondaryAttack?.Invoke();
             
         }
 
