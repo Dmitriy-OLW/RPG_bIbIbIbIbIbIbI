@@ -19,14 +19,10 @@ namespace Character
         public GameObject CurrentLockOnTarget => _currentLockOnTarget;
         public Transform TargetLockOnPos => _targetLockOnPos;
 
-        public PlayerTargeting(PlayerHandler handler)
+        public PlayerTargeting(PlayerHandler handler, Transform targetLockOnPos)
         {
             _handler = handler;
-        }
-
-        public void Initialize()
-        {
-            _targetLockOnPos = _handler.transform.Find("TargetLockOnPos");
+            _targetLockOnPos = targetLockOnPos;
         }
 
         public void SetIsAiming(bool value)

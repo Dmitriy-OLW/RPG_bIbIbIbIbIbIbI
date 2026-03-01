@@ -17,6 +17,8 @@ namespace Character
         [SerializeField] private PlayerConfig _config;
         [SerializeField] private Transform _rearRayPos;
         [SerializeField] private Transform _frontRayPos;
+        [SerializeField] private Transform _targetLockOnPos;
+        
         private PlayerStateMachine _stateMachine;
         private PlayerMovement _playerMovement;
         private PlayerRotation _playerRotation;
@@ -52,7 +54,7 @@ namespace Character
             _playerGroundedChecker = new PlayerGroundedChecker(this);
             _playerMovement = new PlayerMovement(this);
             _playerRotation = new PlayerRotation(this);
-            _playerTargeting = new PlayerTargeting(this);
+            _playerTargeting = new PlayerTargeting(this, _targetLockOnPos);
             _playerCrouch = new PlayerCrouch(this);
             _playerLocomotionAdditives = new PlayerLocomotionAdditives(this);
             _playerInputHandler = new PlayerInputHandler(this);
@@ -84,7 +86,6 @@ namespace Character
         private void Start()
         {
             _playerInputHandler.SubscribeToInputEvents();
-            _playerTargeting.Initialize();
             SubscribeToHealthEvents();
         }
 

@@ -350,6 +350,7 @@ MonoBehaviour:
   _config: {fileID: 11400000, guid: 2220cc939d39c974ba91cdb4bb81871b, type: 2}
   _rearRayPos: {fileID: 7641170695428954346}
   _frontRayPos: {fileID: 7672522290753519079}
+  _targetLockOnPos: {fileID: 560772929650175601}
 --- !u!114 &2831998959199656810
 MonoBehaviour:
   m_ObjectHideFlags: 0

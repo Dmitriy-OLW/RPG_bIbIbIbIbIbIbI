@@ -73,7 +73,6 @@ public class WeaponController : MonoBehaviour
             _animator.SetTrigger(SecondaryAttack);
             _currentWeaponState = WeaponStateActive.SecondaryActive;
         }
-        
     }
 
     private void SetRandomAnimation()
@@ -81,5 +80,4 @@ public class WeaponController : MonoBehaviour
         bool randomAttackValue = Random.value > 0.5f;
         _animator.SetBool(RandomAttack, randomAttackValue);
     }
-
 }
