@@ -56,18 +56,6 @@ namespace Character
             EnableLockOn(!_isLockedOn);
         }
 
-        public void EnableLockOn(bool enable)
-        {
-            _isLockedOn = enable;
-            _handler.PlayerRotation.UpdateStrafingState();
-            _handler.CameraController.LockOn(enable, _targetLockOnPos);
-
-            if (enable && _currentLockOnTarget != null)
-            {
-                _currentLockOnTarget.GetComponent<SampleObjectLockOn>().Highlight(true, true);
-            }
-        }
-
         public void UpdateBestTarget()
         {
             GameObject newBestTarget;
@@ -131,6 +119,18 @@ namespace Character
                     _currentLockOnTarget = newBestTarget;
                     EnableLockOn(false);
                 }
+            }
+        }
+        
+        private void EnableLockOn(bool enable)
+        {
+            _isLockedOn = enable;
+            _handler.PlayerRotation.UpdateStrafingState();
+            _handler.CameraController.LockOn(enable, _targetLockOnPos);
+
+            if (enable && _currentLockOnTarget != null)
+            {
+                _currentLockOnTarget.GetComponent<SampleObjectLockOn>().Highlight(true, true);
             }
         }
     }

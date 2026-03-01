@@ -41,42 +41,6 @@ namespace Character
             _handler = handler;
         }
 
-        public void CalculateInput()
-        {
-            if (_handler.InputReader._movementInputDetected)
-            {
-                if (_handler.InputReader._movementInputDuration == 0)
-                {
-                    _movementInputTapped = true;
-                }
-                else if (_handler.InputReader._movementInputDuration > 0 && 
-                         _handler.InputReader._movementInputDuration < _handler.Config.ButtonHoldThreshold)
-                {
-                    _movementInputTapped = false;
-                    _movementInputPressed = true;
-                    _movementInputHeld = false;
-                }
-                else
-                {
-                    _movementInputTapped = false;
-                    _movementInputPressed = false;
-                    _movementInputHeld = true;
-                }
-
-                _handler.InputReader._movementInputDuration += Time.deltaTime;
-            }
-            else
-            {
-                _handler.InputReader._movementInputDuration = 0;
-                _movementInputTapped = false;
-                _movementInputPressed = false;
-                _movementInputHeld = false;
-            }
-
-            _moveDirection = (_handler.CameraController.GetCameraForwardZeroedYNormalised() * _handler.InputReader._moveComposite.y)
-                + (_handler.CameraController.GetCameraRightZeroedYNormalised() * _handler.InputReader._moveComposite.x);
-        }
-
         public void CalculateMoveDirection()
         {
             CalculateInput();
@@ -119,29 +83,6 @@ namespace Character
                 : 0f;
 
             CalculateGait();
-        }
-
-        private void CalculateGait()
-        {
-            float runThreshold = (_handler.Config.WalkSpeed + _handler.Config.RunSpeed) / 2;
-            float sprintThreshold = (_handler.Config.RunSpeed + _handler.Config.SprintSpeed) / 2;
-
-            if (_speed2D < 0.01)
-            {
-                _currentGait = AnimatorController.GaitState.Idle;
-            }
-            else if (_speed2D < runThreshold)
-            {
-                _currentGait = AnimatorController.GaitState.Walk;
-            }
-            else if (_speed2D < sprintThreshold)
-            {
-                _currentGait = AnimatorController.GaitState.Run;
-            }
-            else
-            {
-                _currentGait = AnimatorController.GaitState.Sprint;
-            }
         }
 
         public void Move()
@@ -213,6 +154,66 @@ namespace Character
             }
 
             _isStarting = isStartingCheck;
+        }
+        
+                
+        private void CalculateInput()
+        {
+            if (_handler.InputReader._movementInputDetected)
+            {
+                if (_handler.InputReader._movementInputDuration == 0)
+                {
+                    _movementInputTapped = true;
+                }
+                else if (_handler.InputReader._movementInputDuration > 0 && 
+                         _handler.InputReader._movementInputDuration < _handler.Config.ButtonHoldThreshold)
+                {
+                    _movementInputTapped = false;
+                    _movementInputPressed = true;
+                    _movementInputHeld = false;
+                }
+                else
+                {
+                    _movementInputTapped = false;
+                    _movementInputPressed = false;
+                    _movementInputHeld = true;
+                }
+
+                _handler.InputReader._movementInputDuration += Time.deltaTime;
+            }
+            else
+            {
+                _handler.InputReader._movementInputDuration = 0;
+                _movementInputTapped = false;
+                _movementInputPressed = false;
+                _movementInputHeld = false;
+            }
+
+            _moveDirection = (_handler.CameraController.GetCameraForwardZeroedYNormalised() * _handler.InputReader._moveComposite.y)
+                             + (_handler.CameraController.GetCameraRightZeroedYNormalised() * _handler.InputReader._moveComposite.x);
+        }
+
+        private void CalculateGait()
+        {
+            float runThreshold = (_handler.Config.WalkSpeed + _handler.Config.RunSpeed) / 2;
+            float sprintThreshold = (_handler.Config.RunSpeed + _handler.Config.SprintSpeed) / 2;
+
+            if (_speed2D < 0.01)
+            {
+                _currentGait = AnimatorController.GaitState.Idle;
+            }
+            else if (_speed2D < runThreshold)
+            {
+                _currentGait = AnimatorController.GaitState.Walk;
+            }
+            else if (_speed2D < sprintThreshold)
+            {
+                _currentGait = AnimatorController.GaitState.Run;
+            }
+            else
+            {
+                _currentGait = AnimatorController.GaitState.Sprint;
+            }
         }
 
         private float VariableOverrideDelayTimer(float timeVariable)

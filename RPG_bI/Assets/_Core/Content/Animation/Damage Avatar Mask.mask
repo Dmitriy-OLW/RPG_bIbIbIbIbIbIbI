@@ -6,8 +6,8 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Avatar Mask
-  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Name: Damage Avatar Mask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
@@ -103,25 +103,25 @@ AvatarMask:
   - m_Path: Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/Jaw
     m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_L/LowerLeg_L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L/Toes_L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_R/LowerLeg_R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R/Toes_R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: SM_Chr_Cat_01
     m_Weight: 1
   - m_Path: SM_Chr_Cyborg_Female_01

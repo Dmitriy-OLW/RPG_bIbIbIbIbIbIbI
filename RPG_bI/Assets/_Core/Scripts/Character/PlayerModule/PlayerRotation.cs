@@ -150,14 +150,6 @@ namespace Character
             }
         }
 
-        private void UpdateStrafeDirection(float TargetZ, float TargetX)
-        {
-            _strafeDirectionZ = Mathf.Lerp(_strafeDirectionZ, TargetZ, _handler.Config.AnimationDampTime * Time.deltaTime);
-            _strafeDirectionX = Mathf.Lerp(_strafeDirectionX, TargetX, _handler.Config.AnimationDampTime * Time.deltaTime);
-            _strafeDirectionZ = Mathf.Round(_strafeDirectionZ * 1000f) / 1000f;
-            _strafeDirectionX = Mathf.Round(_strafeDirectionX * 1000f) / 1000f;
-        }
-
         public void StorePreviousRotation()
         {
             _previousRotation = _handler.transform.forward;
@@ -174,5 +166,14 @@ namespace Character
                 ? Vector3.SignedAngle(_currentRotation, _previousRotation, Vector3.up) / Time.deltaTime * -1f
                 : 0f;
         }
+        
+        private void UpdateStrafeDirection(float TargetZ, float TargetX)
+        {
+            _strafeDirectionZ = Mathf.Lerp(_strafeDirectionZ, TargetZ, _handler.Config.AnimationDampTime * Time.deltaTime);
+            _strafeDirectionX = Mathf.Lerp(_strafeDirectionX, TargetX, _handler.Config.AnimationDampTime * Time.deltaTime);
+            _strafeDirectionZ = Mathf.Round(_strafeDirectionZ * 1000f) / 1000f;
+            _strafeDirectionX = Mathf.Round(_strafeDirectionX * 1000f) / 1000f;
+        }
+        
     }
 }
