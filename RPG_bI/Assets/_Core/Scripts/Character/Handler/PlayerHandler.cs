@@ -11,7 +11,7 @@ namespace Character
         [Header("External Components")]
         [SerializeField]  private AnimatorController _animatorController;
         [SerializeField] private CameraController _cameraController;
-        [SerializeField] private InputReader _inputReader;
+        [SerializeField] private BaseInputReader _inputReader;
         [SerializeField] private CharacterController _controller;
         [SerializeField] private HealthController _healthController; 
         [SerializeField] private PlayerConfig _config;
@@ -30,7 +30,7 @@ namespace Character
         private PlayerHealthHandler _playerHealthHandler;
 
         public CameraController CameraController => _cameraController;
-        public InputReader InputReader => _inputReader;
+        public BaseInputReader InputReader => _inputReader;
         public CharacterController Controller => _controller;
         public AnimatorController AnimatorController => _animatorController;
         public PlayerConfig Config => _config;

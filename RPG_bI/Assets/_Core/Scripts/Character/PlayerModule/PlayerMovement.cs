@@ -159,14 +159,14 @@ namespace Character
                 
         private void CalculateInput()
         {
-            if (_handler.InputReader._movementInputDetected)
+            if (_handler.InputReader.MovementInputDetected)
             {
-                if (_handler.InputReader._movementInputDuration == 0)
+                if (_handler.InputReader.MovementInputDuration == 0)
                 {
                     _movementInputTapped = true;
                 }
-                else if (_handler.InputReader._movementInputDuration > 0 && 
-                         _handler.InputReader._movementInputDuration < _handler.Config.ButtonHoldThreshold)
+                else if (_handler.InputReader.MovementInputDuration > 0 && 
+                         _handler.InputReader.MovementInputDuration < _handler.Config.ButtonHoldThreshold)
                 {
                     _movementInputTapped = false;
                     _movementInputPressed = true;
@@ -179,18 +179,18 @@ namespace Character
                     _movementInputHeld = true;
                 }
 
-                _handler.InputReader._movementInputDuration += Time.deltaTime;
+                _handler.InputReader.MovementInputDuration += Time.deltaTime;
             }
             else
             {
-                _handler.InputReader._movementInputDuration = 0;
+                _handler.InputReader.MovementInputDuration = 0;
                 _movementInputTapped = false;
                 _movementInputPressed = false;
                 _movementInputHeld = false;
             }
 
-            _moveDirection = (_handler.CameraController.GetCameraForwardZeroedYNormalised() * _handler.InputReader._moveComposite.y)
-                             + (_handler.CameraController.GetCameraRightZeroedYNormalised() * _handler.InputReader._moveComposite.x);
+            _moveDirection = (_handler.CameraController.GetCameraForwardZeroedYNormalised() * _handler.InputReader.MoveComposite.y)
+                             + (_handler.CameraController.GetCameraRightZeroedYNormalised() * _handler.InputReader.MoveComposite.x);
         }
 
         private void CalculateGait()

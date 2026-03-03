@@ -11,7 +11,7 @@ namespace Character
 
         public override void Enter()
         {
-            _handler.InputReader.onJumpPerformed += CrouchToJumpState;
+            _handler.InputReader.OnJumpPerformed += CrouchToJumpState;
         }
 
         public override void Update()
@@ -58,7 +58,7 @@ namespace Character
 
         public override void Exit()
         {
-            _handler.InputReader.onJumpPerformed -= CrouchToJumpState;
+            _handler.InputReader.OnJumpPerformed -= CrouchToJumpState;
         }
 
         private void CrouchToJumpState()

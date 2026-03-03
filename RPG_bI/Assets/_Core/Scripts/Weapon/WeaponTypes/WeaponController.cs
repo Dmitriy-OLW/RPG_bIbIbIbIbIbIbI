@@ -16,7 +16,7 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private WeaponBase _secondaryWeapon;
     
     private Animator _animator;
-    private InputReader _inputReader;
+    private BaseInputReader _inputReader;
     private WeaponStateActive _currentWeaponState = WeaponStateActive.Deactive;
 
     private static readonly int PrimaryAttack = Animator.StringToHash("PrimaryAttack");
@@ -25,7 +25,7 @@ public class WeaponController : MonoBehaviour
 
     private void Awake()
     {
-        _inputReader = GetComponent<InputReader>();
+        _inputReader = GetComponent<BaseInputReader>();
         _animator = GetComponent<Animator>();
     }
 
@@ -33,8 +33,8 @@ public class WeaponController : MonoBehaviour
     {
         if (_inputReader != null)
         {
-            _inputReader.onPrimaryAttack += OnPrimaryAttack;
-            _inputReader.onSecondaryAttack += OnSecondaryAttack;
+            _inputReader.OnPrimaryAttackActivated += OnPrimaryAttack;
+            _inputReader.OnSecondaryAttackActivated += OnSecondaryAttack;
         }
     }
 
@@ -42,8 +42,8 @@ public class WeaponController : MonoBehaviour
     {
         if (_inputReader != null)
         {
-            _inputReader.onPrimaryAttack -= OnPrimaryAttack;
-            _inputReader.onSecondaryAttack -= OnSecondaryAttack;
+            _inputReader.OnPrimaryAttackActivated -= OnPrimaryAttack;
+            _inputReader.OnSecondaryAttackActivated -= OnSecondaryAttack;
         }
     }
     

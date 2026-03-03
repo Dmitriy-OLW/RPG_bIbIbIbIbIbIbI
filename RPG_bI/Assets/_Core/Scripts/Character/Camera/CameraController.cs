@@ -39,11 +39,11 @@ namespace CharacterCamera
         private float _deltaRotationX;
         private float _deltaRotationY;
         
-        private InputReader _inputReader;
+        private BaseInputReader _inputReader;
         
         private void Start()
         {
-            _inputReader = _character.GetComponent<InputReader>();
+            _inputReader = _character.GetComponent<BaseInputReader>();
 
             if (_hideCursor)
             {

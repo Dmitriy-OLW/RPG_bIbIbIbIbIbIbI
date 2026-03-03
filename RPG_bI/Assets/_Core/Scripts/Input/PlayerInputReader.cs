@@ -1,56 +1,16 @@
 using UnityEngine;
-using System;
 using UnityEngine.InputSystem;
 
 namespace Character.InputController
 {
-    public class InputReader : MonoBehaviour
+    public class PlayerInputReader : BaseInputReader
     {
-        public Vector2 _mouseDelta;
-        public Vector2 _moveComposite;
-
-        public float _movementInputDuration;
-        public bool _movementInputDetected;
-        
-        [SerializeField] private bool _weaponInputBlocked;
-        [SerializeField] private bool _allInputBlocked;
-        
-        public Action onAimActivated;
-        public Action onAimDeactivated;
-
-        public Action onCrouchActivated;
-        public Action onCrouchDeactivated;
-
-        public Action onJumpPerformed;
-
-        public Action onLockOnToggled;
-
-        public Action onSprintActivated;
-        public Action onSprintDeactivated;
-
-        public Action onWalkToggled;
-        
-        public Action onPrimaryAttack;
-        public Action onSecondaryAttack;
-        
-        public Vector2 MouseDelta => _mouseDelta;
-
-        public void SetAllInputBlock(bool value)
-        {
-            _allInputBlocked = value;
-        }
-        
-        public void SetWeaponBlock(bool value)
-        {
-            _weaponInputBlocked = value;
-        }
-        
         public void OnLook(InputAction.CallbackContext context)
         {
             if(_allInputBlocked)
                 return;
             
-            _mouseDelta = context.ReadValue<Vector2>();
+            MouseDelta = context.ReadValue<Vector2>();
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -58,8 +18,8 @@ namespace Character.InputController
             if(_allInputBlocked)
                 return;
             
-            _moveComposite = context.ReadValue<Vector2>();
-            _movementInputDetected = _moveComposite.magnitude > 0;
+            MoveComposite = context.ReadValue<Vector2>();
+            MovementInputDetected = MoveComposite.magnitude > 0;
         }
 
         public void OnJump(InputAction.CallbackContext context)
@@ -67,7 +27,7 @@ namespace Character.InputController
             if (!context.performed || _allInputBlocked)
                 return;
             
-            onJumpPerformed?.Invoke();
+            OnJumpPerformed?.Invoke();
         }
         
         public void OnToggleWalk(InputAction.CallbackContext context)
@@ -75,7 +35,7 @@ namespace Character.InputController
             if (!context.performed || _allInputBlocked)
                 return;
 
-            onWalkToggled?.Invoke();
+            OnWalkToggled?.Invoke();
         }
 
         public void OnSprint(InputAction.CallbackContext context)
@@ -84,9 +44,9 @@ namespace Character.InputController
                 return;
             
             if (context.started)
-                onSprintActivated?.Invoke();
+                OnSprintActivated?.Invoke();
             else if (context.canceled)
-                onSprintDeactivated?.Invoke();
+                OnSprintDeactivated?.Invoke();
         }
         
         public void OnCrouch(InputAction.CallbackContext context)
@@ -95,9 +55,9 @@ namespace Character.InputController
                 return;
             
             if (context.started)
-                onCrouchActivated?.Invoke();
+                OnCrouchActivated?.Invoke();
             else if (context.canceled)
-                onCrouchDeactivated?.Invoke();
+                OnCrouchDeactivated?.Invoke();
         }
 
         public void OnAim(InputAction.CallbackContext context)
@@ -106,10 +66,9 @@ namespace Character.InputController
                 return;
             
             if (context.started)
-                onAimActivated?.Invoke();
-
+                OnAimActivated?.Invoke();
             if (context.canceled)
-                onAimDeactivated?.Invoke();
+                OnAimDeactivated?.Invoke();
         }
         
         public void OnLockOn(InputAction.CallbackContext context)
@@ -117,8 +76,8 @@ namespace Character.InputController
             if (!context.performed || _allInputBlocked) 
                 return;
             
-            onLockOnToggled?.Invoke();
-            onSprintDeactivated?.Invoke();
+            OnLockOnToggled?.Invoke();
+            OnSprintDeactivated?.Invoke();
         }
         
         public void OnPrimaryAttack(InputAction.CallbackContext context)
@@ -126,8 +85,7 @@ namespace Character.InputController
             if (!context.performed || CanProcessWeaponInput())
                 return;
                
-            onPrimaryAttack?.Invoke();
-            
+            OnPrimaryAttackActivated?.Invoke();
         }
         
         public void OnSecondaryAttack(InputAction.CallbackContext context)
@@ -135,13 +93,7 @@ namespace Character.InputController
             if (!context.performed || CanProcessWeaponInput())
                 return;
             
-            onSecondaryAttack?.Invoke();
-            
-        }
-
-        private bool CanProcessWeaponInput()
-        {
-            return _allInputBlocked || _weaponInputBlocked;
+            OnSecondaryAttackActivated?.Invoke();
         }
     }
 }

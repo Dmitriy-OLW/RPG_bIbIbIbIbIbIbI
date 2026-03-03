@@ -14,26 +14,26 @@ namespace Character
 
         public void SubscribeToInputEvents()
         {
-            _handler.InputReader.onLockOnToggled += OnLockOnToggled;
-            _handler.InputReader.onWalkToggled += OnWalkToggled;
-            _handler.InputReader.onSprintActivated += OnSprintActivated;
-            _handler.InputReader.onSprintDeactivated += OnSprintDeactivated;
-            _handler.InputReader.onCrouchActivated += OnCrouchActivated;
-            _handler.InputReader.onCrouchDeactivated += OnCrouchDeactivated;
-            _handler.InputReader.onAimActivated += OnAimActivated;
-            _handler.InputReader.onAimDeactivated += OnAimDeactivated;
+            _handler.InputReader.OnLockOnToggled += OnLockOnToggled;
+            _handler.InputReader.OnWalkToggled += OnWalkToggled;
+            _handler.InputReader.OnSprintActivated += OnSprintActivated;
+            _handler.InputReader.OnSprintDeactivated += OnSprintDeactivated;
+            _handler.InputReader.OnCrouchActivated += OnCrouchActivated;
+            _handler.InputReader.OnCrouchDeactivated += OnCrouchDeactivated;
+            _handler.InputReader.OnAimActivated += OnAimActivated;
+            _handler.InputReader.OnAimDeactivated += OnAimDeactivated;
         }
 
         public void UnsubscribeFromInputEvents()
         {
-            _handler.InputReader.onLockOnToggled -= OnLockOnToggled;
-            _handler.InputReader.onWalkToggled -= OnWalkToggled;
-            _handler.InputReader.onSprintActivated -= OnSprintActivated;
-            _handler.InputReader.onSprintDeactivated -= OnSprintDeactivated;
-            _handler.InputReader.onCrouchActivated -= OnCrouchActivated;
-            _handler.InputReader.onCrouchDeactivated -= OnCrouchDeactivated;
-            _handler.InputReader.onAimActivated -= OnAimActivated;
-            _handler.InputReader.onAimDeactivated -= OnAimDeactivated;
+            _handler.InputReader.OnLockOnToggled -= OnLockOnToggled;
+            _handler.InputReader.OnWalkToggled -= OnWalkToggled;
+            _handler.InputReader.OnSprintActivated -= OnSprintActivated;
+            _handler.InputReader.OnSprintDeactivated -= OnSprintDeactivated;
+            _handler.InputReader.OnCrouchActivated -= OnCrouchActivated;
+            _handler.InputReader.OnCrouchDeactivated -= OnCrouchDeactivated;
+            _handler.InputReader.OnAimActivated -= OnAimActivated;
+            _handler.InputReader.OnAimDeactivated -= OnAimDeactivated;
         }
 
         private void OnLockOnToggled()
