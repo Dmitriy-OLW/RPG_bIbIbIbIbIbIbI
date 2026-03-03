@@ -5,8 +5,6 @@ namespace Character.InputController
 {
     public abstract class BaseInputReader : MonoBehaviour
     {
-        public float MovementInputDuration;
-
         public Vector2 MouseDelta { get; protected set; }
         public Vector2 MoveComposite { get; protected set; }
 

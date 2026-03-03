@@ -86,9 +86,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: RPGbI_Player_Base_NEW
       objectReference: {fileID: 0}
+    - target: {fileID: 6064801525321721345, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6300321638143805425, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6300321638143805425, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6721040380677126294, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
       propertyPath: m_Enabled
@@ -175,6 +183,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6300321638143805425, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7050039176046897368}
+    - targetCorrespondingSourceObject: {fileID: 6300321638143805425, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5912037579730068450}
     - targetCorrespondingSourceObject: {fileID: 4408822817715005979, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5154754867879404593}
@@ -182,11 +193,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8998936229151368290}
   m_SourcePrefab: {fileID: 100100000, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
---- !u!20 &237345364653438409 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3777643569591866510, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
-  m_PrefabInstance: {fileID: 3974385533031752007}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &560772929650175601 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3526211408653651766, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}
@@ -210,7 +216,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _character: {fileID: 6938049986052220598}
-  _mainCamera: {fileID: 237345364653438409}
   _cameraTransform: {fileID: 4570934276379523884}
   _playerTarget: {fileID: 1057078285267832795}
   _lockOnTarget: {fileID: 560772929650175601}
@@ -324,12 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a3b9b4a343fe1498673016cb2fc4c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mouseDelta: {x: 0, y: 0}
-  _moveComposite: {x: 0, y: 0}
-  _movementInputDuration: 0
-  _movementInputDetected: 0
-  _weaponInputBlocked: 0
-  _allInputBlocked: 0
+  MovementInputDuration: 0
 --- !u!114 &7006579888705728178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,6 +415,19 @@ MonoBehaviour:
   _startHealth: 100
   _currentHealth: 0
   _resistConfig: {fileID: 11400000, guid: b9ecccae302c7b74da525616706b51d5, type: 2}
+--- !u!114 &5912037579730068450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6938049986052220598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e45cfa797a485bbfda6ff95e233838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _faction: 0
 --- !u!1 &7137460280048699206 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6064801525321721345, guid: a3a751c3ff9cf31489769e2f5e3a4f51, type: 3}

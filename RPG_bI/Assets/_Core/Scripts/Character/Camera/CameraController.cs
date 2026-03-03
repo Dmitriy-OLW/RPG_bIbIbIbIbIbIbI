@@ -9,7 +9,6 @@ namespace CharacterCamera
         
         [Header("Targets")]
         [SerializeField] private GameObject _character;
-        [SerializeField] private Camera _mainCamera;
         [SerializeField] private Transform _cameraTransform;
         [SerializeField] private Transform _playerTarget;
         [SerializeField] private Transform _lockOnTarget;
@@ -87,12 +86,12 @@ namespace CharacterCamera
 
         public Vector3 GetCameraPosition()
         {
-            return _mainCamera.transform.position;
+            return _cameraTransform.transform.position;
         }
 
         public Vector3 GetCameraForward()
         {
-            return _mainCamera.transform.forward;
+            return _cameraTransform.transform.forward;
         }
 
         public Vector3 GetCameraForwardZeroedYNormalised()
@@ -107,17 +106,17 @@ namespace CharacterCamera
         
         public float GetCameraTiltX()
         {
-            return _mainCamera.transform.eulerAngles.x;
+            return _cameraTransform.transform.eulerAngles.x;
         }
         
         private Vector3 GetCameraForwardZeroedY()
         {
-            return new Vector3(_mainCamera.transform.forward.x, 0, _mainCamera.transform.forward.z);
+            return new Vector3(_cameraTransform.transform.forward.x, 0, _cameraTransform.transform.forward.z);
         }
         
         private Vector3 GetCameraRightZeroedY()
         {
-            return new Vector3(_mainCamera.transform.right.x, 0, _mainCamera.transform.right.z);
+            return new Vector3(_cameraTransform.transform.right.x, 0, _cameraTransform.transform.right.z);
         }
         
         private float CalculateFollowSpeed(float lag)

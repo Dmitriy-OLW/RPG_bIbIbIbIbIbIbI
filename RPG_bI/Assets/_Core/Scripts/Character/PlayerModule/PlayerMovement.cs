@@ -7,6 +7,7 @@ namespace Character
     {
         private PlayerHandler _handler;
         
+        private float _movementInputDuration;
         private float _currentMaxSpeed;
         private float _targetMaxSpeed;
         private Vector3 _targetVelocity;
@@ -161,12 +162,12 @@ namespace Character
         {
             if (_handler.InputReader.MovementInputDetected)
             {
-                if (_handler.InputReader.MovementInputDuration == 0)
+                if (_movementInputDuration == 0)
                 {
                     _movementInputTapped = true;
                 }
-                else if (_handler.InputReader.MovementInputDuration > 0 && 
-                         _handler.InputReader.MovementInputDuration < _handler.Config.ButtonHoldThreshold)
+                else if (_movementInputDuration > 0 && 
+                         _movementInputDuration < _handler.Config.ButtonHoldThreshold)
                 {
                     _movementInputTapped = false;
                     _movementInputPressed = true;
@@ -179,11 +180,11 @@ namespace Character
                     _movementInputHeld = true;
                 }
 
-                _handler.InputReader.MovementInputDuration += Time.deltaTime;
+                _movementInputDuration += Time.deltaTime;
             }
             else
             {
-                _handler.InputReader.MovementInputDuration = 0;
+                _movementInputDuration = 0;
                 _movementInputTapped = false;
                 _movementInputPressed = false;
                 _movementInputHeld = false;
