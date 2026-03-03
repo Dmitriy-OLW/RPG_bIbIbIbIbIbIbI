@@ -20,8 +20,6 @@ namespace Character.InputController
             
             MoveComposite = context.ReadValue<Vector2>();
             MovementInputDetected = MoveComposite.magnitude > 0;
-
-            Debug.Log(MoveComposite);
         }
 
         public void OnJump(InputAction.CallbackContext context)

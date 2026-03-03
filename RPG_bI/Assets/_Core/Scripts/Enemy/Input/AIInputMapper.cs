@@ -17,6 +17,7 @@ namespace Enemy.Navigation
         private Vector3 _currentWaypoint;
         private bool _isMoving;
         private bool _shouldRun;
+        private bool _canRotate = true;
 
         private void Update()
         {
@@ -34,6 +35,8 @@ namespace Enemy.Navigation
         }
         
         public void SetShouldRun(bool shouldRun) => _shouldRun = shouldRun;
+        
+        public void SetCanRotate(bool canRotate) => _canRotate = canRotate;
 
         private void HandleRotation()
         {

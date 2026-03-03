@@ -12,11 +12,11 @@ namespace Enemy.Navigation
         [SerializeField] private LayerMask _targetMask;
         [SerializeField] private LayerMask _obstacleMask;
         [SerializeField] private Transform _visionPoint;
+        [SerializeField] private Targeting _targetingComponent;
         
         private Transform _currentTarget;
         private Vector3 _lastKnownPosition;
         private float _timeSinceLastSeen;
-        private Targeting _targetingComponent;
 
         public Transform CurrentTarget => _currentTarget;
         public Vector3 LastKnownPosition => _lastKnownPosition;
@@ -25,12 +25,7 @@ namespace Enemy.Navigation
 
         public Action<Transform> OnTargetDetected;
         public Action OnTargetLost;
-
-        private void Awake()
-        {
-            _targetingComponent = GetComponent<Targeting>();
-        }
-
+        
         private void Update()
         {
             FindVisibleTargets();

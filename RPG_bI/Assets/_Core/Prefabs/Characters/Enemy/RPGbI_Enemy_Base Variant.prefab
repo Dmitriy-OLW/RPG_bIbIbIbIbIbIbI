@@ -202,7 +202,7 @@ MonoBehaviour:
   _inputReader: {fileID: 1686603517609820997}
   _navigation: {fileID: 6755223994078568569}
   _enemyTransform: {fileID: 6807410908358535521}
-  _rotationSpeed: 5
+  _rotationSpeed: 1
   _rotationThreshold: 5
 --- !u!114 &3407912035566071735
 MonoBehaviour:
@@ -245,6 +245,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7711067595121343500, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
   m_PrefabInstance: {fileID: 3853954522245223789}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7453521030292567695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5912037579730068450, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
+  m_PrefabInstance: {fileID: 3853954522245223789}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6139277706382291931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e45cfa797a485bbfda6ff95e233838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8339910295514999652 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5099956051573521929, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
@@ -271,6 +282,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _visionPoint: {fileID: 726425040210226753}
+  _targetingComponent: {fileID: 7453521030292567695}
 --- !u!114 &9050606657832130736 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5251700697265688029, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}

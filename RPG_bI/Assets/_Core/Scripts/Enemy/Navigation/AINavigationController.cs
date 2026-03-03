@@ -8,7 +8,6 @@ namespace Enemy.Navigation
     {
         [Header("Navigation Settings")]
         [SerializeField] private float _waypointReachedDistance = 0.5f;
-        [SerializeField] private float _nextPointTriggerDistance = 1.5f;
         [SerializeField] private float _pathUpdateRate = 0.25f;
         [SerializeField] private bool _drawDebugPath = true;
         [SerializeField] private NavMeshAgent _agent;
@@ -20,8 +19,16 @@ namespace Enemy.Navigation
 
         public bool HasPath => _currentPath != null && _currentPath.Count > 0;
         public bool HasReachedDestination => _currentWaypointIndex >= _currentPath.Count - 1;
-        public Vector3 CurrentWaypoint => HasPath ? _currentPath[_currentWaypointIndex] : Vector3.zero;
-        public int RemainingWaypoints => HasPath ? _currentPath.Count - _currentWaypointIndex - 1 : 0;
+        public Vector3 CurrentWaypoint 
+        { 
+            get 
+            {
+                if(_currentWaypointIndex >= _currentPath.Count || !HasPath)
+                    return Vector3.zero;
+
+                return _currentPath[_currentWaypointIndex];
+            }
+        }
 
         private void Awake()
         {
@@ -66,16 +73,9 @@ namespace Enemy.Navigation
 
             float distanceToWaypoint = Vector3.Distance(currentPosition, CurrentWaypoint);
             
-            float requiredDistance = IsLastWaypoint() ? _nextPointTriggerDistance : _waypointReachedDistance;
-            
-            if (distanceToWaypoint <= requiredDistance)
+            if (distanceToWaypoint <= _waypointReachedDistance)
             {
                 _currentWaypointIndex++;
-                
-                if (_currentWaypointIndex >= _currentPath.Count)
-                {
-                    _currentWaypointIndex = _currentPath.Count - 1;
-                }
             }
         }
 
@@ -84,11 +84,6 @@ namespace Enemy.Navigation
             _currentPath.Clear();
             _currentWaypointIndex = 0;
             _agent.ResetPath();
-        }
-        
-        private bool IsLastWaypoint()
-        {
-            return _currentWaypointIndex >= _currentPath.Count - 1;
         }
 
         private void UpdatePathTimer()
