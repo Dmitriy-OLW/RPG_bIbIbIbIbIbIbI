@@ -8,10 +8,11 @@ namespace Enemy.Navigation
     {
         [Header("Navigation Settings")]
         [SerializeField] private float _waypointReachedDistance = 0.5f;
+        [SerializeField] private float _nextPointTriggerDistance = 1.5f;
         [SerializeField] private float _pathUpdateRate = 0.25f;
         [SerializeField] private bool _drawDebugPath = true;
+        [SerializeField] private NavMeshAgent _agent;
         
-        private NavMeshAgent _agent;
         private List<Vector3> _currentPath = new List<Vector3>();
         private int _currentWaypointIndex;
         private float _pathUpdateTimer;
@@ -24,7 +25,6 @@ namespace Enemy.Navigation
 
         private void Awake()
         {
-            _agent = GetComponent<NavMeshAgent>();
             _agent.updatePosition = true;
             _agent.updateRotation = false; 
         }
@@ -66,7 +66,9 @@ namespace Enemy.Navigation
 
             float distanceToWaypoint = Vector3.Distance(currentPosition, CurrentWaypoint);
             
-            if (distanceToWaypoint <= _waypointReachedDistance)
+            float requiredDistance = IsLastWaypoint() ? _nextPointTriggerDistance : _waypointReachedDistance;
+            
+            if (distanceToWaypoint <= requiredDistance)
             {
                 _currentWaypointIndex++;
                 
@@ -82,6 +84,11 @@ namespace Enemy.Navigation
             _currentPath.Clear();
             _currentWaypointIndex = 0;
             _agent.ResetPath();
+        }
+        
+        private bool IsLastWaypoint()
+        {
+            return _currentWaypointIndex >= _currentPath.Count - 1;
         }
 
         private void UpdatePathTimer()
