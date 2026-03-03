@@ -17,6 +17,7 @@ namespace Character
         private bool _isWalking;
         private bool _isSprinting;
         private Vector3 _cameraForward;
+        private float _cameraRotationOffset = 0;
 
         public float StrafeDirectionX => _strafeDirectionX;
         public float StrafeDirectionZ => _strafeDirectionZ;
@@ -27,6 +28,7 @@ namespace Character
         public bool IsStrafing => _isStrafing;
         public bool IsWalking => _isWalking;
         public bool IsSprinting => _isSprinting;
+        public float CameraRotationOffset => _cameraRotationOffset;
 
         public PlayerRotation(PlayerHandler handler)
         {
@@ -84,7 +86,7 @@ namespace Character
                             Vector3.Dot(characterForward, directionForward),
                             Vector3.Dot(characterRight, directionForward)
                         );
-                        _handler.Config.CameraRotationOffset = Mathf.Lerp(_handler.Config.CameraRotationOffset, 0f, 
+                        _cameraRotationOffset = Mathf.Lerp(_cameraRotationOffset, 0f, 
                             _handler.Config.RotationSmoothing * Time.deltaTime);
 
                         float targetValue = _strafeAngle > _handler.Config.ForwardStrafeMinThreshold && 
@@ -116,9 +118,9 @@ namespace Character
                         newOffset = Vector3.SignedAngle(characterForward, _cameraForward, Vector3.up);
                     }
 
-                    _handler.Config.CameraRotationOffset = Mathf.Lerp(_handler.Config.CameraRotationOffset, newOffset, t);
+                    _cameraRotationOffset = Mathf.Lerp(_cameraRotationOffset, newOffset, t);
 
-                    if (Mathf.Abs(_handler.Config.CameraRotationOffset) > 10)
+                    if (Mathf.Abs(_cameraRotationOffset) > 10)
                     {
                         _isTurningInPlace = true;
                     }
@@ -127,7 +129,7 @@ namespace Character
             else
             {
                 UpdateStrafeDirection(1f, 0f);
-                _handler.Config.CameraRotationOffset = Mathf.Lerp(_handler.Config.CameraRotationOffset, 0f, 
+                _cameraRotationOffset = Mathf.Lerp(_cameraRotationOffset, 0f, 
                     _handler.Config.RotationSmoothing * Time.deltaTime);
 
                 _shuffleDirectionZ = 1;

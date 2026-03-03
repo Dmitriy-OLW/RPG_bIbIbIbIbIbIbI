@@ -91,7 +91,7 @@ namespace Character
 
             if (headLookActivated && _handler.PlayerRotation.IsTurningInPlace)
             {
-                _initialTurnValue = _handler.Config.CameraRotationOffset;
+                _initialTurnValue = _handler.PlayerRotation.CameraRotationOffset;
                 _headLookX = Mathf.Lerp(_headLookX, _initialTurnValue / 200, 5f * Time.deltaTime);
             }
             else

@@ -247,7 +247,7 @@ namespace Character
                 StrafeDirectionX = _handler.PlayerRotation.StrafeDirectionX,
                 StrafeDirectionZ = _handler.PlayerRotation.StrafeDirectionZ,
                 ForwardStrafe = _handler.PlayerRotation.ForwardStrafe,
-                CameraRotationOffset = _handler.Config.CameraRotationOffset,
+                CameraRotationOffset = _handler.PlayerRotation.CameraRotationOffset,
                 MovementInputHeld = _movementInputHeld,
                 MovementInputPressed = _movementInputPressed,
                 MovementInputTapped = _movementInputTapped,
