@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using Enemy.Data;
 
 namespace Enemy.State
@@ -79,4 +79,4 @@ namespace Enemy.State
             }
         }
     }
-}
+}*/

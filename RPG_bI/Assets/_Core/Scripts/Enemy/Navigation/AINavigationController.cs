@@ -33,6 +33,22 @@ namespace Enemy.Navigation
         {
             UpdatePathTimer();
         }
+        
+        public void Stop()
+        {
+            _agent.isStopped = true;
+            ClearPath();
+        }
+
+        public void Resume()
+        {
+            _agent.isStopped = false;
+        }
+        
+        public void Warp(Vector3 position)
+        {
+            _agent.Warp(position);
+        }
 
         public void SetDestination(Vector3 destination)
         {
@@ -110,18 +126,7 @@ namespace Enemy.Navigation
                 Debug.DrawLine(_currentPath[i], _currentPath[i + 1], Color.cyan, _pathUpdateRate);
             }
         }
-
-        public void Stop()
-        {
-            _agent.isStopped = true;
-            ClearPath();
-        }
-
-        public void Resume()
-        {
-            _agent.isStopped = false;
-        }
-
+        
         private void OnDrawGizmosSelected()
         {
             if (!_drawDebugPath || _currentPath == null || _currentPath.Count == 0)

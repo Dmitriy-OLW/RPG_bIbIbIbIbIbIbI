@@ -13,10 +13,10 @@ namespace Enemy.Navigation
         [Header("Movement Settings")]
         [SerializeField] private float _rotationSpeed = 5f;
         [SerializeField] private float _rotationThreshold = 5f;
-        [SerializeField] private float _moveSpeed = 5f;
-        
+
         private Vector3 _currentWaypoint;
         private bool _isMoving;
+        private bool _shouldRun;
 
         private void Update()
         {
@@ -32,6 +32,8 @@ namespace Enemy.Navigation
             HandleMovement();
             UpdateWaypointProgress();
         }
+        
+        public void SetShouldRun(bool shouldRun) => _shouldRun = shouldRun;
 
         private void HandleRotation()
         {
@@ -74,8 +76,7 @@ namespace Enemy.Navigation
             
             _isMoving = moveInput.magnitude > 0.1f;
             
-            bool shouldSprint = _isMoving && RemainingDistanceToWaypoint() > 2f;
-            _inputReader.SetSprint(shouldSprint);
+            _inputReader.SetSprint(_shouldRun);
         }
 
         private void UpdateWaypointProgress()
@@ -83,10 +84,7 @@ namespace Enemy.Navigation
             _navigation.UpdateWaypointProgress(_enemyTransform.position);
         }
 
-        private float RemainingDistanceToWaypoint()
-        {
-            return Vector3.Distance(_enemyTransform.position, _currentWaypoint);
-        }
+        #region Debug
 
         private void StopMoving()
         {
@@ -99,26 +97,18 @@ namespace Enemy.Navigation
             }
         }
 
-        public void SetMoveSpeed(float speed)
-        {
-            _moveSpeed = speed;
-        }
-
-        public void SetRotationSpeed(float speed)
-        {
-            _rotationSpeed = speed;
-        }
-
         private void OnDrawGizmosSelected()
         {
             if (_navigation.HasPath)
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(_enemyTransform.position, _currentWaypoint);
-                
+
                 Gizmos.color = Color.blue;
                 Gizmos.DrawRay(_enemyTransform.position, _enemyTransform.forward * 2f);
             }
         }
+
+        #endregion
     }
 }
