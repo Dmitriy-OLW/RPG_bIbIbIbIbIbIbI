@@ -1057,6 +1057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a3b9b4a343fe1498673016cb2fc4c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseDelta: {x: 0, y: 0}
+  MoveComposite: {x: 0, y: 0}
+  MovementInputDetected: 0
 --- !u!1 &792440127
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,6 +1706,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a3b9b4a343fe1498673016cb2fc4c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseDelta: {x: 0, y: 0}
+  MoveComposite: {x: 0, y: 0}
+  MovementInputDetected: 0
 --- !u!114 &1145846420
 MonoBehaviour:
   m_ObjectHideFlags: 0

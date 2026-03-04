@@ -80,11 +80,11 @@ namespace Enemy.State
                     Vector3 retreatPosition = _stateMachine.transform.position + directionAway * 2f;
                     _stateMachine.Navigation.SetDestination(retreatPosition);
                 }
-                else if (distance > preferredDistance) // Слишком далеко - подходим
+                else if (distance > preferredDistance) 
                 {
                     _stateMachine.Navigation.SetDestination(target.position);
                 }
-                else // На хорошей дистанции - можем стрейфиться
+                else 
                 {
                     UpdateSideStep(target);
                 }
@@ -97,11 +97,10 @@ namespace Enemy.State
             
             if (_sideStepTimer <= 0f)
             {
-                _sideStepDirection *= -1; // Меняем направление
+                _sideStepDirection *= -1; 
                 _sideStepTimer = Random.Range(2f, 4f);
             }
             
-            // Двигаемся вбок относительно цели
             Vector3 right = Vector3.Cross(Vector3.up, (target.position - _stateMachine.transform.position).normalized);
             Vector3 sideStepPosition = _stateMachine.transform.position + right * _sideStepDirection * 2f;
             

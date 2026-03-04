@@ -1,5 +1,4 @@
-﻿using Character.AnimationController;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Character
 {

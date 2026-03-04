@@ -17,10 +17,12 @@ namespace Character.Targeting
         
         public bool IsHostileTowards(Targeting other)
         {
-            if (other == null || _faction == FactionType.Neutral || other._faction == FactionType.Neutral)
+            Debug.Log(other.Faction);
+            
+            if (other == null || _faction == FactionType.Neutral || other.Faction == FactionType.Neutral)
                 return false;
                 
-            return _faction != other._faction;
+            return _faction != other.Faction;
         }
         
         public bool IsSameFaction(Targeting other)

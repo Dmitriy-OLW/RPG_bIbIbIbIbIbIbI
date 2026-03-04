@@ -213,7 +213,7 @@ MonoBehaviour:
   _inputReader: {fileID: 1686603517609820997}
   _navigation: {fileID: 6755223994078568569}
   _enemyTransform: {fileID: 6807410908358535521}
-  _rotationSpeed: 1
+  _rotationSpeed: 5
   _rotationThreshold: 5
 --- !u!114 &3407912035566071735
 MonoBehaviour:

@@ -24,8 +24,18 @@ namespace Character.InputController
         public Action OnWalkToggled;
         public Action OnPrimaryAttackActivated;
         public Action OnSecondaryAttackActivated;
-
-        public virtual void SetAllInputBlock(bool value) => _allInputBlocked = value;
+        
+        public virtual void SetAllInputBlock(bool value)
+        {
+            _allInputBlocked = value;
+            if (value)
+            {
+                MouseDelta = Vector2.zero;
+                MoveComposite = Vector2.zero;
+                MovementInputDetected = false;
+            }
+        }
+        
         public virtual void SetWeaponBlock(bool value) => _weaponInputBlocked = value;
         
         protected virtual bool CanProcessWeaponInput() => _allInputBlocked || _weaponInputBlocked;

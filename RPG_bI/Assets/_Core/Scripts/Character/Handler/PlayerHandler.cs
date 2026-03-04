@@ -1,4 +1,3 @@
-using Character.AnimationController;
 using Character.InputController;
 using CharacterCamera;
 using UnityEngine;

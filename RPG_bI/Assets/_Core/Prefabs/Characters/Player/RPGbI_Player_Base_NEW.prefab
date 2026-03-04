@@ -329,7 +329,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a3b9b4a343fe1498673016cb2fc4c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementInputDuration: 0
+  MouseDelta: {x: 0, y: 0}
+  MoveComposite: {x: 0, y: 0}
+  MovementInputDetected: 0
 --- !u!114 &7006579888705728178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,6 +693,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8240500175125633422}
     m_Modifications:
+    - target: {fileID: 2125912525, guid: ec443fb14ec671d42a86785643f6b010, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1320664712496021330, guid: ec443fb14ec671d42a86785643f6b010, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0457

@@ -34,7 +34,7 @@ namespace Character
             {
                 _stateTimer += Time.deltaTime;
                 
-                if (_handler.AnimatorController.GetAnimationHitState() || _stateTimer > 10.0f) 
+                if (!_handler.AnimatorController.GetAnimationHitState() || _stateTimer > 4.0f) 
                 {
                     _animationFinished = true;
                 }
@@ -60,7 +60,7 @@ namespace Character
                 _handler.PlayerMovement.ApplyGravity();
             }
             
-            _handler.PlayerMovement.Move();
+            //_handler.PlayerMovement.Move();
         }
 
         public override void Exit()
