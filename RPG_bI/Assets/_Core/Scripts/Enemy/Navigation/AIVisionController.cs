@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Character.Targeting;
+using System.Collections.Generic;
 
 namespace Enemy.Navigation
 {
@@ -17,11 +18,13 @@ namespace Enemy.Navigation
         private Transform _currentTarget;
         private Vector3 _lastKnownPosition;
         private float _timeSinceLastSeen;
+        private List<Transform> _visibleTargets = new List<Transform>();
 
         public Transform CurrentTarget => _currentTarget;
         public Vector3 LastKnownPosition => _lastKnownPosition;
         public bool HasTarget => _currentTarget != null;
         public float TimeSinceLastSeen => _timeSinceLastSeen;
+        public float DistanceToTarget => HasTarget ? Vector3.Distance(transform.position, _currentTarget.position) : float.MaxValue;
 
         public Action<Transform> OnTargetDetected;
         public Action OnTargetLost;
@@ -43,9 +46,7 @@ namespace Enemy.Navigation
                     
                     if (_timeSinceLastSeen > 5f)
                     {
-                        Transform lostTarget = _currentTarget;
-                        _currentTarget = null;
-                        OnTargetLost?.Invoke();
+                        ClearTarget();
                     }
                 }
             }
@@ -56,9 +57,8 @@ namespace Enemy.Navigation
             if (_targetingComponent == null)
                 return;
                 
+            _visibleTargets.Clear();
             Collider[] targetsInRadius = Physics.OverlapSphere(_visionPoint.position, _viewRadius, _targetMask);
-            Transform closestTarget = null;
-            float closestDistance = float.MaxValue;
             
             foreach (Collider target in targetsInRadius)
             {
@@ -73,28 +73,44 @@ namespace Enemy.Navigation
                 
                 if (CanSeeTarget(targetTransform))
                 {
-                    float distance = Vector3.Distance(transform.position, targetTransform.position);
-                    
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestTarget = targetTransform;
-                    }
+                    _visibleTargets.Add(targetTransform);
                 }
             }
+            
+            Transform closestTarget = GetClosestTarget();
             
             if (closestTarget != null)
             {
                 if (_currentTarget == null)
                 {
-                    _currentTarget = closestTarget;
-                    OnTargetDetected?.Invoke(closestTarget);
+                    SetTarget(closestTarget);
                 }
                 else if (_currentTarget != closestTarget)
                 {
-                    _currentTarget = closestTarget;
+                    SetTarget(closestTarget);
                 }
             }
+        }
+        
+        private Transform GetClosestTarget()
+        {
+            if (_visibleTargets.Count == 0)
+                return null;
+                
+            Transform closest = null;
+            float closestDistance = float.MaxValue;
+            
+            foreach (Transform target in _visibleTargets)
+            {
+                float distance = Vector3.Distance(transform.position, target.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closest = target;
+                }
+            }
+            
+            return closest;
         }
 
         private bool CanSeeTarget(Transform target)
@@ -113,6 +129,30 @@ namespace Enemy.Navigation
                 
             return true;
         }
+        
+        private void SetTarget(Transform target)
+        {
+            _currentTarget = target;
+            _lastKnownPosition = target.position;
+            _timeSinceLastSeen = 0f;
+            OnTargetDetected?.Invoke(target);
+        }
+        
+        private void ClearTarget()
+        {
+            _currentTarget = null;
+            OnTargetLost?.Invoke();
+        }
+        
+        public bool IsTargetInAttackRange(float attackRange)
+        {
+            return HasTarget && DistanceToTarget <= attackRange;
+        }
+        
+        public bool IsTargetInAggressionRange(float aggressionRange)
+        {
+            return HasTarget && DistanceToTarget <= aggressionRange;
+        }
 
         #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
@@ -130,6 +170,12 @@ namespace Enemy.Navigation
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(_visionPoint.position, _currentTarget.position);
+            }
+            
+            if (_lastKnownPosition != Vector3.zero)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireSphere(_lastKnownPosition, 1f);
             }
         }
         #endif

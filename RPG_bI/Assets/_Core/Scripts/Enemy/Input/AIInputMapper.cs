@@ -17,7 +17,8 @@ namespace Enemy.Navigation
         private Vector3 _currentWaypoint;
         private bool _isMoving;
         private bool _shouldRun;
-        private bool _canRotate = true;
+
+        public AIInputReader InputReader => _inputReader;
 
         private void Update()
         {
@@ -28,15 +29,13 @@ namespace Enemy.Navigation
             }
 
             _currentWaypoint = _navigation.CurrentWaypoint;
-            
+
             HandleRotation();
             HandleMovement();
             UpdateWaypointProgress();
         }
         
         public void SetShouldRun(bool shouldRun) => _shouldRun = shouldRun;
-        
-        public void SetCanRotate(bool canRotate) => _canRotate = canRotate;
 
         private void HandleRotation()
         {

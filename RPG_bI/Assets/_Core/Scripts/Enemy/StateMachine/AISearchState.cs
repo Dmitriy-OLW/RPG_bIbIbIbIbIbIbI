@@ -1,27 +1,32 @@
-﻿/*using UnityEngine;
-using Enemy.Data;
+﻿using UnityEngine;
+using Enemy.Navigation;
 
 namespace Enemy.State
 {
-    public class AISearchState : IAIState
+    public class AISearchState : AIBaseState
     {
-        private AIStateMachine _stateMachine;
         private float _searchTimer;
         private float _searchRadius = 5f;
+        private bool _hasReachedLastKnownPosition;
 
-        public AISearchState(AIStateMachine stateMachine)
+        public AISearchState(AIStateMachine stateMachine) : base(stateMachine)
         {
-            _stateMachine = stateMachine;
         }
 
-        public void Enter()
+        public override void Enter()
         {
-            _searchTimer = 10f; 
+            base.Enter();
             
-            if (_stateMachine.Vision.LastKnownPosition != Vector3.zero)
+            _searchTimer = 10f;
+            _hasReachedLastKnownPosition = false;
+            
+            _stateMachine.InputMapper.SetShouldRun(true);
+
+            Vector3 lastKnownPosition = _stateMachine.Vision.LastKnownPosition;
+            
+            if (lastKnownPosition != Vector3.zero)
             {
-                _stateMachine.Navigation.SetDestination(_stateMachine.Vision.LastKnownPosition);
-                //_stateMachine.Navigation.SetSpeed(4f);
+                _stateMachine.Navigation.SetDestination(lastKnownPosition);
             }
             else
             {
@@ -29,7 +34,7 @@ namespace Enemy.State
             }
         }
 
-        public void Update()
+        public override void Update()
         {
             if (_stateMachine.Vision.HasTarget)
             {
@@ -38,41 +43,40 @@ namespace Enemy.State
             }
 
             _searchTimer -= Time.deltaTime;
-
-            if (_stateMachine.Navigation.HasReachedDestination)
+            
+            if (!_hasReachedLastKnownPosition && _stateMachine.Navigation.HasReachedDestination)
             {
-                if (_searchTimer <= 0f)
-                {
-                    ReturnToPatrol();
-                }
-                else
-                {
-                    SearchNewArea();
-                }
+                _hasReachedLastKnownPosition = true;
+                _searchTimer = 5f;
             }
-
+            
             if (_searchTimer <= 0f)
             {
                 ReturnToPatrol();
+                return;
+            }
+            
+            if (_hasReachedLastKnownPosition)
+            {
+                LookAround();
             }
         }
 
-        public void Exit()
+        private void LookAround()
         {
-        }
-
-        private void SearchNewArea()
-        {
-            Vector2 randomCircle = Random.insideUnitCircle * _searchRadius;
-            Vector3 searchPosition = _stateMachine.Vision.LastKnownPosition + 
-                                     new Vector3(randomCircle.x, 0f, randomCircle.y);
-            
-            _stateMachine.Navigation.SetDestination(searchPosition);
+            float rotationAngle = Mathf.Sin(Time.time * 2f) * 45f;
+            Vector3 lookDirection = Quaternion.Euler(0, rotationAngle, 0) * _stateMachine.transform.forward;
+            _stateMachine.InputMapper.InputReader.SetLookDirection(new Vector2(lookDirection.x * 2f, 0f));
         }
 
         private void ReturnToPatrol()
         {
             _stateMachine.SwitchState(AIStateType.Patrol);
         }
+
+        public override void Exit()
+        {
+            _stateMachine.InputMapper.InputReader.SetLookDirection(Vector2.zero);
+        }
     }
-}*/
+}

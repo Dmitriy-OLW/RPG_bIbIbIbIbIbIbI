@@ -148,6 +148,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc9d23b2b0bc4bf582e959e08b78155a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6101597387865931189 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7050039176046897368, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
+  m_PrefabInstance: {fileID: 3853954522245223789}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6139277706382291931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 502422b0f7a44e9cb8c4f1d7204b844c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6139277706382291931 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6938049986052220598, guid: d18de9069cd8dfc4287b4969f49516cf, type: 3}
@@ -218,6 +229,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputMapper: {fileID: 4433272430430233016}
   _navigation: {fileID: 6755223994078568569}
+  _vision: {fileID: 6610847858592354683}
+  _targeting: {fileID: 7453521030292567695}
+  _healthController: {fileID: 6101597387865931189}
+  _enemyType: 0
   _patrolPoints:
   - {fileID: 0}
   - {fileID: 0}

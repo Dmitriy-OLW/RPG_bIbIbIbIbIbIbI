@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Enemy.Navigation;
+using Enemy.Strategies;
+using Character.Targeting;
+using Health;
 
 namespace Enemy.State
 {
+    
     public enum AIStateType
     {
         Patrol,
@@ -12,36 +16,85 @@ namespace Enemy.State
         Search,
         Dead
     }
-
+    
     public class AIStateMachine : MonoBehaviour
     {
         [Header("Components")]
         [SerializeField] private AIInputMapper _inputMapper;
         [SerializeField] private AINavigationController _navigation;
+        [SerializeField] private AIVisionController _vision;
+        [SerializeField] private Targeting _targeting;
+        [SerializeField] private HealthController _healthController;
+        
+        [Header("AI Settings")]
+        [SerializeField] private EnemyType _enemyType;
         [SerializeField] private Transform[] _patrolPoints;
         
+        private IEnemyBehaviorStrategy _behaviorStrategy;
         private Dictionary<AIStateType, AIBaseState> _states;
         private AIBaseState _currentState;
         private AIStateType _currentStateType;
 
         public AIInputMapper InputMapper => _inputMapper;
         public AINavigationController Navigation => _navigation;
+        public AIVisionController Vision => _vision;
+        public Targeting Targeting => _targeting;
+        public IEnemyBehaviorStrategy BehaviorStrategy => _behaviorStrategy;
         public Transform[] PatrolPoints => _patrolPoints;
         public AIStateType CurrentStateType => _currentStateType;
 
+        public EnemyType EnemyType => _enemyType;
+        
         private void Awake()
         {
+            InitializeBehaviorStrategy();
             InitializeStates();
+            SubscribeToEvents();
+        }
+
+        private void InitializeBehaviorStrategy()
+        {
+            _behaviorStrategy = _enemyType switch
+            {
+                EnemyType.Melee => new MeleeBehaviorStrategy(),
+                EnemyType.Ranged => new RangedBehaviorStrategy(),
+                _ => new MeleeBehaviorStrategy()
+            };
         }
 
         private void InitializeStates()
         {
             _states = new Dictionary<AIStateType, AIBaseState>
             {
-                { AIStateType.Patrol, new AIPatrolState(this) }
+                { AIStateType.Patrol, new AIPatrolState(this) },
+                { AIStateType.Aggression, new AIAggressionState(this) },
+                { AIStateType.Attack, new AIAttackState(this) },
+                { AIStateType.Search, new AISearchState(this) },
+                { AIStateType.Dead, new AIDeadState(this) }
             };
             
             SwitchState(AIStateType.Patrol);
+        }
+
+        private void SubscribeToEvents()
+        {
+            _vision.OnTargetDetected += OnTargetDetected;
+            _vision.OnTargetLost += OnTargetLost;
+            _healthController.OnDeath += OnDeath;
+        }
+
+        private void OnDestroy()
+        {
+            if (_vision != null)
+            {
+                _vision.OnTargetDetected -= OnTargetDetected;
+                _vision.OnTargetLost -= OnTargetLost;
+            }
+            
+            if (_healthController != null)
+            {
+                _healthController.OnDeath -= OnDeath;
+            }
         }
 
         private void Update()
@@ -58,8 +111,34 @@ namespace Enemy.State
             _currentStateType = newStateType;
             _currentState = _states[newStateType];
             _currentState.Enter();
-            
-            Debug.Log($"[AI] Switched to state: {newStateType}");
+        }
+
+        private void OnTargetDetected(Transform target)
+        {
+            if (_currentStateType != AIStateType.Dead)
+            {
+                SwitchState(AIStateType.Aggression);
+            }
+        }
+
+        private void OnTargetLost()
+        {
+            if (_currentStateType != AIStateType.Dead && 
+                _currentStateType != AIStateType.Search)
+            {
+                SwitchState(AIStateType.Search);
+            }
+        }
+
+        private void OnDeath()
+        {
+            SwitchState(AIStateType.Dead);
+        }
+        
+        public void SetEnemyType(EnemyType newType)
+        {
+            _enemyType = newType;
+            InitializeBehaviorStrategy();
         }
     }
 }

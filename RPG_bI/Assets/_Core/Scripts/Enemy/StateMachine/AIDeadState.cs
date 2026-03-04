@@ -1,40 +1,37 @@
-﻿/*using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy.State
 {
-    public class AIDeadState : IAIState
+    public class AIDeadState : AIBaseState
     {
-        private AIStateMachine _stateMachine;
-        private float _stateTimer;
+        private float _destroyDelay = 5f;
 
-        public AIDeadState(AIStateMachine stateMachine)
+        public AIDeadState(AIStateMachine stateMachine) : base(stateMachine)
         {
-            _stateMachine = stateMachine;
         }
 
-        public void Enter()
+        public override void Enter()
         {
+            base.Enter();
+            
             _stateMachine.Navigation.Stop();
-            _stateMachine.Navigation.enabled = false;
-            //_stateMachine.InputMapper.ResetInput();
-            _stateMachine.InputMapper.enabled = false;
-            _stateMachine.Vision.enabled = false;
-            
-            _stateTimer = 0f;
+
+            _stateMachine.StartCoroutine(DestroyAfterDelay());
         }
 
-        public void Update()
+        private System.Collections.IEnumerator DestroyAfterDelay()
         {
-            _stateTimer += Time.deltaTime;
+            yield return new WaitForSeconds(_destroyDelay);
             
-            if (_stateTimer > 5f)
+            if (_stateMachine.gameObject != null)
             {
                 GameObject.Destroy(_stateMachine.gameObject);
             }
         }
 
-        public void Exit()
+        public override void Update()
         {
+            
         }
     }
-}*/
+}
