@@ -214,6 +214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9153911030696552442}
   - component: {fileID: 7384530189423637833}
+  - component: {fileID: 5019570650751509457}
   m_Layer: 0
   m_Name: Deal With It Doge
   m_TagString: Untagged
@@ -260,3 +261,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &5019570650751509457
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6125232508401408211}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.16393545
+  m_Height: 0.7362202
+  m_Direction: 0
+  m_Center: {x: 0.106524855, y: 0.13569304, z: 0.0000009536743}

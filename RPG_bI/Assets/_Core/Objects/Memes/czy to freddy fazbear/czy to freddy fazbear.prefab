@@ -96,6 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3629078498436575646}
   - component: {fileID: 9020851532878194155}
+  - component: {fileID: 7558372510469219314}
   m_Layer: 0
   m_Name: czy to freddy fazbear
   m_TagString: Untagged
@@ -224,6 +225,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!136 &7558372510469219314
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3242338058408533404}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.20736535
+  m_Height: 0.51019
+  m_Direction: 1
+  m_Center: {x: 0.017617673, y: 0.24490523, z: -0.011074096}
 --- !u!1 &3949781301885124548
 GameObject:
   m_ObjectHideFlags: 0

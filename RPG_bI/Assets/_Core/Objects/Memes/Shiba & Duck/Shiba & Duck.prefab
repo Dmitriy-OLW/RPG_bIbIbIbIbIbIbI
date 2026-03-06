@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5864778792775449673}
   - component: {fileID: 4239899041032749303}
   - component: {fileID: 1072626145114289130}
+  - component: {fileID: 4813094830708771217}
   m_Layer: 0
   m_Name: Shiba & Duck
   m_TagString: Untagged
@@ -86,3 +87,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4813094830708771217
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2451568244744718594}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.14391136
+  m_Height: 0.5510646
+  m_Direction: 2
+  m_Center: {x: -0.0015354156, y: 0.25851876, z: -0.033109307}

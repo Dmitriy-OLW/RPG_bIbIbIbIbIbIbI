@@ -843,6 +843,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2903545359356685230}
   - component: {fileID: 6715464272380722305}
+  - component: {fileID: 8268605728973673981}
   m_Layer: 0
   m_Name: pepe the frog
   m_TagString: Untagged
@@ -890,6 +891,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &8268605728973673981
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8298271978827408097}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.37297237
+  m_Height: 1.4433312
+  m_Direction: 2
+  m_Center: {x: 0, y: -0.055297583, z: 0.030259907}
 --- !u!1 &8878276819356808011
 GameObject:
   m_ObjectHideFlags: 0

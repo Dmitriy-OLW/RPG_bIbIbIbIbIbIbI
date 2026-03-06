@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4008324173136910749}
   - component: {fileID: 7092858730098870382}
   - component: {fileID: 5578322078429590881}
+  - component: {fileID: 1262378194760857369}
   m_Layer: 0
   m_Name: bananaduck
   m_TagString: Untagged
@@ -87,3 +88,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1262378194760857369
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953493812193461914}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.47329712
+  m_Height: 3.082818
+  m_Direction: 1
+  m_Center: {x: -0.0043640137, y: 1.5299923, z: 0.18913949}

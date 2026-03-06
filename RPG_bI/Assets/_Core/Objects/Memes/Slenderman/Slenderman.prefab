@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3983264636790617437}
   - component: {fileID: 7570402631222901605}
   - component: {fileID: 6107595405005435697}
+  - component: {fileID: 3187184076504853065}
   m_Layer: 0
   m_Name: Slenderman
   m_TagString: Untagged
@@ -86,3 +87,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3187184076504853065
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151563286485336217}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5568801
+  m_Height: 3.0275397
+  m_Direction: 1
+  m_Center: {x: 0.0015749037, y: -0.14699519, z: 0.08276492}

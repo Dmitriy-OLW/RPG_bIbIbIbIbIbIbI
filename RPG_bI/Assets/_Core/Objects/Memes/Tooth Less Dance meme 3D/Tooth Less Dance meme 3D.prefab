@@ -1294,6 +1294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4912749301003533682}
   - component: {fileID: 5891304593141016184}
+  - component: {fileID: 2754071321681761666}
   m_Layer: 0
   m_Name: Tooth Less Dance meme 3D
   m_TagString: Untagged
@@ -1340,6 +1341,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &2754071321681761666
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4073139259167145100}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.40413302
+  m_Height: 1.6153715
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.7482461, z: 0.09586698}
 --- !u!1 &4203635059273510918
 GameObject:
   m_ObjectHideFlags: 0

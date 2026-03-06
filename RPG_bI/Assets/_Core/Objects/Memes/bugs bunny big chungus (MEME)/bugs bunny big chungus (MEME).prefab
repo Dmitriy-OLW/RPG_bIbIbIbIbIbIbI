@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4190754736123634868}
+  - component: {fileID: 4907893263037700465}
   m_Layer: 0
   m_Name: bugs bunny big chungus (MEME)
   m_TagString: Untagged
@@ -33,6 +34,29 @@ Transform:
   - {fileID: 4427529229684967402}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!136 &4907893263037700465
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918095129901257590}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.16809209
+  m_Height: 0.6582067
+  m_Direction: 1
+  m_Center: {x: -0.15253577, y: 0.3460313, z: 0.066381454}
 --- !u!1 &5984739462641684897
 GameObject:
   m_ObjectHideFlags: 0

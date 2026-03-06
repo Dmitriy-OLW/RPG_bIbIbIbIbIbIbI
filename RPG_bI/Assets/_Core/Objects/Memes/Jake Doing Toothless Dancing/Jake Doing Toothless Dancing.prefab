@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7983272777896193637}
   - component: {fileID: 2309423107912605808}
+  - component: {fileID: 3275505387921508896}
   m_Layer: 0
   m_Name: Jake Doing Toothless Dancing
   m_TagString: Untagged
@@ -55,6 +56,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &3275505387921508896
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67258411156554335}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5251505
+  m_Height: 1.9385552
+  m_Direction: 1
+  m_Center: {x: -0.02515042, y: 0.8697283, z: -2.4639502e-11}
 --- !u!1 &70261802552305196
 GameObject:
   m_ObjectHideFlags: 0

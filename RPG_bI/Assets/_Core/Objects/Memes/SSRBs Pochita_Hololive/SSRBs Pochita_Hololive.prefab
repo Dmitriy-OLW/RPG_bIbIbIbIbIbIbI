@@ -3600,6 +3600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1161155092242299724}
   - component: {fileID: 8153255813546091634}
+  - component: {fileID: 1506808426721665199}
   m_Layer: 0
   m_Name: SSRBs Pochita_Hololive
   m_TagString: Untagged
@@ -3739,6 +3740,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1506808426721665199
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3047569505444235103}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32470083
+  m_Height: 0.75390625
+  m_Direction: 0
+  m_Center: {x: 0.0050582886, y: 0.25478476, z: -0.0067420006}
 --- !u!1 &3075115369873756661
 GameObject:
   m_ObjectHideFlags: 0

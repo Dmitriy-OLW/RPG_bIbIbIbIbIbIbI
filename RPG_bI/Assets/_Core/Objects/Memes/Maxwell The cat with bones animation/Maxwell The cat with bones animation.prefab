@@ -252,6 +252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8473096590086059246}
   - component: {fileID: 4980039369472852619}
+  - component: {fileID: 4754671771373388651}
   m_Layer: 0
   m_Name: Maxwell The cat with bones animation
   m_TagString: Untagged
@@ -299,6 +300,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &4754671771373388651
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902929705196337108}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2315445
+  m_Height: 0.8177681
+  m_Direction: 2
+  m_Center: {x: -0.13780212, y: 0.29779005, z: 0.035043716}
 --- !u!1 &7537493121203132889
 GameObject:
   m_ObjectHideFlags: 0

@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 4189673751136606465}
   - component: {fileID: 2114642417632798396}
   - component: {fileID: 3382874579375843535}
+  - component: {fileID: 6063152123343636927}
   m_Layer: 0
   m_Name: eggdog_mat-material
   m_TagString: Untagged
@@ -206,6 +207,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6063152123343636927
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7816994068747743444}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.10024736
+  m_Height: 0.288625
+  m_Direction: 2
+  m_Center: {x: 0.0025930405, y: 0.005149558, z: 0.1443088}
 --- !u!1 &8009025286804275534
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +241,7 @@ GameObject:
   - component: {fileID: 3228130435900094913}
   - component: {fileID: 8153745793729400450}
   - component: {fileID: 1219088603577781453}
+  - component: {fileID: 5969059119906580333}
   m_Layer: 0
   m_Name: Material_002-material
   m_TagString: Untagged
@@ -292,6 +317,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5969059119906580333
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8009025286804275534}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.14251046
+  m_Height: 0.34281746
+  m_Direction: 2
+  m_Center: {x: -0.0025027767, y: 0.13315672, z: 0.14251046}
 --- !u!1 &8355985798022405037
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,6 +351,7 @@ GameObject:
   - component: {fileID: 9215457707507259296}
   - component: {fileID: 6542463794069172271}
   - component: {fileID: 2437676344842151989}
+  - component: {fileID: 4959834721538376130}
   m_Layer: 0
   m_Name: yippeeOutline_mat-material
   m_TagString: Untagged
@@ -379,3 +428,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4959834721538376130
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8355985798022405037}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1271269
+  m_Height: 0.2453983
+  m_Direction: 1
+  m_Center: {x: 0.16940856, y: -0.095451504, z: 0.12315696}
