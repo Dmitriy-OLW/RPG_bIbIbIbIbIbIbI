@@ -17,8 +17,6 @@ namespace Character.Targeting
         
         public bool IsHostileTowards(Targeting other)
         {
-            Debug.Log(other.Faction);
-            
             if (other == null || _faction == FactionType.Neutral || other.Faction == FactionType.Neutral)
                 return false;
                 

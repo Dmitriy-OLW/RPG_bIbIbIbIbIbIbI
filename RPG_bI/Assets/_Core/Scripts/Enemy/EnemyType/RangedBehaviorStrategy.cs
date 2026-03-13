@@ -8,8 +8,7 @@ namespace Enemy.Strategies
         public float AggressionRange => 15f;
         public float AttackRange => 12f;
         public float PreferredDistance => 8f;
-        public float MoveSpeed => 3.5f;
-        public float AttackCooldown => 1.5f;
+        public float AttackCooldown => 5f;
         
         public void UpdatePosition(Transform enemy, Transform target, out bool shouldAttack)
         {
@@ -28,7 +27,7 @@ namespace Enemy.Strategies
         
         public void PerformAttack(AIInputReader inputReader)
         {
-            inputReader.PerformPrimaryAttack();
+            inputReader.PerformSecondaryAttack();
         }
     }
 }

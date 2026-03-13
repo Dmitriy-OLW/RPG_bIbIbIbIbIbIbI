@@ -7,9 +7,15 @@ namespace Enemy.State
     public class AIAttackState : AIBaseState
     {
         private float _attackTimer;
-        private Vector3 _lastTargetPosition;
         private float _sideStepTimer;
         private int _sideStepDirection = 1;
+        
+        private const float MELEE_HOLD_DISTANCE = 3f;
+        private const float OUT_OF_SIGHT_THRESHOLD = 1.5f;
+        private const float RANGED_AIM_ANGLE = 5f;
+        
+        private float _outOfSightTimer;
+        private bool _isAiming;
 
         public AIAttackState(AIStateMachine stateMachine) : base(stateMachine)
         {
@@ -21,8 +27,9 @@ namespace Enemy.State
             
             _attackTimer = 0f;
             _sideStepTimer = 0f;
+            _outOfSightTimer = 0f;
+            _isAiming = false;
             
-            var strategy = _stateMachine.BehaviorStrategy;
             _stateMachine.InputMapper.SetShouldRun(false);
         }
 
@@ -30,9 +37,16 @@ namespace Enemy.State
         {
             if (!_stateMachine.Vision.HasTarget)
             {
-                _stateMachine.SwitchState(AIStateType.Search);
+                _outOfSightTimer += Time.deltaTime;
+                
+                if (_outOfSightTimer >= OUT_OF_SIGHT_THRESHOLD)
+                {
+                    _stateMachine.SwitchState(AIStateType.Patrol);
+                }
                 return;
             }
+
+            _outOfSightTimer = 0f;
 
             Transform target = _stateMachine.Vision.CurrentTarget;
             float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
@@ -40,11 +54,13 @@ namespace Enemy.State
             
             _attackTimer -= Time.deltaTime;
 
-            if (distanceToTarget > strategy.AttackRange)
+            bool shouldExitAttack = CheckExitConditions(target, distanceToTarget, strategy);
+            
+            if (shouldExitAttack)
             {
                 if (distanceToTarget > strategy.AggressionRange)
                 {
-                    _stateMachine.SwitchState(AIStateType.Search);
+                    _stateMachine.SwitchState(AIStateType.Patrol);
                 }
                 else
                 {
@@ -53,9 +69,68 @@ namespace Enemy.State
                 return;
             }
             
+            if (_stateMachine.EnemyType == EnemyType.Ranged)
+            {
+                UpdateRangedAttack(target, strategy);
+            }
+            else
+            {
+                UpdateMeleeAttack(target, strategy);
+            }
+        }
+
+        private void UpdateRangedAttack(Transform target, IEnemyBehaviorStrategy strategy)
+        {
+            Vector3 directionToTarget = (target.position - _stateMachine.transform.position).normalized;
+            directionToTarget.y = 0;
+            
+            float angleToTarget = Vector3.Angle(_stateMachine.transform.forward, directionToTarget);
+            _isAiming = angleToTarget <= RANGED_AIM_ANGLE;
+            
+            if (directionToTarget != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+                _stateMachine.transform.rotation = Quaternion.Slerp(
+                    _stateMachine.transform.rotation, 
+                    targetRotation, 
+                    Time.deltaTime * 5f
+                );
+            }
+            
             strategy.UpdatePosition(_stateMachine.transform, target, out bool shouldAttack);
             
-            UpdateMovementForType(target, distanceToTarget, strategy);
+            float preferredDistance = strategy.PreferredDistance;
+            float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
+            
+            if (distanceToTarget < 5f)
+            {
+                Vector3 directionAway = (_stateMachine.transform.position - target.position).normalized;
+                Vector3 retreatPosition = _stateMachine.transform.position + directionAway * 2f;
+                _stateMachine.Navigation.SetDestination(retreatPosition);
+                _isAiming = false;
+            }
+            else if (distanceToTarget > preferredDistance)
+            {
+                _stateMachine.Navigation.SetDestination(target.position);
+                _isAiming = false;
+            }
+            else
+            {
+                _stateMachine.Navigation.ClearPath();
+            }
+            
+            if (_isAiming && shouldAttack && _attackTimer <= 0f)
+            {
+                strategy.PerformAttack(_stateMachine.InputMapper.InputReader);
+                _attackTimer = strategy.AttackCooldown;
+            }
+        }
+
+        private void UpdateMeleeAttack(Transform target, IEnemyBehaviorStrategy strategy)
+        {
+            strategy.UpdatePosition(_stateMachine.transform, target, out bool shouldAttack);
+            
+            _stateMachine.Navigation.SetDestination(target.position);
             
             if (shouldAttack && _attackTimer <= 0f)
             {
@@ -64,47 +139,19 @@ namespace Enemy.State
             }
         }
 
-        private void UpdateMovementForType(Transform target, float distance, IEnemyBehaviorStrategy strategy)
+        private bool CheckExitConditions(Transform target, float distance, IEnemyBehaviorStrategy strategy)
         {
-            if (_stateMachine.EnemyType == EnemyType.Melee)
+            switch (_stateMachine.EnemyType)
             {
-                _stateMachine.Navigation.SetDestination(target.position);
+                case EnemyType.Melee:
+                    return distance > MELEE_HOLD_DISTANCE;
+                    
+                case EnemyType.Ranged:
+                    return !_stateMachine.Vision.HasTarget;
+                    
+                default:
+                    return distance > strategy.AttackRange;
             }
-            else 
-            {
-                float preferredDistance = strategy.PreferredDistance;
-                
-                if (distance < 5f) 
-                {
-                    Vector3 directionAway = (_stateMachine.transform.position - target.position).normalized;
-                    Vector3 retreatPosition = _stateMachine.transform.position + directionAway * 2f;
-                    _stateMachine.Navigation.SetDestination(retreatPosition);
-                }
-                else if (distance > preferredDistance) 
-                {
-                    _stateMachine.Navigation.SetDestination(target.position);
-                }
-                else 
-                {
-                    UpdateSideStep(target);
-                }
-            }
-        }
-
-        private void UpdateSideStep(Transform target)
-        {
-            _sideStepTimer -= Time.deltaTime;
-            
-            if (_sideStepTimer <= 0f)
-            {
-                _sideStepDirection *= -1; 
-                _sideStepTimer = Random.Range(2f, 4f);
-            }
-            
-            Vector3 right = Vector3.Cross(Vector3.up, (target.position - _stateMachine.transform.position).normalized);
-            Vector3 sideStepPosition = _stateMachine.transform.position + right * _sideStepDirection * 2f;
-            
-            _stateMachine.Navigation.SetDestination(sideStepPosition);
         }
 
         public override void Exit()
