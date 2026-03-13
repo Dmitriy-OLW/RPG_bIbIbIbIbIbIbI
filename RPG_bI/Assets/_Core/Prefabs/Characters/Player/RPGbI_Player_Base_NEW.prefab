@@ -278,7 +278,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -329,9 +329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a3b9b4a343fe1498673016cb2fc4c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MouseDelta: {x: 0, y: 0}
-  MoveComposite: {x: 0, y: 0}
-  MovementInputDetected: 0
 --- !u!114 &7006579888705728178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,6 +398,7 @@ MonoBehaviour:
   _projectilePrefab: {fileID: 7215435939982588545, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
   _shootPoint: {fileID: 4742219648283086358}
   _projectileSpeed: 50
+  _chargeTime: 10
 --- !u!114 &7050039176046897368
 MonoBehaviour:
   m_ObjectHideFlags: 0
