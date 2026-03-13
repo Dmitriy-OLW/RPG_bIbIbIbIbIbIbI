@@ -9,7 +9,7 @@ namespace Weapons
         [SerializeField] private float _projectileSpeed = 20f;
         [SerializeField] private float _chargeTime = 10f;
 
-        private float _currentChargeTimer;
+        private float _currentChargeTimer = 10;
         private bool _isCharged;
         public float CurrentChargeProgress => _currentChargeTimer / _chargeTime;
         
