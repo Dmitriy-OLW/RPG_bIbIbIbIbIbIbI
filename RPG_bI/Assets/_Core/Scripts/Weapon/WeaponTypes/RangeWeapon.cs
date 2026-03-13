@@ -7,14 +7,42 @@ namespace Weapons
         [SerializeField] private Projectile _projectilePrefab;
         [SerializeField] private Transform _shootPoint;
         [SerializeField] private float _projectileSpeed = 20f;
+        [SerializeField] private float _chargeTime = 10f;
 
+        private float _currentChargeTimer;
+        private bool _isCharged;
+        public float CurrentChargeProgress => _currentChargeTimer / _chargeTime;
+        
+        private void FixedUpdate()
+        {
+            if (_isCharged) return;
+
+            _currentChargeTimer += Time.deltaTime;
+            
+            if (_currentChargeTimer >= _chargeTime)
+                _isCharged = true;
+        }
+        
         public override void Attack()
         {
-            if (_projectilePrefab == null || _shootPoint == null || _damageDataSO.DamageList == null || _damageDataSO.DamageList.Count == 0)
-                return;
-
+            if (CanAttack() == false) return;
+            
             Projectile projectile = Instantiate(_projectilePrefab, _shootPoint.position, _shootPoint.rotation);
             projectile.Initialize(_damageDataSO.DamageList, _projectileSpeed);
+            
+            _isCharged = false;
+            _currentChargeTimer = 0f;
+        }
+        
+        private bool CanAttack()
+        {
+            if (_projectilePrefab == null) return false;
+            if (_shootPoint == null) return false;
+            if (_damageDataSO?.DamageList == null) return false;
+            if (_damageDataSO.DamageList.Count == 0) return false;
+            if (_isCharged == false) return false;
+            
+            return true;
         }
     }
 }
