@@ -12,7 +12,7 @@ namespace Enemy.State
         
         private const float MELEE_HOLD_DISTANCE = 3f;
         private const float OUT_OF_SIGHT_THRESHOLD = 1.5f;
-        private const float RANGED_AIM_ANGLE = 5f;
+        private const float RANGED_AIM_ANGLE = 20f;
         
         private float _outOfSightTimer;
         private bool _isAiming;
@@ -29,8 +29,6 @@ namespace Enemy.State
             _sideStepTimer = 0f;
             _outOfSightTimer = 0f;
             _isAiming = false;
-            
-            _stateMachine.InputMapper.SetShouldRun(false);
         }
 
         public override void Update()
@@ -105,18 +103,27 @@ namespace Enemy.State
             if (distanceToTarget < 5f)
             {
                 Vector3 directionAway = (_stateMachine.transform.position - target.position).normalized;
-                Vector3 retreatPosition = _stateMachine.transform.position + directionAway * 2f;
+                Vector3 retreatPosition = _stateMachine.transform.position + directionAway * 7f;
                 _stateMachine.Navigation.SetDestination(retreatPosition);
+                _stateMachine.InputMapper.SetShouldRun(true);
                 _isAiming = false;
             }
-            else if (distanceToTarget > preferredDistance)
+            else if (distanceToTarget > preferredDistance && distanceToTarget <= 10f)
             {
                 _stateMachine.Navigation.SetDestination(target.position);
+                _stateMachine.InputMapper.SetShouldRun(true);
+                _isAiming = false;
+            }
+            else if (distanceToTarget > 10f)
+            {
+                _stateMachine.Navigation.SetDestination(target.position);
+                _stateMachine.InputMapper.SetShouldRun(true);
                 _isAiming = false;
             }
             else
             {
                 _stateMachine.Navigation.ClearPath();
+                _stateMachine.InputMapper.SetShouldRun(false);
             }
             
             if (_isAiming && shouldAttack && _attackTimer <= 0f)
@@ -130,7 +137,18 @@ namespace Enemy.State
         {
             strategy.UpdatePosition(_stateMachine.transform, target, out bool shouldAttack);
             
-            _stateMachine.Navigation.SetDestination(target.position);
+            float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
+            
+            if (distanceToTarget > MELEE_HOLD_DISTANCE)
+            {
+                _stateMachine.Navigation.SetDestination(target.position);
+                _stateMachine.InputMapper.SetShouldRun(true);
+            }
+            else
+            {
+                _stateMachine.Navigation.SetDestination(target.position);
+                _stateMachine.InputMapper.SetShouldRun(false);
+            }
             
             if (shouldAttack && _attackTimer <= 0f)
             {
@@ -157,6 +175,7 @@ namespace Enemy.State
         public override void Exit()
         {
             _stateMachine.Navigation.ClearPath();
+            _stateMachine.InputMapper.SetShouldRun(false);
         }
     }
 }
