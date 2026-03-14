@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 592665063635878954, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _resistConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: e82a6dc2c065eae45bd67e57891f79c3, type: 2}
     - target: {fileID: 794142205421366612, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 0

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 987927899817381564, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
+      propertyPath: _resistConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: e17a7ef533f7c6f47adb627930f62d24, type: 2}
     - target: {fileID: 2012485727170082295, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -20,10 +24,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4162902277925038274, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
+      propertyPath: _damageDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: cddb016e89cb8d242add8b2f58b7fc15, type: 2}
     - target: {fileID: 4383148880132754967, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4775474588084191404, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
+      propertyPath: _damageDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 5d6e7947a237d5a47b515fc2667ba362, type: 2}
     - target: {fileID: 5208765841939597781, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.7286

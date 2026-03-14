@@ -340,6 +340,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2882830380550680027, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
+      propertyPath: _maxHealth
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2882830380550680027, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
+      propertyPath: _startHealth
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2882830380550680027, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
+      propertyPath: _resistConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 84d2fe38a6216d2429d8567c8b7e855c, type: 2}
     - target: {fileID: 4164805197660502049, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
       propertyPath: m_IsActive
       value: 1

@@ -180,6 +180,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6571805443300304682}
     m_Modifications:
+    - target: {fileID: 619958110, guid: 54dae0370a9ff8e4cba5e9f908568416, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5916948644024170722, guid: 54dae0370a9ff8e4cba5e9f908568416, type: 3}
       propertyPath: m_Name
       value: SM_Wep_Sniper_Rifle_01
@@ -242,14 +246,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 592665063635878954, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _resistConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: a35be7b47c12a0045ab6eaadf23acd89, type: 2}
+    - target: {fileID: 1466405188745315996, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466405188745315996, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466405188745315996, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.508
+      objectReference: {fileID: 0}
     - target: {fileID: 1914982918381028162, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5341c6960dffc584baae13e35de0acd7, type: 2}
     - target: {fileID: 2791058549148951944, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _damageDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 5cfed8b3a093cc245aad3891f4f50117, type: 2}
+    - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _projectileSpeed
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _projectilePrefab
+      value: 
+      objectReference: {fileID: 520090335404256098, guid: e1a5b6721b1c55c42bce41b0733a6323, type: 3}
     - target: {fileID: 6230349065170489899, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Name
       value: RPGbI_Enemy_Sniper
@@ -260,7 +292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6610847858592354683, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _viewRadius
-      value: 20
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6610847858592354683, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _peripheralRadius

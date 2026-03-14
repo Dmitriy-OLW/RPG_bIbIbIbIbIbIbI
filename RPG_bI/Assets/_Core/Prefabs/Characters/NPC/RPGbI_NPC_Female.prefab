@@ -86,6 +86,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2882830380550680027, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
+      propertyPath: _maxHealth
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2882830380550680027, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
+      propertyPath: _startHealth
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 3115667862793569445, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
       propertyPath: m_IsActive
       value: 0

@@ -657,7 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e8f11a3d8e472dbb69724383d0ab73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageDataSO: {fileID: 11400000, guid: 2c5a2c53890ca7445ac46c0c7813e9f8, type: 2}
+  _damageDataSO: {fileID: 11400000, guid: a296b9928bb6478449c0c4e963463efd, type: 2}
   _targetLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc9d23b2b0bc4bf582e959e08b78155a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageDataSO: {fileID: 11400000, guid: 2c5a2c53890ca7445ac46c0c7813e9f8, type: 2}
+  _damageDataSO: {fileID: 11400000, guid: c927bf6f7eeb9894c94c1c9ab296f3ba, type: 2}
   _projectilePrefab: {fileID: 7215435939982588545, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
   _shootPoint: {fileID: 5208765841939597781}
   _projectileSpeed: 20
@@ -692,10 +692,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502422b0f7a44e9cb8c4f1d7204b844c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _startHealth: 100
+  _maxHealth: 120
+  _startHealth: 120
   _currentHealth: 0
-  _resistConfig: {fileID: 11400000, guid: b9ecccae302c7b74da525616706b51d5, type: 2}
+  _resistConfig: {fileID: 11400000, guid: be33e01d57475c048a827165ee04e050, type: 2}
 --- !u!114 &2404395212683360403
 MonoBehaviour:
   m_ObjectHideFlags: 0
