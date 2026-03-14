@@ -223,7 +223,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -0.3
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1686603517609820997
@@ -273,12 +273,7 @@ MonoBehaviour:
   _targeting: {fileID: 7453521030292567695}
   _healthController: {fileID: 6101597387865931189}
   _enemyType: 0
-  _patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _patrolPoints: []
 --- !u!114 &6755223994078568569
 MonoBehaviour:
   m_ObjectHideFlags: 0
