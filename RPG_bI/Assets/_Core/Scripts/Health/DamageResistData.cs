@@ -9,7 +9,7 @@ namespace Health
     {
         public DamageType Type;
         
-        [Range(0f, 1f)]
+        [Range(0f, 3f)]
         public float ResistMultiplier = 1f;
     }
 }

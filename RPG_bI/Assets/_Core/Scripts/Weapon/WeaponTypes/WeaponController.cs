@@ -61,6 +61,7 @@ public class WeaponController : MonoBehaviour
     {
         if (_currentWeaponState == WeaponStateActive.Deactive)
         {
+            SetRandomAnimation();
             _animator.SetTrigger(PrimaryAttack);
             _currentWeaponState = WeaponStateActive.PrimaryActive;
         }
@@ -70,6 +71,7 @@ public class WeaponController : MonoBehaviour
     {
         if (_currentWeaponState == WeaponStateActive.Deactive)
         {
+            SetRandomAnimation();
             _animator.SetTrigger(SecondaryAttack);
             _currentWeaponState = WeaponStateActive.SecondaryActive;
         }

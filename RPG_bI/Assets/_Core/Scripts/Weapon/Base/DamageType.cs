@@ -3,6 +3,8 @@ namespace Damage
     public enum DamageType
     {
         Physical,
-        Magical
+        Plasma,
+        Explosive,
+        Ballistic 
     }
 }
