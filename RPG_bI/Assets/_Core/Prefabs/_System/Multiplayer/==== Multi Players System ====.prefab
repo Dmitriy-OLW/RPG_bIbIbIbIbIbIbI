@@ -127,6 +127,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
+--- !u!1 &722806687427077504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1385210068876499396, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
+  m_PrefabInstance: {fileID: 1819082535807990852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1480416391912993528 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 987927899817381564, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
@@ -261,6 +266,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502422b0f7a44e9cb8c4f1d7204b844c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1950971773099081303 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2712825364079573349, guid: f45262542c3b2294c9b4bf833d020fd8, type: 3}
+  m_PrefabInstance: {fileID: 4519039201806878514}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7115604229161399907 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6631953347768037713, guid: f45262542c3b2294c9b4bf833d020fd8, type: 3}
@@ -334,6 +344,14 @@ PrefabInstance:
       propertyPath: '_healthControllers.Array.data[1]'
       value: 
       objectReference: {fileID: 405232133831911727}
+    - target: {fileID: 7739125903613352542, guid: 3910f94ad8f59d94aa6b31d8bd46b609, type: 3}
+      propertyPath: '_gameObjectsToDisable.Array.data[0]'
+      value: 
+      objectReference: {fileID: 722806687427077504}
+    - target: {fileID: 7739125903613352542, guid: 3910f94ad8f59d94aa6b31d8bd46b609, type: 3}
+      propertyPath: '_gameObjectsToDisable.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1950971773099081303}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
