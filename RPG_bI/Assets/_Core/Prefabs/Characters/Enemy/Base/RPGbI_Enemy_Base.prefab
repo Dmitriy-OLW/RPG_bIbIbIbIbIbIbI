@@ -766,7 +766,7 @@ MonoBehaviour:
   _inputReader: {fileID: 3036658743997486478}
   _controller: {fileID: 384841926628819450}
   _healthController: {fileID: 592665063635878954}
-  _config: {fileID: 11400000, guid: 2220cc939d39c974ba91cdb4bb81871b, type: 2}
+  _config: {fileID: 11400000, guid: bd258d114fef41740bc021e330246206, type: 2}
   _rearRayPos: {fileID: 6877308322404699527}
   _frontRayPos: {fileID: 6845956762245195914}
   _targetLockOnPos: {fileID: 7072933291137410577}
