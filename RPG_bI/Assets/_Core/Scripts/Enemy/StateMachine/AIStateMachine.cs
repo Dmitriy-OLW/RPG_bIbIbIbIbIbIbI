@@ -7,13 +7,11 @@ using Health;
 
 namespace Enemy.State
 {
-    
     public enum AIStateType
     {
         Patrol,
         Aggression,
         Attack,
-        Search,
         Dead
     }
     
@@ -42,7 +40,6 @@ namespace Enemy.State
         public IEnemyBehaviorStrategy BehaviorStrategy => _behaviorStrategy;
         public Transform[] PatrolPoints => _patrolPoints;
         public AIStateType CurrentStateType => _currentStateType;
-
         public EnemyType EnemyType => _enemyType;
         
         private void Awake()
@@ -69,7 +66,6 @@ namespace Enemy.State
                 { AIStateType.Patrol, new AIPatrolState(this) },
                 { AIStateType.Aggression, new AIAggressionState(this) },
                 { AIStateType.Attack, new AIAttackState(this) },
-                { AIStateType.Search, new AISearchState(this) },
                 { AIStateType.Dead, new AIDeadState(this) }
             };
             
@@ -78,19 +74,12 @@ namespace Enemy.State
 
         private void SubscribeToEvents()
         {
-            _vision.OnTargetDetected += OnTargetDetected;
-            _vision.OnTargetLost += OnTargetLost;
             _healthController.OnDeath += OnDeath;
+            _vision.OnTargetDetected += OnTargetDetected;
         }
 
         private void OnDestroy()
         {
-            if (_vision != null)
-            {
-                _vision.OnTargetDetected -= OnTargetDetected;
-                _vision.OnTargetLost -= OnTargetLost;
-            }
-            
             if (_healthController != null)
             {
                 _healthController.OnDeath -= OnDeath;
@@ -113,26 +102,17 @@ namespace Enemy.State
             _currentState.Enter();
         }
 
+        private void OnDeath()
+        {
+            SwitchState(AIStateType.Dead);
+        }
+        
         private void OnTargetDetected(Transform target)
         {
             if (_currentStateType != AIStateType.Dead)
             {
                 SwitchState(AIStateType.Aggression);
             }
-        }
-
-        private void OnTargetLost()
-        {
-            if (_currentStateType != AIStateType.Dead && 
-                _currentStateType != AIStateType.Search)
-            {
-                SwitchState(AIStateType.Search);
-            }
-        }
-
-        private void OnDeath()
-        {
-            SwitchState(AIStateType.Dead);
         }
         
         public void SetEnemyType(EnemyType newType)

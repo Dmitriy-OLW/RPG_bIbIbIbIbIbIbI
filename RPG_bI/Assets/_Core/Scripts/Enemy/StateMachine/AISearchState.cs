@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using Enemy.Navigation;
 
 namespace Enemy.State
@@ -79,4 +79,4 @@ namespace Enemy.State
             _stateMachine.InputMapper.InputReader.SetLookDirection(Vector2.zero);
         }
     }
-}
+}*/

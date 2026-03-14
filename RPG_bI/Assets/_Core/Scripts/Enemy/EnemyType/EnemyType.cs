@@ -14,8 +14,7 @@ namespace Enemy.Strategies
     {
         float AggressionRange { get; }      
         float AttackRange { get; }           
-        float PreferredDistance { get; }      
-        float MoveSpeed { get; }              
+        float PreferredDistance { get; }
         float AttackCooldown { get; }        
         
         void UpdatePosition(Transform enemy, Transform target, out bool shouldAttack);

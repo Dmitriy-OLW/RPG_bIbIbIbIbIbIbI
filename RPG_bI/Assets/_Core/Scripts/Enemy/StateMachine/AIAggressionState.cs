@@ -12,8 +12,6 @@ namespace Enemy.State
         public override void Enter()
         {
             base.Enter();
-            
-            var strategy = _stateMachine.BehaviorStrategy;
             _stateMachine.InputMapper.SetShouldRun(true);
         }
 
@@ -21,7 +19,7 @@ namespace Enemy.State
         {
             if (!_stateMachine.Vision.HasTarget)
             {
-                _stateMachine.SwitchState(AIStateType.Search);
+                _stateMachine.SwitchState(AIStateType.Patrol);
                 return;
             }
 
@@ -37,10 +35,10 @@ namespace Enemy.State
             
             if (distanceToTarget > strategy.AggressionRange)
             {
-                _stateMachine.SwitchState(AIStateType.Search);
+                _stateMachine.SwitchState(AIStateType.Patrol);
                 return;
             }
-            
+
             _stateMachine.Navigation.SetDestination(target.position);
         }
 

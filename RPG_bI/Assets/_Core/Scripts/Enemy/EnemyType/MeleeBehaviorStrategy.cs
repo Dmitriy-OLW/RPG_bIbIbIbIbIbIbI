@@ -6,10 +6,9 @@ namespace Enemy.Strategies
     public class MeleeBehaviorStrategy : IEnemyBehaviorStrategy
     {
         public float AggressionRange => 10f;
-        public float AttackRange => 2f;
+        public float AttackRange => 3f;
         public float PreferredDistance => 1.5f;
-        public float MoveSpeed => 5f;
-        public float AttackCooldown => 1f;
+        public float AttackCooldown => 4f;
         
         public void UpdatePosition(Transform enemy, Transform target, out bool shouldAttack)
         {

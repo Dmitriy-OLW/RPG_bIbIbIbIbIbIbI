@@ -43,7 +43,7 @@ namespace Character
                 _handler.PlayerMovement.ApplyGravity();
             }
             
-            _handler.PlayerMovement.Move();
+            //_handler.PlayerMovement.Move();
         }
 
         public override void Exit()
