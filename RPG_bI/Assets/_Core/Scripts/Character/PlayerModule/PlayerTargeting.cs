@@ -41,6 +41,8 @@ namespace Character
 
         public void RemoveTarget(GameObject targetToRemove)
         {
+            if (targetToRemove == null) return;
+            
             if (_currentTargetCandidates.Contains(targetToRemove))
             {
                 _currentTargetCandidates.Remove(targetToRemove);
@@ -54,6 +56,8 @@ namespace Character
 
         public void UpdateBestTarget()
         {
+            _currentTargetCandidates.RemoveAll(target => target == null);
+            
             GameObject newBestTarget;
 
             if (_currentTargetCandidates.Count == 0)
@@ -71,6 +75,8 @@ namespace Character
 
                 foreach (GameObject target in _currentTargetCandidates)
                 {
+                    if (target == null) continue;
+                    
                     target.GetComponent<SampleObjectLockOn>().Highlight(false, false);
 
                     float distance = Vector3.Distance(_handler.transform.position, target.transform.position);
@@ -113,7 +119,10 @@ namespace Character
                 else
                 {
                     _currentLockOnTarget = newBestTarget;
-                    EnableLockOn(false);
+                    if (_currentLockOnTarget == null)
+                    {
+                        EnableLockOn(false);
+                    }
                 }
             }
         }

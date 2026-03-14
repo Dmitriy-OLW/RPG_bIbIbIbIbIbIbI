@@ -26,7 +26,7 @@ namespace Enemy.State
             
             if (_stateMachine.gameObject != null)
             {
-                GameObject.Destroy(_stateMachine.gameObject.transform.parent);
+                GameObject.Destroy(_stateMachine.gameObject.transform.parent.gameObject);
             }
         }
 

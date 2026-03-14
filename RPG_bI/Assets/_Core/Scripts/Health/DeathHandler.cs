@@ -60,10 +60,10 @@ namespace Health
 
         private IEnumerator DeathRoutine()
         {           
-            yield return new WaitForSeconds(_deathScreenDelay);
-            
             DisablePlayerControls();
             
+            yield return new WaitForSeconds(_deathScreenDelay);
+
             Time.timeScale = 0f;
             
             if (_deathCanvas != null)
