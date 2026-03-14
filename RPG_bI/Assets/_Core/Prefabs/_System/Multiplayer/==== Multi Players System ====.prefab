@@ -143,6 +143,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502422b0f7a44e9cb8c4f1d7204b844c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2325325912271615081 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4142074111478614061, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
+  m_PrefabInstance: {fileID: 1819082535807990852}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8334868781894659508 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7680268021639762416, guid: 514fbbf3bcaf719409952b5cc8eefc7d, type: 3}
@@ -329,9 +340,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7739125903613352542, guid: 3910f94ad8f59d94aa6b31d8bd46b609, type: 3}
+      propertyPath: _scriptsToDisable.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7739125903613352542, guid: 3910f94ad8f59d94aa6b31d8bd46b609, type: 3}
       propertyPath: _healthControllers.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7739125903613352542, guid: 3910f94ad8f59d94aa6b31d8bd46b609, type: 3}
+      propertyPath: '_scriptsToDisable.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2325325912271615081}
     - target: {fileID: 7739125903613352542, guid: 3910f94ad8f59d94aa6b31d8bd46b609, type: 3}
       propertyPath: _gameObjectsToDisable.Array.size
       value: 2

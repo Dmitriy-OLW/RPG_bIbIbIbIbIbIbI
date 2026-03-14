@@ -879,6 +879,10 @@ PrefabInstance:
       propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2978143302566921383, guid: 9aa08207022ab3b44b9282c29f605f9f, type: 3}
+      propertyPath: hudPanel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7569910181196231806, guid: 9aa08207022ab3b44b9282c29f605f9f, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -922,7 +926,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 683403315677156026, guid: 9aa08207022ab3b44b9282c29f605f9f, type: 3}
     - {fileID: 7939537977013733346, guid: 9aa08207022ab3b44b9282c29f605f9f, type: 3}
-    - {fileID: 2978143302566921383, guid: 9aa08207022ab3b44b9282c29f605f9f, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8993185264944897654, guid: 9aa08207022ab3b44b9282c29f605f9f, type: 3}
     m_AddedGameObjects:
