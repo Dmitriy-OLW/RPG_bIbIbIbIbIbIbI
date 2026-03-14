@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Health;
 
 namespace RPGbI.UI
 {
     public class HealthBarUI : MonoBehaviour
     {
-        [SerializeField] private Health.HealthController _healthController;
+        [SerializeField] private HealthController _healthController;
         [SerializeField] private Image _fillImage;
         
         private void OnEnable()
