@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 883585496792927170}
   - component: {fileID: 1056044751792708874}
   - component: {fileID: 6688388405963072530}
+  - component: {fileID: 6373780733407127052}
   m_Layer: 5
   m_Name: EnemyCanvas
   m_TagString: Untagged
@@ -36,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.41}
+  m_AnchoredPosition: {x: 0, y: 2.4099731}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &883585496792927170
@@ -84,7 +85,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6688388405963072530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +103,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6373780733407127052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291852112965223178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfa4e84af71947c591e40116ea57fabf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthController: {fileID: 0}
+  _fillImage: {fileID: 7659819916250863494}
 --- !u!1 &1545212026374298980
 GameObject:
   m_ObjectHideFlags: 0
