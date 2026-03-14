@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7215435939982588545}
   - component: {fileID: -7607970831399229636}
   m_Layer: 0
-  m_Name: Projectile Base
+  m_Name: Projectile Plasma Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
