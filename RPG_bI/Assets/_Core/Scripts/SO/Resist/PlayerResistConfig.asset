@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resists:
   - Type: 0
-    ResistMultiplier: 0.9
+    ResistMultiplier: 0.75
   - Type: 1
-    ResistMultiplier: 0.8
+    ResistMultiplier: 1
+  - Type: 2
+    ResistMultiplier: 0.9
+  - Type: 3
+    ResistMultiplier: 0.85

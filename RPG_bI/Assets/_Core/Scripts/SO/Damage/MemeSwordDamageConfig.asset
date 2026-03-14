@@ -9,15 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce98ffb0ab82412ba7a5257bab2587f2, type: 3}
-  m_Name: BaseResistConfig
+  m_Script: {fileID: 11500000, guid: 220f4cb90728da54c99bd4b84e6e4194, type: 3}
+  m_Name: MemeSwordDamageConfig
   m_EditorClassIdentifier: 
-  _resists:
+  DamageList:
   - Type: 0
-    ResistMultiplier: 0.7
-  - Type: 1
-    ResistMultiplier: 0.8
-  - Type: 2
-    ResistMultiplier: 1
-  - Type: 3
-    ResistMultiplier: 0.9
+    Amount: 25
