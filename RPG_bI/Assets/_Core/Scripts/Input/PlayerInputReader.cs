@@ -62,9 +62,6 @@ namespace Character.InputController
 
         public void OnAim(InputAction.CallbackContext context)
         {
-            if(_allInputBlocked)
-                return;
-            
             if (context.started)
                 OnAimActivated?.Invoke();
             if (context.canceled)
@@ -73,7 +70,7 @@ namespace Character.InputController
         
         public void OnLockOn(InputAction.CallbackContext context)
         {
-            if (!context.performed || _allInputBlocked) 
+            if (!context.performed) 
                 return;
             
             OnLockOnToggled?.Invoke();

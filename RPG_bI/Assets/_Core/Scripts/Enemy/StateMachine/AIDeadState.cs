@@ -5,7 +5,7 @@ namespace Enemy.State
 {
     public class AIDeadState : AIBaseState
     {
-        private float _destroyDelay = 2f;
+        private float _destroyDelay = 15f;
 
         public AIDeadState(AIStateMachine stateMachine) : base(stateMachine)
         {
@@ -26,7 +26,7 @@ namespace Enemy.State
             
             if (_stateMachine.gameObject != null)
             {
-                GameObject.Destroy(_stateMachine.gameObject);
+                GameObject.Destroy(_stateMachine.gameObject.transform.parent);
             }
         }
 
