@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using EntryPoint.Interface;
+using SaveSystem;
 
 namespace EntryPoint.Services
 {
@@ -39,6 +40,46 @@ namespace EntryPoint.Services
             }
             
             return Path.Combine(savesDirectory, key + ".json");
+        }
+        
+        public void SaveSceneData(string sceneName, SceneSaveData data)
+        {
+            try
+            {
+                string json = JsonUtility.ToJson(data, true);
+                string path = GetPath($"scene_{sceneName}", null);
+                File.WriteAllText(path, json);
+                Debug.Log($"Scene data saved: {sceneName} at {path}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to save scene data: {e.Message}");
+            }
+        }
+        
+        public SceneSaveData LoadSceneData(string sceneName)
+        {
+            try
+            {
+                string path = GetPath($"scene_{sceneName}", null);
+                if (File.Exists(path))
+                {
+                    string json = File.ReadAllText(path);
+                    return JsonUtility.FromJson<SceneSaveData>(json);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to load scene data: {e.Message}");
+            }
+            
+            return null;
+        }
+        
+        public bool HasSceneSave(string sceneName)
+        {
+            string path = GetPath($"scene_{sceneName}", null);
+            return File.Exists(path);
         }
         
         public void Save<T>(string key, T data, string sceneName = null)
