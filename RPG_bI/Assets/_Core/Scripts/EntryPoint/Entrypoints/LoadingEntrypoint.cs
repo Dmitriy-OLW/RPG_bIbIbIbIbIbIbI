@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using EntryPoint.Interface;
+using TMPro;
 
 namespace EntryPoint.Entrypoints
 {
     public class LoadingEntrypoint : MonoBehaviour
     {
         [SerializeField] private Slider progressBar;
-        [SerializeField] private Text progressText;
-        [SerializeField] private Text loadingMessage;
+        [SerializeField] private TMP_Text progressText;
+        [SerializeField] private TMP_Text loadingMessage;
 
         private ISceneLoader _sceneLoader;
         private string _targetScene;
