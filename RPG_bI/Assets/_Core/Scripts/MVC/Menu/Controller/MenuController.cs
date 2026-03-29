@@ -1,6 +1,7 @@
 using System;
 using MVC.Menu.View;
 using EntryPoint.Interface;
+using SaveSystem.Interactor;
 
 namespace MVC.Menu.Controller
 {
@@ -8,7 +9,7 @@ namespace MVC.Menu.Controller
     {
         private MenuView _view;
         private ISceneLoader _sceneLoader;
-        private IGameSaveService _saveService;
+        private ISaveInteractor _saveInteractor;
         private AudioSettingsController _audioSettingsController;
         private GraphicsSettingsController _graphicsSettingsController;
 
@@ -17,13 +18,13 @@ namespace MVC.Menu.Controller
         public MenuController(
             MenuView view,
             ISceneLoader sceneLoader,
-            IGameSaveService saveService,
+            ISaveInteractor saveInteractor,
             AudioSettingsController audioSettingsController,
             GraphicsSettingsController graphicsSettingsController)
         {
             _view = view;
             _sceneLoader = sceneLoader;
-            _saveService = saveService;
+            _saveInteractor = saveInteractor;
             _audioSettingsController = audioSettingsController;
             _graphicsSettingsController = graphicsSettingsController;
 
@@ -55,14 +56,12 @@ namespace MVC.Menu.Controller
 
         private void CheckContinueAvailability()
         {
-            bool hasSave = _saveService.HasKey("player", "GameScene");
-            _view?.SetContinueButtonActive(hasSave);
+            _view?.SetContinueButtonActive(_saveInteractor.HasSave(GAMEPLAY_SCENE));
         }
 
         private void HandleNewGame()
         {
-            _saveService.ClearSceneSaves(GAMEPLAY_SCENE);
-
+            _saveInteractor.DeleteAllSaves();
             _sceneLoader.LoadSceneWithLoadingScreen(GAMEPLAY_SCENE);
         }
 

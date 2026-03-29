@@ -26,9 +26,10 @@ namespace EntryPoint.Entrypoints
             }
 
             var sceneLoader = gameEntrypoint.SceneLoader;
-            var gameSaveService = gameEntrypoint.GameSaveService;
+            var saveInteractor = gameEntrypoint.SaveInteractor;
             var audioSaveService = gameEntrypoint.AudioSaveService;
             var settingsSaveService = gameEntrypoint.SettingsSaveService;
+            
             
             _audioSettingsController = new AudioSettingsController(
                 audioSettingsView,
@@ -43,7 +44,7 @@ namespace EntryPoint.Entrypoints
             _menuController = new MenuController(
                 menuView,
                 sceneLoader,
-                gameSaveService,
+                saveInteractor, 
                 _audioSettingsController,
                 _graphicsSettingsController
             );

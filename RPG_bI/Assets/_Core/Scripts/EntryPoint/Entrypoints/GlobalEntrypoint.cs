@@ -4,6 +4,8 @@ using UnityEngine.Rendering.Universal;
 using EntryPoint.Interface;
 using EntryPoint.Services;
 using System.IO;
+using SaveSystem.Repository;
+using SaveSystem.Interactor;
 
 namespace EntryPoint.Entrypoints
 {
@@ -42,6 +44,8 @@ namespace EntryPoint.Entrypoints
         public IAudioSaveService AudioSaveService { get; private set; }
         public IGameSaveService GameSaveService { get; private set; }
         public ISettingsSaveService SettingsSaveService { get; private set; }
+        
+        public ISaveInteractor SaveInteractor { get; private set; }
         public ISceneLoader SceneLoader { get; private set; }
 
         private string _baseSavePath;
@@ -103,7 +107,10 @@ namespace EntryPoint.Entrypoints
             SettingsSaveService = new SettingsSaveService(_urpAsset, _baseSavePath);
             
             GameSaveService = new GameSaveService(_baseSavePath);
-            
+
+            var saveRepo = new GameSaveRepository(_baseSavePath);
+            SaveInteractor = new SaveInteractor(saveRepo);
+        
             SceneLoader = new SceneLoader();
         }
 

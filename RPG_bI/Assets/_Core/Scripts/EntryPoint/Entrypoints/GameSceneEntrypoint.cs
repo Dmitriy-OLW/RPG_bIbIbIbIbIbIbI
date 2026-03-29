@@ -1,65 +1,90 @@
 using UnityEngine;
-using EntryPoint.Interface;
+using System.Collections.Generic;
+using EntryPoint.Entrypoints;
 using SceneManagement;
-using EntryPoint.Services;
+using SaveSystem.MVC;
+using SaveSystem;
 
 namespace EntryPoint.Entrypoints
 {
     public class GameSceneEntrypoint : MonoBehaviour
     {
-        [Header("Scene References")]
-        /*[SerializeField] private GameSceneController _sceneController;
-        [SerializeField] private GameSaveView _saveView;*/
+        [Header("Scene Configuration")]
         [SerializeField] private SceneController _sceneSettingsController;
-        
-        //private GameSaveController _saveController;
-        
+        [SerializeField] private PlayerSaveController _playerSaveController;
+        [SerializeField] private SpawnerInitializer _spawnerInitializer;
+
+        [Header("UI References")]
+        [SerializeField] private SaveView[] _saveViews;
+
+        private List<SaveController> _activeSaveControllers = new List<SaveController>();
+
         private void Start()
         {
-            var globalEntrypoint = GlobalEntrypoint.Instance;
-            if (globalEntrypoint == null) return;
+            var global = GlobalEntrypoint.Instance;
+            if (global == null) return;
+
+            string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             
-            var settingsService = globalEntrypoint.SettingsSaveService;
-            var gameSaveService = globalEntrypoint.GameSaveService;
-            var sceneLoader = globalEntrypoint.SceneLoader;
-            
-            if (_sceneSettingsController != null && settingsService != null)
+            if (_sceneSettingsController != null)
             {
-                _sceneSettingsController.Initialize(settingsService.PostProcessing, settingsService.SplitScreen);
+                _sceneSettingsController.Initialize(
+                    global.SettingsSaveService.PostProcessing, 
+                    global.SettingsSaveService.SplitScreen
+                );
             }
             
-            /*if (_sceneController != null)
-            {
-                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-                _sceneController.Initialize(gameSaveService, sceneName);
-                
-                if (_saveView != null)
-                {
-                    _saveController = new GameSaveController(_saveView, _sceneController, gameSaveService, sceneName);
-                }
-                
-                // Загружаем сцену с учетом сохранения
-                if (sceneLoader is EntryPoint.Services.SceneLoader loader && loader.ShouldLoadFromSave())
-                {
-                    if (_sceneController.HasSaveData())
-                    {
-                        _sceneController.LoadScene();
-                    }
-                    else
-                    {
-                        _sceneController.LoadScene(); 
-                    }
-                }
-                else
-                {
-                    _sceneController.LoadScene(); 
-                }
-            }*/
+            InitializeLevelData(global, sceneName);
+            
+            InitializeSaveButtons(global, sceneName);
         }
-        
+
+        private void InitializeLevelData(GlobalEntrypoint global, string sceneName)
+        {
+            if (global.SaveInteractor.HasSave(sceneName))
+            {
+                SceneSaveData data = global.SaveInteractor.LoadScene(sceneName);
+                
+                if (_playerSaveController != null)
+                    _playerSaveController.ApplyPlayerData(data.players);
+                
+                if (_spawnerInitializer != null)
+                    _spawnerInitializer.InitializeFromSave(data.enemies);
+            }
+            else
+            {
+                if (_spawnerInitializer != null)
+                    _spawnerInitializer.InitializeDefault();
+            }
+        }
+
+        private void InitializeSaveButtons(GlobalEntrypoint global, string sceneName)
+        {
+            if (_saveViews == null) return;
+
+            foreach (var view in _saveViews)
+            {
+                if (view != null)
+                {
+                    var controller = new SaveController(
+                        view, 
+                        global.SaveInteractor, 
+                        _playerSaveController, 
+                        _spawnerInitializer, 
+                        sceneName
+                    );
+                    _activeSaveControllers.Add(controller);
+                }
+            }
+        }
+
         private void OnDestroy()
         {
-            //_saveController?.Dispose();
+            foreach (var controller in _activeSaveControllers)
+            {
+                controller.Dispose();
+            }
+            _activeSaveControllers.Clear();
         }
     }
 }

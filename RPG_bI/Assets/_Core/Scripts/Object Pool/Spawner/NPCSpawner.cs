@@ -8,11 +8,15 @@ namespace Spawning
 {
     public class NPCSpawner : MonoBehaviour
     {
+        public IReadOnlyDictionary<AIStateMachine, NPCTypes> ActiveNPCs => _activeNPCTypes;
+        
         [Header("NPC Library")]
         [SerializeField] private NPCLibrary _npcLibrary;
         
         [Header("Pool Settings")]
         [SerializeField] private Transform _poolParent;
+        
+        private Dictionary<AIStateMachine, NPCTypes> _activeNPCTypes = new Dictionary<AIStateMachine, NPCTypes>();
         
         private Dictionary<NPCTypes, GameObject> _npcPrefabs;
         private Dictionary<NPCTypes, ObjectPool<AIStateMachine>> _pools;
@@ -96,6 +100,37 @@ namespace Spawning
 
             _activeNPCs[npc] = spawnData;
             
+            npc.OnSpawn();
+        }
+        
+        public void SpawnNPC(NPCSpawnData spawnData, float healthOverride = -1f)
+        {
+            if (!_npcPrefabs.ContainsKey(spawnData.npcType)) return;
+    
+            if (!_pools.ContainsKey(spawnData.npcType))
+            {
+                _pools[spawnData.npcType] = new ObjectPool<AIStateMachine>(_npcPrefabs[spawnData.npcType], _poolParent, 1, 20);
+            }
+    
+            AIStateMachine npc = _pools[spawnData.npcType].Get();
+    
+            if (spawnData.patrolRouteParent != null)
+            {
+                List<Transform> patrolPoints = new List<Transform>();
+                foreach (Transform child in spawnData.patrolRouteParent) patrolPoints.Add(child);
+                npc.SetPatrolPoints(patrolPoints.ToArray());
+            }
+    
+            npc.transform.position = spawnData.spawnPoint != null ? spawnData.spawnPoint.position : npc.transform.position;
+    
+            if (healthOverride >= 0)
+            {
+                var health = npc.GetComponentInChildren<Health.HealthController>();
+                if (health != null) health.ResetHealth(healthOverride);
+            }
+
+            _activeNPCs[npc] = spawnData;
+            _activeNPCTypes[npc] = spawnData.npcType; 
             npc.OnSpawn();
         }
         
