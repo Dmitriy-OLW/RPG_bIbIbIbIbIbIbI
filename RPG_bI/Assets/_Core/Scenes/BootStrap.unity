@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 24100000, guid: 87d7f78544dd258498c35e867f58e403, type: 2}
   _musicPlaylist:
+  - {fileID: 8300000, guid: f166d72de4d373f418e5c4aff453e63d, type: 3}
   - {fileID: 8300000, guid: fce5e1e342e3c3447a82b45db68af37a, type: 3}
   - {fileID: 8300000, guid: 1b0d0f89f6fad524f8ec3ae6bb6ddb5e, type: 3}
   _startMusicIndex: 0
