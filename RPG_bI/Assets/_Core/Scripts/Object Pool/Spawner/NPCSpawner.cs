@@ -3,6 +3,7 @@ using UnityEngine;
 using Pooling;
 using Enemy.State;
 using Spawning.Data;
+using Health;
 
 namespace Spawning
 {
@@ -63,75 +64,36 @@ namespace Spawning
         
         public void SpawnNPC(NPCSpawnData spawnData)
         {
-            if (!_npcPrefabs.ContainsKey(spawnData.npcType))
-            {
-                return;
-            }
-            
-            GameObject prefab = _npcPrefabs[spawnData.npcType];
-            
-            if (!_pools.ContainsKey(spawnData.npcType))
-            {
-                var pool = new ObjectPool<AIStateMachine>(prefab, _poolParent, 1, 20);
-                _pools[spawnData.npcType] = pool;
-            }
-            
-            AIStateMachine npc = _pools[spawnData.npcType].Get();
-            
-            if (npc == null)
-                return;
-            
-            if (spawnData.patrolRouteParent != null)
-            {
-                List<Transform> patrolPoints = new List<Transform>();
-                foreach (Transform child in spawnData.patrolRouteParent)
-                {
-                    patrolPoints.Add(child);
-                }
-                npc.SetPatrolPoints(patrolPoints.ToArray());
-            }
-            
-            GameObject npcRoot = npc.gameObject;
-            if (spawnData.spawnPoint != null)
-            {
-                npcRoot.transform.position = spawnData.spawnPoint.position;
-                npcRoot.transform.rotation = spawnData.spawnPoint.rotation;
-            }
-
-            _activeNPCs[npc] = spawnData;
-            
-            npc.OnSpawn();
+            SpawnNPC(spawnData, -1f);
         }
-        
+
         public void SpawnNPC(NPCSpawnData spawnData, float healthOverride = -1f)
         {
             if (!_npcPrefabs.ContainsKey(spawnData.npcType)) return;
-    
+
             if (!_pools.ContainsKey(spawnData.npcType))
             {
                 _pools[spawnData.npcType] = new ObjectPool<AIStateMachine>(_npcPrefabs[spawnData.npcType], _poolParent, 1, 20);
             }
-    
+
             AIStateMachine npc = _pools[spawnData.npcType].Get();
-    
+            if (npc == null) return;
+
             if (spawnData.patrolRouteParent != null)
             {
                 List<Transform> patrolPoints = new List<Transform>();
                 foreach (Transform child in spawnData.patrolRouteParent) patrolPoints.Add(child);
                 npc.SetPatrolPoints(patrolPoints.ToArray());
             }
-    
-            npc.transform.position = spawnData.spawnPoint != null ? spawnData.spawnPoint.position : npc.transform.position;
-    
-            if (healthOverride >= 0)
-            {
-                var health = npc.GetComponentInChildren<Health.HealthController>();
-                if (health != null) health.ResetHealth(healthOverride);
-            }
-
+            
+            Vector3 targetPosition = spawnData.spawnPoint != null 
+                ? spawnData.spawnPoint.position 
+                : _poolParent.position;
+            
             _activeNPCs[npc] = spawnData;
             _activeNPCTypes[npc] = spawnData.npcType; 
-            npc.OnSpawn();
+
+            npc.OnSpawn(targetPosition, healthOverride);
         }
         
         public void DespawnNPC(AIStateMachine npc)

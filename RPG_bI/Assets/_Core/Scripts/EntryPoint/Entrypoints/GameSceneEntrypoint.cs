@@ -55,6 +55,9 @@ namespace EntryPoint.Entrypoints
             {
                 if (_spawnerInitializer != null)
                     _spawnerInitializer.InitializeDefault();
+                
+                if (_playerSaveController != null)
+                    _playerSaveController.ApplyDefaultHealth();
             }
         }
 

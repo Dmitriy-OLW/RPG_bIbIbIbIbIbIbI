@@ -32,5 +32,13 @@ namespace SceneManagement
                 _playerHealths[i].ResetHealth(data[i].currentHealth);
             }
         }
+
+        public void ApplyDefaultHealth()
+        {
+            for (int i = 0; i < _playerHealths.Count; i++)
+            {
+                _playerHealths[i].ResetHealth();
+            }
+        }
     }
 }

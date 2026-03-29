@@ -23,12 +23,6 @@ namespace Health
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _maxHealth;
         public float HealthPercentage => _currentHealth / _maxHealth;
-
-        private void Awake()
-        {
-            ResetHealth();
-        }
-
         
         #region Reset
         

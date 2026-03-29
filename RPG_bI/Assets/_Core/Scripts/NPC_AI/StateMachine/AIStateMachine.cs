@@ -55,7 +55,7 @@ namespace Enemy.State
             InitializeStates();
             SubscribeToEvents();
         }
-        
+
         private void OnDestroy()
         {
             if (_healthController != null)
@@ -86,7 +86,7 @@ namespace Enemy.State
             };
 
             if (_activateWithOutPool)
-                OnSpawn();
+                OnSpawn(transform.parent.position);
         }
 
         private void SubscribeToEvents()
@@ -138,11 +138,19 @@ namespace Enemy.State
             _patrolPoints = patrolPoints;
         }
         
-        public void OnSpawn()
+        public void OnSpawn(Vector3 spawnPosition, float healthOverride = -1f)
         {
-            SwitchState(AIStateType.Patrol);
+            if (_navigation != null)
+            {
+                _navigation.Warp(spawnPosition);
+            }
             
-            _healthController.ResetHealth();
+            if (healthOverride >= 0)
+                _healthController.ResetHealth(healthOverride);
+            else
+                _healthController.ResetHealth();
+            
+            SwitchState(AIStateType.Patrol);
             
             gameObject.transform.parent.gameObject.SetActive(true);
         }

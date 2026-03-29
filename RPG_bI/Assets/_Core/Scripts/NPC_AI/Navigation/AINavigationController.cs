@@ -54,11 +54,17 @@ namespace Enemy.Navigation
         
         public void Warp(Vector3 position)
         {
-            _agent.Warp(position);
+            if (_agent.isActiveAndEnabled)
+            {
+                _agent.Warp(position);
+            }
         }
 
         public void SetDestination(Vector3 destination)
         {
+            if (!_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
+                return;
+            
             if (Vector3.Distance(_currentDestination, destination) < 0.1f && HasPath)
                 return;
 
