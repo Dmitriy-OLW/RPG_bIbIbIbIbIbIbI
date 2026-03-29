@@ -23,6 +23,9 @@ namespace SceneManagement
 
             foreach (var enemy in savedEnemies)
             {
+                if (enemy.currentHealth <= 0) 
+                    continue;
+                
                 if (!typeUsageCount.ContainsKey(enemy.npcType)) 
                     typeUsageCount[enemy.npcType] = 0;
 
@@ -58,6 +61,10 @@ namespace SceneManagement
             foreach (var npc in _npcSpawner.ActiveNPCs)
             {
                 var health = npc.Key.GetComponentInChildren<Health.HealthController>();
+                
+                if (health == null || health.CurrentHealth <= 0)
+                    continue;
+                
                 data.Add(new EnemySaveData
                 {
                     npcType = npc.Value,

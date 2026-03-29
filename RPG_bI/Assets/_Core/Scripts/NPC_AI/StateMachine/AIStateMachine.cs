@@ -140,10 +140,12 @@ namespace Enemy.State
         
         public void OnSpawn(Vector3 spawnPosition, float healthOverride = -1f)
         {
-            if (_navigation != null)
+            /*if (_navigation != null)
             {
                 _navigation.Warp(spawnPosition);
-            }
+            }*/
+            
+            gameObject.transform.parent.gameObject.SetActive(true);
             
             if (healthOverride >= 0)
                 _healthController.ResetHealth(healthOverride);
@@ -151,8 +153,6 @@ namespace Enemy.State
                 _healthController.ResetHealth();
             
             SwitchState(AIStateType.Patrol);
-            
-            gameObject.transform.parent.gameObject.SetActive(true);
         }
         
         public void OnDespawn()

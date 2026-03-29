@@ -29,7 +29,10 @@ namespace SceneManagement
             for (int i = 0; i < data.Count && i < _playerHealths.Count; i++)
             {
                 _playerHealths[i].transform.position = data[i].position;
-                _playerHealths[i].ResetHealth(data[i].currentHealth);
+                if (data[i].currentHealth == 0)
+                    _playerHealths[i].ResetHealth(10f);
+                else
+                    _playerHealths[i].ResetHealth(data[i].currentHealth);
             }
         }
 
