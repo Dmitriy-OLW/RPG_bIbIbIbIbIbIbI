@@ -75,8 +75,12 @@ namespace Spawning
             {
                 _pools[spawnData.npcType] = new ObjectPool<AIStateMachine>(_npcPrefabs[spawnData.npcType], _poolParent, 1, 20);
             }
-
-            AIStateMachine npc = _pools[spawnData.npcType].Get();
+            
+            Vector3 targetPosition = spawnData.spawnPoint != null 
+                ? spawnData.spawnPoint.position 
+                : _poolParent.position;
+            
+            AIStateMachine npc = _pools[spawnData.npcType].Get(targetPosition, Quaternion.identity);
             if (npc == null) return;
 
             if (spawnData.patrolRouteParent != null)
@@ -85,14 +89,10 @@ namespace Spawning
                 foreach (Transform child in spawnData.patrolRouteParent) patrolPoints.Add(child);
                 npc.SetPatrolPoints(patrolPoints.ToArray());
             }
-            
-            Vector3 targetPosition = spawnData.spawnPoint != null 
-                ? spawnData.spawnPoint.position 
-                : _poolParent.position;
-            
+    
             _activeNPCs[npc] = spawnData;
             _activeNPCTypes[npc] = spawnData.npcType; 
-
+            
             npc.OnSpawn(targetPosition, healthOverride);
         }
         

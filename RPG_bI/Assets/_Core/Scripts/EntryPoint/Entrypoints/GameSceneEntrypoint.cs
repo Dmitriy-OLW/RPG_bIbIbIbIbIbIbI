@@ -26,6 +26,8 @@ namespace EntryPoint.Entrypoints
 
             string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             
+            InitializeLevelData(global, sceneName);
+            
             if (_sceneSettingsController != null)
             {
                 _sceneSettingsController.Initialize(
@@ -33,9 +35,7 @@ namespace EntryPoint.Entrypoints
                     global.SettingsSaveService.SplitScreen
                 );
             }
-            
-            InitializeLevelData(global, sceneName);
-            
+
             InitializeSaveButtons(global, sceneName);
         }
 

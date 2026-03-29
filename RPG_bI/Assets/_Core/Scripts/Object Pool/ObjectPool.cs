@@ -20,24 +20,28 @@ namespace Pooling
             Prewarm(initialSize);
         }
 
-        public T Get()
+        public T Get(Vector3 position, Quaternion rotation)
         {
             T obj;
-            
+    
             if (_pool.Count > 0)
             {
                 obj = _pool.Dequeue();
             }
             else
             {
-                GameObject newObj = Object.Instantiate(_prefab, _parent);
+                GameObject newObj = Object.Instantiate(_prefab, position, rotation, _parent);
                 obj = newObj.GetComponentInChildren<T>();
                 obj.OnReturnToPool += OnReturnToPool;
             }
             
+            obj.transform.parent.SetPositionAndRotation(position, rotation);
+    
             _activeObjects.Add(obj);
             return obj;
         }
+        
+        public T Get() => Get(Vector3.zero, Quaternion.identity);
 
         private void OnReturnToPool(IPoolable poolable)
         {

@@ -16,6 +16,8 @@ namespace RPGbI.UI
                 _healthController.OnHit += UpdateHealthBar;
                 _healthController.OnDeath += UpdateHealthBar;
             }
+
+            UpdateHealthBar();
         }
 
         private void OnDisable()
