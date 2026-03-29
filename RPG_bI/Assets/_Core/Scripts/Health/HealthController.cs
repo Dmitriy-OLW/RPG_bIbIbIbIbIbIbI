@@ -26,9 +26,24 @@ namespace Health
 
         private void Awake()
         {
-            _currentHealth = Mathf.Clamp(_startHealth, 0f, _maxHealth);
+            ResetHealth();
         }
 
+        
+        #region Reset
+        
+        public void ResetHealth()
+        {
+            _currentHealth = Mathf.Clamp(_startHealth, 0f, _maxHealth);
+        }
+        
+        public void ResetHealth(float newHealth)
+        {
+            _currentHealth = Mathf.Clamp(newHealth, 0f, _maxHealth);
+        }
+        
+        #endregion
+        
         #region Heal
 
         public void Heal(float healAmount)

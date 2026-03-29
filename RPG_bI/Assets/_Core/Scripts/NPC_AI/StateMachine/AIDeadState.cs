@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Pooling;
 
 namespace Enemy.State
 {
@@ -24,9 +25,9 @@ namespace Enemy.State
         {
             yield return new WaitForSeconds(_destroyDelay);
             
-            if (_stateMachine.gameObject != null)
+            if (_stateMachine is IPoolable poolable)
             {
-                GameObject.Destroy(_stateMachine.gameObject.transform.parent.gameObject);
+                _stateMachine.OnDespawn();
             }
         }
 

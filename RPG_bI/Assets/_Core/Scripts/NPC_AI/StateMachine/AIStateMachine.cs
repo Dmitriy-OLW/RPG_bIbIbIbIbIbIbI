@@ -4,6 +4,8 @@ using Enemy.Navigation;
 using Enemy.Strategies;
 using Character.Targeting;
 using Health;
+using Pooling;
+using System;
 
 namespace Enemy.State
 {
@@ -15,7 +17,7 @@ namespace Enemy.State
         Dead
     }
     
-    public class AIStateMachine : MonoBehaviour
+    public class AIStateMachine : MonoBehaviour, IPoolable
     {
         [Header("Components")]
         [SerializeField] private AIInputMapper _inputMapper;
@@ -26,12 +28,17 @@ namespace Enemy.State
         
         [Header("AI Settings")]
         [SerializeField] private EnemyType _enemyType;
+        
         [SerializeField] private Transform[] _patrolPoints;
+
+        [SerializeField] private bool _activateWithOutPool = false;
         
         private IEnemyBehaviorStrategy _behaviorStrategy;
         private Dictionary<AIStateType, AIBaseState> _states;
         private AIBaseState _currentState;
         private AIStateType _currentStateType;
+
+        public event Action<IPoolable> OnReturnToPool;
 
         public AIInputMapper InputMapper => _inputMapper;
         public AINavigationController Navigation => _navigation;
@@ -47,6 +54,15 @@ namespace Enemy.State
             InitializeBehaviorStrategy();
             InitializeStates();
             SubscribeToEvents();
+        }
+        
+        private void OnDestroy()
+        {
+            if (_healthController != null)
+                _healthController.OnDeath -= OnDeath;
+            
+            if (_vision != null)
+                _vision.OnTargetDetected -= OnTargetDetected;
         }
 
         private void InitializeBehaviorStrategy()
@@ -68,22 +84,18 @@ namespace Enemy.State
                 { AIStateType.Attack, new AIAttackState(this) },
                 { AIStateType.Dead, new AIDeadState(this) }
             };
-            
-            SwitchState(AIStateType.Patrol);
+
+            if (_activateWithOutPool)
+                OnSpawn();
         }
 
         private void SubscribeToEvents()
         {
-            _healthController.OnDeath += OnDeath;
-            _vision.OnTargetDetected += OnTargetDetected;
-        }
-
-        private void OnDestroy()
-        {
             if (_healthController != null)
-            {
-                _healthController.OnDeath -= OnDeath;
-            }
+                _healthController.OnDeath += OnDeath;
+            
+            if (_vision != null)
+                _vision.OnTargetDetected += OnTargetDetected;
         }
 
         private void Update()
@@ -119,6 +131,26 @@ namespace Enemy.State
         {
             _enemyType = newType;
             InitializeBehaviorStrategy();
+        }
+        
+        public void SetPatrolPoints(Transform[] patrolPoints)
+        {
+            _patrolPoints = patrolPoints;
+        }
+        
+        public void OnSpawn()
+        {
+            SwitchState(AIStateType.Patrol);
+            
+            _healthController.ResetHealth();
+            
+            gameObject.transform.parent.gameObject.SetActive(true);
+        }
+        
+        public void OnDespawn()
+        {
+            gameObject.transform.parent.gameObject.SetActive(false);
+            OnReturnToPool?.Invoke(this);
         }
     }
 }
