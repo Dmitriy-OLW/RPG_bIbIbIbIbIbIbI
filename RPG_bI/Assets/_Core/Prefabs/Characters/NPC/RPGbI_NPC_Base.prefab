@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RPGbI_NPC_Base
       objectReference: {fileID: 0}
+    - target: {fileID: 6230349065170489899, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7069637522365589005, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _faction
       value: 2

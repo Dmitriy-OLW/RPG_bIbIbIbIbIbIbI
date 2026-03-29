@@ -17,18 +17,30 @@ namespace Health
         [Header("Resist Settings")]
         [SerializeField] private ResistConfig _resistConfig;
 
+        public event Action OnHeal;
         public event Action OnHit;
         public event Action OnDeath;
 
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _maxHealth;
         public float HealthPercentage => _currentHealth / _maxHealth;
-
-        private void Awake()
+        
+        #region Reset
+        
+        public void ResetHealth()
         {
             _currentHealth = Mathf.Clamp(_startHealth, 0f, _maxHealth);
+            OnHeal?.Invoke();
         }
-
+        
+        public void ResetHealth(float newHealth)
+        {
+            _currentHealth = Mathf.Clamp(newHealth, 0f, _maxHealth);
+            OnHeal?.Invoke();
+        }
+        
+        #endregion
+        
         #region Heal
 
         public void Heal(float healAmount)
@@ -36,6 +48,8 @@ namespace Health
             if (healAmount <= 0f) return;
             
             _currentHealth = Mathf.Min(_currentHealth + healAmount, _maxHealth);
+            
+            OnHeal?.Invoke();
         }
 
         public void HealPercent(float percent)
