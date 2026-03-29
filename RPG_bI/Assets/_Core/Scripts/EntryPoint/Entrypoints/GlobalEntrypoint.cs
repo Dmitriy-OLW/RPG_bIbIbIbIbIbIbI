@@ -3,6 +3,7 @@ using UnityEngine.Audio;
 using UnityEngine.Rendering.Universal;
 using EntryPoint.Interface;
 using EntryPoint.Services;
+using System.IO;
 
 namespace EntryPoint.Entrypoints
 {
@@ -131,7 +132,7 @@ namespace EntryPoint.Entrypoints
         
         public string GetSceneSavePath(string sceneName)
         {
-            return System.IO.Path.Combine(_baseSavePath, "GameSaves", sceneName);
+            return Path.Combine(_baseSavePath, "GameSaves", sceneName);
         }
     }
 }
