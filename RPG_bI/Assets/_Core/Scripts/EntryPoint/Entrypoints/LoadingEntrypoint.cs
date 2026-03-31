@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using EntryPoint.Interface;
 using TMPro;
+using System.Collections;
+using EntryPoint.Services;
+using UnityEngine.SceneManagement;
 
 namespace EntryPoint.Entrypoints
 {
@@ -25,7 +28,7 @@ namespace EntryPoint.Entrypoints
 
             _sceneLoader = gameEntrypoint.SceneLoader;
             
-            if (_sceneLoader is EntryPoint.Services.SceneLoader loader)
+            if (_sceneLoader is SceneLoader loader)
             {
                 _targetScene = loader.GetTargetScene();
             }
@@ -38,12 +41,12 @@ namespace EntryPoint.Entrypoints
             StartCoroutine(LoadSceneAsync());
         }
 
-        private System.Collections.IEnumerator LoadSceneAsync()
+        private IEnumerator LoadSceneAsync()
         {
             if (loadingMessage != null)
                 loadingMessage.text = $"Loading {_targetScene}...";
 
-            var asyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_targetScene);
+            var asyncOperation = SceneManager.LoadSceneAsync(_targetScene);
             asyncOperation.allowSceneActivation = false;
 
             while (!asyncOperation.isDone)
