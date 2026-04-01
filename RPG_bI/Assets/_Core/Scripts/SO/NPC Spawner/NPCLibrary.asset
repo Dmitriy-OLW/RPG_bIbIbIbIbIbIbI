@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c39dea2599664430850bcc41c20c9739, type: 3}
+  m_Name: NPCLibrary
+  m_EditorClassIdentifier: 
+  npcs:
+  - npcType: 0
+    prefab: {fileID: 8525008697616563162, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
+  - npcType: 1
+    prefab: {fileID: 2518303984392936873, guid: 603afe6685388e5449b3fe1c455bba76, type: 3}
+  - npcType: 2
+    prefab: {fileID: 1949439538100244244, guid: 3d55733c02a418a44bd46945057b66f7, type: 3}
+  - npcType: 3
+    prefab: {fileID: 3753396807327285666, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+  - npcType: 4
+    prefab: {fileID: 2961636942811631021, guid: c678694a93de10248ae1789888b31b76, type: 3}
+  - npcType: 5
+    prefab: {fileID: 6270013656131862343, guid: 364ef11d8dc6131479c641f345d45740, type: 3}
+  - npcType: 6
+    prefab: {fileID: 7362551640604606499, guid: a61331c086ad39040a326b515316be72, type: 3}
+  - npcType: 7
+    prefab: {fileID: 1505555861401471838, guid: 11ffc53f91f38ac49af8b89a8d0151d2, type: 3}
+  - npcType: 8
+    prefab: {fileID: 7169146515592497916, guid: ef8e2f4e269b57648bc0f50a46b0fd5b, type: 3}
+  - npcType: 9
+    prefab: {fileID: 7332590330712295044, guid: ca4d7fc995d544540a9c7ced3a662ff9, type: 3}

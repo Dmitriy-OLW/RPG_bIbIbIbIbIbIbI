@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Health;
@@ -8,13 +9,19 @@ namespace RPGbI.UI
     {
         [SerializeField] private HealthController _healthController;
         [SerializeField] private Image _fillImage;
-        
+
+        private void Start()
+        {
+            UpdateHealthBar();
+        }
+
         private void OnEnable()
         {
             if (_healthController != null)
             {
                 _healthController.OnHit += UpdateHealthBar;
                 _healthController.OnDeath += UpdateHealthBar;
+                _healthController.OnHeal += UpdateHealthBar;
             }
         }
 
@@ -24,6 +31,7 @@ namespace RPGbI.UI
             {
                 _healthController.OnHit -= UpdateHealthBar;
                 _healthController.OnDeath -= UpdateHealthBar;
+                _healthController.OnHeal -= UpdateHealthBar;
             }
         }
 

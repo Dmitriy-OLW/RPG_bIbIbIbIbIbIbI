@@ -3,63 +3,71 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class MenuController : MonoBehaviour
+namespace RPGbI.Menu
 {
-    [SerializeField] private GameObject hudPanel;
-    [SerializeField] private GameObject pausePanel;
-
-    private bool isPaused = false;
-    private int sceneIndex;
-    private void Start()
+    public class MenuController : MonoBehaviour
     {
-        sceneIndex = SceneManager.GetActiveScene().buildIndex;
-    }
-    public void OnPause(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
+        [SerializeField] private GameObject hudPanel;
+        [SerializeField] private GameObject pausePanel;
 
-        if (isPaused)
-            Resume();
-        else
-            Pause();
-    }
-    private void Pause()
-    {
-        pausePanel.SetActive(true);
-        hudPanel.SetActive(false);
+        private bool isPaused = false;
+        private int sceneIndex;
 
-        Time.timeScale = 0f;
+        private void Start()
+        {
+            sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        }
 
-        isPaused = true;
-    }
+        public void OnPause(InputAction.CallbackContext context)
+        {
+            if (!context.performed) return;
 
-    private void Resume()
-    {
-        pausePanel.SetActive(false);
-        hudPanel.SetActive(true);
+            if (isPaused)
+                Resume();
+            else
+                Pause();
+        }
 
-        Time.timeScale = 1f;
+        private void Pause()
+        {
+            pausePanel.SetActive(true);
+            hudPanel.SetActive(false);
 
-        isPaused = false;
-    }
+            Time.timeScale = 0f;
 
-    public void Restart()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(sceneIndex);
-    }
+            isPaused = true;
+        }
 
-    public void BackToMenu(int index)
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(index);
-    }
-    public void NewGame()
-    {
-        SceneManager.LoadScene(1);
-    }
-    public void QuitGame()
-    {
-        Application.Quit();
+        private void Resume()
+        {
+            pausePanel.SetActive(false);
+            hudPanel.SetActive(true);
+
+            Time.timeScale = 1f;
+
+            isPaused = false;
+        }
+
+        public void Restart()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(sceneIndex);
+        }
+
+        public void BackToMenu(int index)
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(index);
+        }
+
+        public void NewGame()
+        {
+            SceneManager.LoadScene(1);
+        }
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
     }
 }
