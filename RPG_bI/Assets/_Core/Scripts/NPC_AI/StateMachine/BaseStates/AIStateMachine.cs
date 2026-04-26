@@ -121,7 +121,6 @@ namespace Enemy.State
             _attackTransitionLogic.ResetRandomTimer();
             _isUsingPrimaryAttack = _attackTransitionLogic.DetermineAttackOnEnter(_isUsingPrimaryAttack);
             
-            // Пересоздаем состояние атаки с новым типом оружия
             _states[AIStateType.Attack] = CreateAttackState();
         }
         
@@ -257,16 +256,6 @@ namespace Enemy.State
         {
             return _weaponProvider?.GetStrategy(false);
         }
-        
-        public EnemyType GetPrimaryWeaponType()
-        {
-            return _weaponProvider?.GetWeaponType(true) ?? EnemyType.Melee;
-        }
-        
-        public EnemyType GetSecondaryWeaponType()
-        {
-            return _weaponProvider?.GetWeaponType(false) ?? EnemyType.Melee;
-        }
 
         private void OnDeath()
         {
@@ -297,17 +286,14 @@ namespace Enemy.State
         private void OnTargetDetected(Transform target)
         {
             if (_currentStateType != AIStateType.Dead && _currentStateType != AIStateType.Flee)
-            {
                 SwitchState(AIStateType.Aggression);
-            }
         }
         
         private void OnTargetLost()
         {
             if (_currentStateType == AIStateType.Aggression || _currentStateType == AIStateType.Attack)
-            {
                 SwitchState(AIStateType.Search);
-            }
+            
         }
         
         public bool CanRest()
@@ -315,11 +301,8 @@ namespace Enemy.State
             return _restTimer >= _restCooldown && Random.value < _restChance;
         }
         
-        public void ResetRestTimer()
-        {
-            _restTimer = 0f;
-        }
-        
+        public void ResetRestTimer() => _restTimer = 0f;
+
         public void SetPatrolPoints(Transform[] patrolPoints)
         {
             _patrolPoints = patrolPoints;
