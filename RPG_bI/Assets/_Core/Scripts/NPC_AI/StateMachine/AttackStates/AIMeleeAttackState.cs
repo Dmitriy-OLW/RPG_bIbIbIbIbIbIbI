@@ -6,8 +6,8 @@ namespace Enemy.State
 {
     public class AIMeleeAttackState : AIBaseAttackState
     {
-        private bool _hasReachedPreferredDistance; // Флаг что достигли оптимальной дистанции
-        private const float STOP_THRESHOLD = 0.3f; // Допустимая погрешность чтобы не дёргаться
+        private bool _hasReachedPreferredDistance; 
+        private const float STOP_THRESHOLD = 0.3f; 
 
         public AIMeleeAttackState(AIStateMachine stateMachine) : base(stateMachine)
         {
@@ -34,8 +34,7 @@ namespace Enemy.State
             if (strategyData == null) return;
             
             _attackTimer -= Time.deltaTime;
-
-            // Проверяем выход из зоны атаки
+            
             if (distanceToTarget > strategyData.AttackRange)
             {
                 StrategyData otherStrategy = _stateMachine.IsUsingPrimaryAttack 
@@ -48,7 +47,6 @@ namespace Enemy.State
                     return;
                 }
                 
-                // Вышли из зоны атаки - возвращаемся в агрессию
                 _stateMachine.SwitchState(AIStateType.Aggression);
                 return;
             }
@@ -62,10 +60,8 @@ namespace Enemy.State
             float preferredDistance = strategyData.PreferredDistance;
             bool shouldAttack = distanceToTarget <= strategyData.AttackRange;
             
-            // Определяем, достигли ли мы предпочтительной дистанции
             if (distanceToTarget <= preferredDistance + STOP_THRESHOLD)
             {
-                // Достигли или даже ближе чем нужно — останавливаемся
                 if (!_hasReachedPreferredDistance)
                 {
                     _hasReachedPreferredDistance = true;
@@ -75,13 +71,11 @@ namespace Enemy.State
             }
             else
             {
-                // Цель дальше предпочтительной дистанции — бежим к ней
                 _hasReachedPreferredDistance = false;
                 _stateMachine.Navigation.SetDestination(target.position);
                 _stateMachine.InputMapper.SetShouldRun(true);
             }
             
-            // Если игрок отошёл пока мы стояли — снова бежим
             if (_hasReachedPreferredDistance && distanceToTarget > preferredDistance + STOP_THRESHOLD + 0.5f)
             {
                 _hasReachedPreferredDistance = false;
@@ -89,7 +83,6 @@ namespace Enemy.State
                 _stateMachine.InputMapper.SetShouldRun(true);
             }
             
-            // Поворачиваемся к цели всегда
             Vector3 directionToTarget = (target.position - _stateMachine.transform.position).normalized;
             directionToTarget.y = 0;
             if (directionToTarget != Vector3.zero)

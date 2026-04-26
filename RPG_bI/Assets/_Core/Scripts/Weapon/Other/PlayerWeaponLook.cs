@@ -35,10 +35,6 @@ namespace Player
                 _lookTransform = transform;
                 
             _initialLocalRotation = _lookTransform.localRotation;
-            
-            // Выводим отладочную информацию о направлении
-            Debug.Log($"LookTransform forward direction: {_lookTransform.forward}");
-            Debug.Log($"LookTransform local forward: {_lookTransform.InverseTransformDirection(Vector3.forward)}");
         }
 
         private void Update()
@@ -66,7 +62,6 @@ namespace Player
             Transform bestTarget = null;
             float bestAngle = float.MaxValue;
             
-            // Получаем правильное направление "вперед" для объекта
             Vector3 forwardDirection = _lookTransform.forward;
             Vector3 upDirection = _lookTransform.up;
             Vector3 rightDirection = _lookTransform.right;
@@ -79,29 +74,23 @@ namespace Player
                 float distance = directionToEntity.magnitude;
                 
                 if (distance <= 0) continue;
-                
-                // Нормализуем направление
+
                 Vector3 normalizedDirection = directionToEntity.normalized;
                 
-                // Вычисляем горизонтальный угол (отклонение влево-вправо)
                 Vector3 horizontalProjection = Vector3.ProjectOnPlane(normalizedDirection, upDirection).normalized;
                 float horizontalAngle = Vector3.Angle(forwardDirection, horizontalProjection);
                 
-                // Определяем знак горизонтального угла (влево или вправо)
                 Vector3 crossHorizontal = Vector3.Cross(forwardDirection, horizontalProjection);
                 if (Vector3.Dot(crossHorizontal, upDirection) < 0)
                     horizontalAngle = -horizontalAngle;
                 
-                // Вычисляем вертикальный угол (отклонение вверх-вниз)
                 Vector3 verticalProjection = Vector3.ProjectOnPlane(normalizedDirection, rightDirection).normalized;
                 float verticalAngle = Vector3.Angle(forwardDirection, verticalProjection);
                 
-                // Определяем знак вертикального угла (вверх или вниз)
                 Vector3 crossVertical = Vector3.Cross(forwardDirection, verticalProjection);
                 if (Vector3.Dot(crossVertical, rightDirection) > 0)
                     verticalAngle = -verticalAngle;
                 
-                // Проверяем, находится ли цель в конусе
                 if (Mathf.Abs(horizontalAngle) <= _maxHorizontalAngle && 
                     Mathf.Abs(verticalAngle) <= _maxVerticalAngle)
                 {
@@ -170,7 +159,6 @@ namespace Player
 
         private Vector3 LimitAngles(Vector3 angles)
         {
-            // Нормализуем углы
             if (angles.x > 180) angles.x -= 360;
             if (angles.y > 180) angles.y -= 360;
             if (angles.z > 180) angles.z -= 360;
@@ -179,8 +167,7 @@ namespace Player
             if (initialAngles.x > 180) initialAngles.x -= 360;
             if (initialAngles.y > 180) initialAngles.y -= 360;
             if (initialAngles.z > 180) initialAngles.z -= 360;
-            
-            // Ограничиваем углы
+
             float minX = initialAngles.x - _maxVerticalAngle;
             float maxX = initialAngles.x + _maxVerticalAngle;
             angles.x = Mathf.Clamp(angles.x, minX, maxX);
@@ -219,20 +206,16 @@ namespace Player
         {
             if (!_showDebugGizmos || _lookTransform == null) return;
             
-            // Получаем направления объекта
             Vector3 forward = _lookTransform.forward;
             Vector3 right = _lookTransform.right;
             Vector3 up = _lookTransform.up;
             
-            // Рисуем сферу обнаружения
             Gizmos.color = new Color(1, 1, 0, 0.1f);
             Gizmos.DrawSphere(_lookTransform.position, _detectionRadius);
             
-            // Рисуем центральную ось (всегда вперед объекта)
             Gizmos.color = Color.white;
             Gizmos.DrawRay(_lookTransform.position, forward * _detectionRadius);
             
-            // Горизонтальные границы конуса (влево-вправо)
             Gizmos.color = _coneColor;
             
             Quaternion horizontalRotLeft = Quaternion.AngleAxis(-_maxHorizontalAngle, up);
@@ -244,10 +227,8 @@ namespace Player
             Gizmos.DrawRay(_lookTransform.position, leftDir * _detectionRadius);
             Gizmos.DrawRay(_lookTransform.position, rightDir * _detectionRadius);
             
-            // Рисуем горизонтальную дугу
             DrawArcInPlane(forward, up, _maxHorizontalAngle, 30, _coneColor);
             
-            // Вертикальные границы конуса (вверх-вниз)
             Gizmos.color = _verticalConeColor;
             
             Quaternion verticalRotUp = Quaternion.AngleAxis(_maxVerticalAngle, right);
@@ -259,10 +240,8 @@ namespace Player
             Gizmos.DrawRay(_lookTransform.position, upDir * _detectionRadius);
             Gizmos.DrawRay(_lookTransform.position, downDir * _detectionRadius);
             
-            // Рисуем вертикальную дугу
             DrawArcInPlane(forward, right, _maxVerticalAngle, 30, _verticalConeColor);
             
-            // Рисуем оси координат для отладки
             if (_showDebugGizmos)
             {
                 Gizmos.color = Color.red;
@@ -273,7 +252,6 @@ namespace Player
                 Gizmos.DrawRay(_lookTransform.position, forward * 0.5f);
             }
             
-            // Текущая цель
             if (_hasTarget && _currentTarget != null)
             {
                 Gizmos.color = Color.green;

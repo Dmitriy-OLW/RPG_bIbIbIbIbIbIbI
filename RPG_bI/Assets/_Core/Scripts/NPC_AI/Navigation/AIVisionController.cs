@@ -21,6 +21,7 @@ namespace Enemy.Navigation
         private Vector3 _lastKnownPosition;
         private float _lastSeenTime;
         private bool _hasLastKnownPosition;
+        private Transform _lastSeenTarget;
 
         public Action<Transform> OnTargetDetected;
         public Action OnTargetLost;
@@ -31,6 +32,7 @@ namespace Enemy.Navigation
         public Vector3 LastKnownPosition => _lastKnownPosition;
         public bool HasLastKnownPosition => _hasLastKnownPosition;
         public float LastSeenTime => _lastSeenTime;
+        public Transform LastSeenTarget => _lastSeenTarget;
 
         private void Update()
         {
@@ -136,6 +138,7 @@ namespace Enemy.Navigation
                 _lastKnownPosition = target.position;
                 _lastSeenTime = Time.time;
                 _hasLastKnownPosition = true;
+                _lastSeenTarget = target;
             }
         }
         
@@ -164,6 +167,12 @@ namespace Enemy.Navigation
             _hasLastKnownPosition = false;
             _lastKnownPosition = Vector3.zero;
             _lastSeenTime = 0f;
+            _lastSeenTarget = null; 
+        }
+        
+        public void ClearLastSeenTarget()
+        {
+            _lastSeenTarget = null;
         }
         
         public float GetTimeSinceLastSeen()

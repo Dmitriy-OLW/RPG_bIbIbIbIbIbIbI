@@ -11,20 +11,17 @@ namespace Enemy.State
         private readonly IEnemyWeaponProvider _weaponProvider;
         private readonly AIVisionController _vision;
         
-        // Константы для случайного переключения
         private const float RANDOM_SWITCH_CHANCE_DURING = 0.1f;
         private const float RANDOM_SWITCH_CHECK_INTERVAL = 2f;
         
-        // Таймер для обязательного сближения
         private const float CLOSE_IN_TIMEOUT = 10f;
         
         private float _randomSwitchTimer;
         private float _closeInTimer;
         private bool _isClosingIn;
         
-        // Отслеживание "запасной" атаки
-        private bool _usingFallbackAttack; // Используем чужую (дальнюю) атаку из-за таймаута
-        private bool _fallbackAttackUsed;  // Запасная атака была выполнена
+        private bool _usingFallbackAttack;
+        private bool _fallbackAttackUsed;  
         
         public AttackTransitionLogic(IEnemyWeaponProvider weaponProvider, AIVisionController vision)
         {
@@ -47,26 +44,18 @@ namespace Enemy.State
             }
         }
         
-        /// <summary>
-        /// Вызывается когда враг выполнил атаку (из WeaponController.OnDamageFrame)
-        /// </summary>
         public void OnAttackPerformed(bool isPrimaryAttack)
         {
             if (_usingFallbackAttack && !_fallbackAttackUsed)
             {
-                // Это была первая атака из запасного оружия
                 _fallbackAttackUsed = true;
             }
         }
         
-        /// <summary>
-        /// Проверяет, нужно ли сбросить таймер и вернуться к своей атаке после выстрела из запасной
-        /// </summary>
         public bool ShouldResetAfterFallbackAttack()
         {
             if (_usingFallbackAttack && _fallbackAttackUsed)
             {
-                // Сбрасываем флаги и таймер для новой попытки сближения
                 _usingFallbackAttack = false;
                 _fallbackAttackUsed = false;
                 _isClosingIn = true;
@@ -75,10 +64,7 @@ namespace Enemy.State
             }
             return false;
         }
-        
-        /// <summary>
-        /// Определяет, какую атаку использовать при входе в состояние атаки
-        /// </summary>
+
         public bool DetermineAttackOnEnter(bool currentlyUsingPrimary)
         {
             if (_weaponProvider == null || !_vision.HasTarget)
@@ -101,11 +87,9 @@ namespace Enemy.State
             
             bool canUseOwn = distanceToTarget <= ownAttackRange;
             
-            // Сброс состояния запасной атаки при входе
             _usingFallbackAttack = false;
             _fallbackAttackUsed = false;
             
-            // Если своя атака имеет МЕНЬШИЙ радиус (предпочитаем ближний бой)
             if (ownAttackRange < otherAttackRange)
             {
                 if (canUseOwn)
@@ -121,7 +105,6 @@ namespace Enemy.State
                     return ownIsPrimary;
                 }
             }
-            // Если своя атака имеет БОЛЬШИЙ радиус (предпочитаем дальний бой)
             else if (ownAttackRange > otherAttackRange)
             {
                 _isClosingIn = false;
@@ -138,7 +121,6 @@ namespace Enemy.State
                     return ownIsPrimary;
                 }
             }
-            // Равные радиусы
             else
             {
                 _isClosingIn = false;
@@ -147,9 +129,6 @@ namespace Enemy.State
             }
         }
         
-        /// <summary>
-        /// Определяет, нужно ли переключить атаку во время боя
-        /// </summary>
         public bool ShouldSwitchDuringAttack(bool currentlyUsingPrimary)
         {
             if (_weaponProvider == null || !_vision.HasTarget)
@@ -173,19 +152,15 @@ namespace Enemy.State
             bool canUseOwn = distanceToTarget <= ownAttackRange;
             bool canUseOther = distanceToTarget <= otherAttackRange;
             
-            // Сценарий: своя атака имеет МЕНЬШИЙ радиус (предпочитаем ближний бой)
             if (ownAttackRange < otherAttackRange)
             {
-                // Если мы в запасной атаке и уже выстрелили - возвращаемся к своей
                 if (_usingFallbackAttack && _fallbackAttackUsed)
                 {
-                    // Сбрасываем и начинаем новое сближение
                     _usingFallbackAttack = false;
                     _fallbackAttackUsed = false;
                     _isClosingIn = true;
                     _closeInTimer = 0f;
                     
-                    // Переключаемся на свою атаку
                     if (currentlyUsingPrimary != ownIsPrimary)
                     {
                         return true;
@@ -209,7 +184,6 @@ namespace Enemy.State
                     
                     if (_closeInTimer >= CLOSE_IN_TIMEOUT)
                     {
-                        // Время вышло - переключаемся на чужую (дальнюю) атаку
                         _isClosingIn = false;
                         _closeInTimer = 0f;
                         _usingFallbackAttack = true;
@@ -253,7 +227,6 @@ namespace Enemy.State
                     return false;
                 }
             }
-            // Сценарий: своя атака имеет БОЛЬШИЙ радиус (предпочитаем дальний бой)
             else if (ownAttackRange > otherAttackRange)
             {
                 if (currentlyUsingPrimary == ownIsPrimary && canUseOther)
@@ -273,7 +246,6 @@ namespace Enemy.State
                 
                 return false;
             }
-            // Равные радиусы
             else
             {
                 if (canUseOwn && canUseOther)

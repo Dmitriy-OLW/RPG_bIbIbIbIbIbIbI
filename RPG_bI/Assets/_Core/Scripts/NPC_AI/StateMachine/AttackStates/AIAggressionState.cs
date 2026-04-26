@@ -13,7 +13,7 @@ namespace Enemy.State
         public override void Enter()
         {
             base.Enter();
-            // Сразу начинаем бежать к цели
+            
             _stateMachine.InputMapper.SetShouldRun(true);
         }
 
@@ -38,7 +38,6 @@ namespace Enemy.State
             
             if (currentStrategy == null) return;
             
-            // ВАЖНО: Сначала двигаемся к цели, потом проверяем атаку
             _stateMachine.Navigation.SetDestination(target.position);
             _stateMachine.InputMapper.SetShouldRun(true);
             

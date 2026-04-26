@@ -1,19 +1,39 @@
 ﻿using UnityEngine;
+using Enemy.Navigation;
 
 namespace Enemy.State
 {
     public class AISearchState : AIBaseState
     {
-        private float _searchTimer;
-        private bool _hasReachedLastKnownPosition;
-        private Vector3 _lastKnownPosition;
-        private float _waitAtPositionTimer;
-        private bool _isWaitingAtPosition;
+        private const float DIRECT_TRACK_DURATION = 3f;
         
-        private const float MAX_SEARCH_DURATION = 5f;          
+        private const float FIRST_TURN_DURATION = 2f;  
+        private const float SECOND_TURN_DURATION = 4f; 
+        private const float TURN_ANGLE_FIRST = 90f;
+        private const float TURN_ANGLE_SECOND = 180f;
+        
         private const float WAYPOINT_REACH_DISTANCE = 2f;
-        private const float WAIT_AT_POSITION_DURATION = 2f;   
-        private const float ROTATION_SPEED = 0.1f;              
+        
+        private enum SearchPhase
+        {
+            DirectTracking,    
+            MovingToLastPos,  
+            FirstTurn,        
+            SecondTurn         
+        }
+        
+        private SearchPhase _currentPhase;
+        private float _phaseTimer;
+        
+        private Transform _trackedTarget;
+        
+        private Vector3 _targetPosition;
+        
+        private float _firstTurnDirection;  
+        private float _secondTurnDirection; 
+
+        private Quaternion _turnStartRotation;
+        private Quaternion _turnTargetRotation;
 
         public AISearchState(AIStateMachine stateMachine) : base(stateMachine)
         {
@@ -22,35 +42,40 @@ namespace Enemy.State
         public override void Enter()
         {
             base.Enter();
-            
-            _searchTimer = MAX_SEARCH_DURATION;
-            _hasReachedLastKnownPosition = false;
-            _isWaitingAtPosition = false;
-            _waitAtPositionTimer = 0f;
-            
+    
             _stateMachine.InputMapper.SetShouldRun(true);
             
-            if (_stateMachine.Vision.HasLastKnownPosition && _stateMachine.Vision.IsLastKnownPositionRecent())
+            _trackedTarget = _stateMachine.Vision.LastSeenTarget;
+            
+            if (_trackedTarget != null)
             {
-                _lastKnownPosition = _stateMachine.Vision.LastKnownPosition;
+                _currentPhase = SearchPhase.DirectTracking;
+                _phaseTimer = DIRECT_TRACK_DURATION;
                 
-                if (_lastKnownPosition != Vector3.zero)
+                _stateMachine.Navigation.SetDestination(_trackedTarget.position);
+                
+            }
+            else if (_stateMachine.Vision.HasLastKnownPosition && _stateMachine.Vision.IsLastKnownPositionRecent())
+            {
+                _targetPosition = _stateMachine.Vision.LastKnownPosition;
+        
+                if (_targetPosition != Vector3.zero)
                 {
-                    _stateMachine.Navigation.SetDestination(_lastKnownPosition);
-                    
-                    Debug.DrawLine(_stateMachine.transform.position, _lastKnownPosition, Color.yellow, MAX_SEARCH_DURATION);
-                    Debug.DrawRay(_lastKnownPosition, Vector3.up * 2f, Color.yellow, MAX_SEARCH_DURATION);
+                    _currentPhase = SearchPhase.MovingToLastPos;
+                    _phaseTimer = 0f;
+            
+                    _stateMachine.Navigation.SetDestination(_targetPosition);
                 }
                 else
                 {
-                    _stateMachine.Vision.ClearLastKnownPosition();
-                    _stateMachine.SwitchState(AIStateType.Patrol);
+                    ReturnToPatrol();
+                    return;
                 }
             }
             else
             {
-                _stateMachine.Vision.ClearLastKnownPosition();
-                _stateMachine.SwitchState(AIStateType.Patrol);
+                ReturnToPatrol();
+                return;
             }
         }
 
@@ -61,75 +86,158 @@ namespace Enemy.State
                 _stateMachine.SwitchState(AIStateType.Aggression);
                 return;
             }
-
-            _searchTimer -= Time.deltaTime;
             
-            if (_searchTimer <= 0f)
+            switch (_currentPhase)
             {
-                _stateMachine.Vision.ClearLastKnownPosition();
-                _stateMachine.SwitchState(AIStateType.Patrol);
-                return;
-            }
-            
-            if (!_hasReachedLastKnownPosition)
-            {
-                UpdateMovementToLastKnownPosition();
-            }
-            else if (_isWaitingAtPosition)
-            {
-                PerformLookAround();
-                
-                _waitAtPositionTimer -= Time.deltaTime;
-                if (_waitAtPositionTimer <= 0f)
-                {
-                    _stateMachine.Vision.ClearLastKnownPosition();
-                    _stateMachine.SwitchState(AIStateType.Patrol);
-                }
+                case SearchPhase.DirectTracking:
+                    UpdateDirectTracking();
+                    break;
+                    
+                case SearchPhase.MovingToLastPos:
+                    UpdateMovingToLastPos();
+                    break;
+                    
+                case SearchPhase.FirstTurn:
+                    UpdateFirstTurn();
+                    break;
+                    
+                case SearchPhase.SecondTurn:
+                    UpdateSecondTurn();
+                    break;
             }
         }
-
-        private void UpdateMovementToLastKnownPosition()
+        
+        private void UpdateDirectTracking()
         {
-            float distanceToLastKnown = Vector3.Distance(
-                _stateMachine.transform.position, 
-                _lastKnownPosition
-            );
+            _phaseTimer -= Time.deltaTime;
             
-            if (_stateMachine.Navigation.HasReachedDestination && distanceToLastKnown > WAYPOINT_REACH_DISTANCE)
+            if (_trackedTarget != null)
             {
-                _stateMachine.Navigation.SetDestination(_lastKnownPosition);
+                _stateMachine.Navigation.SetDestination(_trackedTarget.position);
+                _stateMachine.InputMapper.SetShouldRun(true);
             }
             
-            if (distanceToLastKnown <= WAYPOINT_REACH_DISTANCE)
+            if (_phaseTimer <= 0f)
             {
-                _hasReachedLastKnownPosition = true;
-                _isWaitingAtPosition = true;
-                _waitAtPositionTimer = WAIT_AT_POSITION_DURATION;
+                if (_trackedTarget != null)
+                {
+                    _targetPosition = _trackedTarget.position;
+                }
+                else if (_stateMachine.Vision.HasLastKnownPosition)
+                {
+                    _targetPosition = _stateMachine.Vision.LastKnownPosition;
+                }
+                else
+                {
+                    ReturnToPatrol();
+                    return;
+                }
+                
+                _trackedTarget = null;
+
+                _currentPhase = SearchPhase.MovingToLastPos;
+                _stateMachine.Navigation.SetDestination(_targetPosition);
+                
+                Debug.DrawLine(_stateMachine.transform.position, _targetPosition, Color.cyan, 5f);
+            }
+        }
+        
+        private void UpdateMovingToLastPos()
+        {
+            float distanceToTarget = Vector3.Distance(
+                _stateMachine.transform.position, 
+                _targetPosition
+            );
+            
+            if (_stateMachine.Navigation.HasReachedDestination && distanceToTarget > WAYPOINT_REACH_DISTANCE)
+            {
+                _stateMachine.Navigation.SetDestination(_targetPosition);
+            }
+            
+            _stateMachine.InputMapper.SetShouldRun(true);
+            
+            if (distanceToTarget <= WAYPOINT_REACH_DISTANCE)
+            {
                 _stateMachine.Navigation.ClearPath();
                 _stateMachine.InputMapper.SetShouldRun(false);
+                
+                StartFirstTurn();
             }
         }
-
-        private void PerformLookAround()
+        
+        private void StartFirstTurn()
         {
-            float rotationAngle = Mathf.Sin(Time.time * ROTATION_SPEED) * 45f;
+            _currentPhase = SearchPhase.FirstTurn;
+            _phaseTimer = FIRST_TURN_DURATION;
             
-            _stateMachine.InputMapper.InputReader.SetLookDirection(
-                new Vector2(rotationAngle * 0.5f, 0f)
+            _firstTurnDirection = Random.value > 0.5f ? 1f : -1f;
+            
+            _turnStartRotation = _stateMachine.transform.rotation;
+            float targetAngle = _stateMachine.transform.eulerAngles.y + (TURN_ANGLE_FIRST * _firstTurnDirection);
+            _turnTargetRotation = Quaternion.Euler(0f, targetAngle, 0f);
+        }
+        
+        private void UpdateFirstTurn()
+        {
+            _phaseTimer -= Time.deltaTime;
+            
+            float progress = 1f - (_phaseTimer / FIRST_TURN_DURATION);
+            _stateMachine.transform.rotation = Quaternion.Slerp(
+                _turnStartRotation, 
+                _turnTargetRotation, 
+                progress
             );
+            
+            if (_phaseTimer <= 0f)
+            {
+                StartSecondTurn();
+            }
+        }
+        
+        private void StartSecondTurn()
+        {
+            _currentPhase = SearchPhase.SecondTurn;
+            _phaseTimer = SECOND_TURN_DURATION;
+            
+            _secondTurnDirection = -_firstTurnDirection;
+            
+            _turnStartRotation = _stateMachine.transform.rotation;
+            float targetAngle = _stateMachine.transform.eulerAngles.y + (TURN_ANGLE_SECOND * _secondTurnDirection);
+            _turnTargetRotation = Quaternion.Euler(0f, targetAngle, 0f);
+        }
+        
+        private void UpdateSecondTurn()
+        {
+            _phaseTimer -= Time.deltaTime;
+            
+            float progress = 1f - (_phaseTimer / SECOND_TURN_DURATION);
+            _stateMachine.transform.rotation = Quaternion.Slerp(
+                _turnStartRotation, 
+                _turnTargetRotation, 
+                progress
+            );
+            
+            if (_phaseTimer <= 0f)
+            {
+                ReturnToPatrol();
+            }
+        }
+        
+        private void ReturnToPatrol()
+        {
+            _stateMachine.Vision.ClearLastKnownPosition();
+            _stateMachine.Vision.ClearLastSeenTarget();
+            _stateMachine.SwitchState(AIStateType.Patrol);
         }
 
         public override void Exit()
         {
-            _stateMachine.InputMapper.InputReader.SetLookDirection(Vector2.zero);
-            _stateMachine.InputMapper.SetShouldRun(false);
+            _trackedTarget = null;
             
+            _stateMachine.InputMapper.SetShouldRun(false);
             _stateMachine.Navigation.ClearPath();
             
-            if (_stateMachine.CurrentStateType == AIStateType.Patrol)
-            {
-                _stateMachine.Vision.ClearLastKnownPosition();
-            }
+            _stateMachine.InputMapper.InputReader.SetLookDirection(Vector2.zero);
         }
     }
 }
