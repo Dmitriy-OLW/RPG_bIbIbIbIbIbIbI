@@ -38,13 +38,18 @@ namespace Enemy.State
         [SerializeField] private float _fleeHealthThreshold = 0.3f;
         [SerializeField] private float _restChance = 0.1f;
         [SerializeField] private float _restCooldown = 10f;
+        [Header("Flee Settings")]
+        [SerializeField] private bool _canFlee = true;
+        [SerializeField] private bool _canSelfHeal = false;
+        [SerializeField] private bool _allowRepeatFlee = false;
         
         private Dictionary<AIStateType, AIBaseState> _states;
         private AIBaseState _currentState;
         private AIStateType _currentStateType;
         private float _restTimer = 0f;
         
-        // Weapon provider и логика переключения атак
+        private bool _hasFledOnce = false;
+
         private IEnemyWeaponProvider _weaponProvider;
         private AttackTransitionLogic _attackTransitionLogic;
         
@@ -64,6 +69,11 @@ namespace Enemy.State
         public float RestCooldown => _restCooldown;
         public IEnemyWeaponProvider WeaponProvider => _weaponProvider;
         public bool IsUsingPrimaryAttack => _isUsingPrimaryAttack;
+        public bool CanSelfHeal => _canSelfHeal;
+        public HealthController HealthController => _healthController;
+        public bool HasFledOnce => _hasFledOnce;
+        public bool AllowRepeatFlee => _allowRepeatFlee;
+        public bool CanFlee => _canFlee;
         
         private void Awake()
         {
@@ -147,7 +157,10 @@ namespace Enemy.State
         private void SubscribeToEvents()
         {
             if (_healthController != null)
+            {
                 _healthController.OnDeath += OnDeath;
+                _healthController.OnHit += OnHit;
+            }
             
             if (_vision != null)
             {
@@ -159,7 +172,10 @@ namespace Enemy.State
         private void OnDestroy()
         {
             if (_healthController != null)
+            {
                 _healthController.OnDeath -= OnDeath;
+                _healthController.OnHit -= OnHit;
+            }
             
             if (_vision != null)
             {
@@ -167,23 +183,23 @@ namespace Enemy.State
                 _vision.OnTargetLost -= OnTargetLost;
             }
         }
-
+        
         private void Update()
         {
             _currentState?.Update();
-            
+    
             // Обновляем таймер для случайного переключения
             if (_currentStateType == AIStateType.Attack)
             {
                 _attackTransitionLogic?.UpdateTimer(Time.deltaTime);
             }
-            
-            // Update rest timer
+    
+            // Update rest timer - теперь только когда НЕ в отдыхе
             if (_currentStateType != AIStateType.Rest)
             {
                 _restTimer += Time.deltaTime;
             }
-            
+    
             // Check for flee condition
             CheckFleeCondition();
         }
@@ -192,13 +208,17 @@ namespace Enemy.State
         {
             if (_currentStateType == AIStateType.Dead || _currentStateType == AIStateType.Flee)
                 return;
-                
+
+            if (!_canFlee)
+                return;
+            
+            if (_hasFledOnce)
+                return;
+        
             if (_healthController != null && _healthController.HealthPercentage <= _fleeHealthThreshold)
             {
-                if (_vision.HasTarget)
-                {
-                    SwitchState(AIStateType.Flee);
-                }
+                _hasFledOnce = true; 
+                SwitchState(AIStateType.Flee);
             }
         }
 
@@ -265,6 +285,21 @@ namespace Enemy.State
             SwitchState(AIStateType.Dead);
         }
         
+        private void OnHit()
+        {
+            if (!_canFlee) 
+                return;
+            
+            if (_allowRepeatFlee && 
+                _hasFledOnce &&
+                _healthController.HealthPercentage <= _fleeHealthThreshold &&
+                _currentStateType != AIStateType.Flee && 
+                _currentStateType != AIStateType.Dead)
+            {
+                SwitchState(AIStateType.Flee);
+            }
+        }
+        
         private void OnTargetDetected(Transform target)
         {
             if (_currentStateType != AIStateType.Dead && _currentStateType != AIStateType.Flee)
@@ -305,6 +340,8 @@ namespace Enemy.State
             else
                 _healthController.ResetHealth();
             
+            _hasFledOnce = false;
+
             SwitchState(AIStateType.Patrol);
         }
         

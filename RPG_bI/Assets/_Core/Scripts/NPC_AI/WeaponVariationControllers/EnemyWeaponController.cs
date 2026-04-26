@@ -13,11 +13,9 @@ namespace Enemy.Weapons
     public class EnemyWeaponController : MonoBehaviour, IEnemyWeaponProvider
     {
         [Header("Primary Weapon")]
-        [SerializeField] protected WeaponBase _primaryWeapon;
         [SerializeField] protected StrategyData _primaryStrategy;
         
         [Header("Secondary Weapon")]
-        [SerializeField] protected WeaponBase _secondaryWeapon;
         [SerializeField] protected StrategyData _secondaryStrategy;
         
         [Header("Attack Settings")]
@@ -41,11 +39,6 @@ namespace Enemy.Weapons
         public StrategyData GetStrategy(bool isPrimary)
         {
             return isPrimary ? _primaryStrategy : _secondaryStrategy;
-        }
-        
-        public WeaponBase GetWeapon(bool isPrimary)
-        {
-            return isPrimary ? _primaryWeapon : _secondaryWeapon;
         }
     }
 }

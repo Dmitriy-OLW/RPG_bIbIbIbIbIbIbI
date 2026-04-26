@@ -6,8 +6,8 @@ namespace Enemy.State
     {
         private float _restDuration;
         private float _restTimer;
-        private const float MIN_REST_TIME = 3f;
-        private const float MAX_REST_TIME = 5f;
+        private const float MIN_REST_TIME = 1f;
+        private const float MAX_REST_TIME = 3f;
 
         public AIRestState(AIStateMachine stateMachine) : base(stateMachine)
         {
@@ -23,10 +23,7 @@ namespace Enemy.State
             _stateMachine.Navigation.Stop();
             _stateMachine.InputMapper.SetShouldRun(false);
             
-            // Reset rest timer in state machine
             _stateMachine.ResetRestTimer();
-            
-            // Optional: play idle/rest animation
         }
 
         public override void Update()

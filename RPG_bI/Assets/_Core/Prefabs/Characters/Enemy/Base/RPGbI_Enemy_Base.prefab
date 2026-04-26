@@ -916,7 +916,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0e1ecda50a4abfb77522a6a8a74c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _primaryWeapon: {fileID: 0}
   _primaryStrategy: {fileID: 11400000, guid: a92599e6fc9241345b278a7e33a3868f, type: 2}
+  _secondaryWeapon: {fileID: 0}
   _secondaryStrategy: {fileID: 11400000, guid: 713e63b00a4d0c84babe567ea94ff0b3, type: 2}
   _preferredAttack: 0
   _weaponController: {fileID: 4296301768260088168}
@@ -937,12 +939,12 @@ MonoBehaviour:
   _vision: {fileID: 6610847858592354683}
   _targeting: {fileID: 7069637522365589005}
   _healthController: {fileID: 592665063635878954}
-  _enemyWeaponController: {fileID: 3087089164302758091}
   _patrolPoints: []
   _activateWithOutPool: 0
   _fleeHealthThreshold: 0.3
   _restChance: 0.1
-  _restCooldown: 10
+  _restCooldown: 60
+  _canSelfHeal: 1
 --- !u!114 &367740121737191455
 MonoBehaviour:
   m_ObjectHideFlags: 0

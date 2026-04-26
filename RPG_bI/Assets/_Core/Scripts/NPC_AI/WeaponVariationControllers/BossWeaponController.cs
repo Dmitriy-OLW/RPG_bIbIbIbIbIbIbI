@@ -33,9 +33,8 @@ namespace Enemy.Weapons
         public void SetPrimaryWeapon(WeaponBase weapon, StrategyData strategyData = null)
         {
             if (strategyData != null)
-            {
                 _primaryStrategy = strategyData;
-            }
+            
             
             _weaponController?.SetWeapon(WeaponStateActive.PrimaryActive, weapon);
         }
@@ -43,9 +42,8 @@ namespace Enemy.Weapons
         public void SetSecondaryWeapon(WeaponBase weapon, StrategyData strategyData = null)
         {
             if (strategyData != null)
-            {
                 _secondaryStrategy = strategyData;
-            }
+            
             
             _weaponController?.SetWeapon(WeaponStateActive.SecondaryActive, weapon);
         }
@@ -53,7 +51,8 @@ namespace Enemy.Weapons
         
         public void SetWeaponFromConfig(int configIndex, bool isPrimary)
         {
-            if (configIndex < 0 || configIndex >= _weaponConfigs.Count) return;
+            if (configIndex < 0 || configIndex >= _weaponConfigs.Count) 
+                return;
             
             var config = _weaponConfigs[configIndex];
             
@@ -75,10 +74,9 @@ namespace Enemy.Weapons
         public WeaponConfig GetConfig(int index)
         {
             if (index >= 0 && index < _weaponConfigs.Count)
-            {
                 return _weaponConfigs[index];
-            }
-            return null;
+
+                return null;
         }
     }
 }

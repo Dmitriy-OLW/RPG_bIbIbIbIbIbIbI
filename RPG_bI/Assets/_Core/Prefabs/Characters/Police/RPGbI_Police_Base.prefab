@@ -118,6 +118,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3087089164302758091, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _preferredAttack
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3091220009637227927, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -169,7 +173,7 @@ PrefabInstance:
     - target: {fileID: 6205657561085084071, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 6c590e1ed1fdac74290debe08e86aa7a, type: 2}
+      objectReference: {fileID: 9100000, guid: 2da68f0b2f2e6914dae3dce346b794d9, type: 2}
     - target: {fileID: 6230349065170489899, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Name
       value: RPGbI_Police_Base
@@ -244,6 +248,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _enemyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _canSelfHeal
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

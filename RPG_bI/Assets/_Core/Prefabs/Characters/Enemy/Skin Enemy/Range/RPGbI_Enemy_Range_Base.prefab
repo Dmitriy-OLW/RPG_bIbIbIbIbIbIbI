@@ -262,6 +262,10 @@ PrefabInstance:
       propertyPath: _enemyType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _canSelfHeal
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
