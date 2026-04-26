@@ -144,7 +144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _chargeTime
-      value: 0.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _damageDataSO

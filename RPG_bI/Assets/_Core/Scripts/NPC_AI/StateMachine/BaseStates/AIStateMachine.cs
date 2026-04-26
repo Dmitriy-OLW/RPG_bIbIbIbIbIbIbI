@@ -31,7 +31,6 @@ namespace Enemy.State
         [SerializeField] private AIVisionController _vision;
         [SerializeField] private Targeting _targeting;
         [SerializeField] private HealthController _healthController;
-        [SerializeField] private EnemyWeaponController _enemyWeaponController;
         
         [Header("AI Settings")]
         [SerializeField] private Transform[] _patrolPoints;
@@ -45,12 +44,12 @@ namespace Enemy.State
         private AIStateType _currentStateType;
         private float _restTimer = 0f;
         
-        // Attack switching variables
+        // Weapon provider и логика переключения атак
+        private IEnemyWeaponProvider _weaponProvider;
+        private AttackTransitionLogic _attackTransitionLogic;
+        
+        // Какую атаку используем сейчас
         private bool _isUsingPrimaryAttack = true;
-        private float _attackSwitchChanceOnEnter = 0.2f;
-        private float _attackSwitchChanceDuring = 0.1f;
-        private float _attackSwitchCheckTimer = 0f;
-        private float _attackSwitchCheckInterval = 2f;
 
         public event Action<IPoolable> OnReturnToPool;
 
@@ -58,26 +57,25 @@ namespace Enemy.State
         public AINavigationController Navigation => _navigation;
         public AIVisionController Vision => _vision;
         public Targeting Targeting => _targeting;
-        public EnemyWeaponController WeaponController => _enemyWeaponController;
         public Transform[] PatrolPoints => _patrolPoints;
         public AIStateType CurrentStateType => _currentStateType;
         public float FleeHealthThreshold => _fleeHealthThreshold;
         public float RestChance => _restChance;
         public float RestCooldown => _restCooldown;
+        public IEnemyWeaponProvider WeaponProvider => _weaponProvider;
+        public bool IsUsingPrimaryAttack => _isUsingPrimaryAttack;
         
         private void Awake()
         {
+            _weaponProvider = GetComponent<IEnemyWeaponProvider>();
+            
+            if (_weaponProvider != null)
+            {
+                _attackTransitionLogic = new AttackTransitionLogic(_weaponProvider, _vision);
+            }
+            
             InitializeStates();
             SubscribeToEvents();
-        }
-
-        private void OnDestroy()
-        {
-            if (_healthController != null)
-                _healthController.OnDeath -= OnDeath;
-            
-            if (_vision != null)
-                _vision.OnTargetDetected -= OnTargetDetected;
         }
 
         private void InitializeStates()
@@ -99,59 +97,51 @@ namespace Enemy.State
 
         private AIBaseState CreateAttackState()
         {
-            if (_enemyWeaponController != null)
+            if (_attackTransitionLogic != null)
             {
-                var weaponType = _isUsingPrimaryAttack 
-                    ? _enemyWeaponController.GetWeaponType(WeaponStateActive.PrimaryActive)
-                    : _enemyWeaponController.GetWeaponType(WeaponStateActive.SecondaryActive);
-                
-                switch (weaponType)
-                {
-                    case EnemyType.Ranged:
-                        return new AIRangedAttackState(this);
-                    case EnemyType.Melee:
-                    default:
-                        return new AIMeleeAttackState(this);
-                }
+                return _attackTransitionLogic.CreateAttackState(this, _isUsingPrimaryAttack);
             }
             
             return new AIMeleeAttackState(this);
         }
         
-        private void DetermineAttackType()
+        /// <summary>
+        /// Определяет тип атаки при входе в состояние атаки
+        /// </summary>
+        private void DetermineAttackTypeOnEnter()
         {
-            if (_enemyWeaponController == null) return;
+            if (_attackTransitionLogic == null) return;
             
-            bool shouldSwitchToSecondary = false;
+            _attackTransitionLogic.ResetRandomTimer();
+            _isUsingPrimaryAttack = _attackTransitionLogic.DetermineAttackOnEnter(_isUsingPrimaryAttack);
             
-            if (_enemyWeaponController.PreferredAttack == AttackPriority.Primary)
-            {
-                // 20% chance to use secondary when entering attack
-                if (_currentStateType != AIStateType.Attack)
-                {
-                    shouldSwitchToSecondary = Random.value < _attackSwitchChanceOnEnter;
-                }
-                // 10% chance to switch during attack
-                else
-                {
-                    _attackSwitchCheckTimer += Time.deltaTime;
-                    if (_attackSwitchCheckTimer >= _attackSwitchCheckInterval)
-                    {
-                        _attackSwitchCheckTimer = 0f;
-                        shouldSwitchToSecondary = Random.value < _attackSwitchChanceDuring;
-                    }
-                }
-            }
-            else
-            {
-                // If secondary is preferred, always use secondary
-                shouldSwitchToSecondary = true;
-            }
-            
-            _isUsingPrimaryAttack = !shouldSwitchToSecondary;
-            
-            // Recreate attack state with new weapon type
+            // Пересоздаем состояние атаки с новым типом оружия
             _states[AIStateType.Attack] = CreateAttackState();
+        }
+        
+        /// <summary>
+        /// Проверяет нужно ли переключить атаку во время боя
+        /// </summary>
+        public void CheckAttackSwitchDuring()
+        {
+            if (_attackTransitionLogic == null) return;
+            
+            bool shouldSwitch = _attackTransitionLogic.ShouldSwitchDuringAttack(_isUsingPrimaryAttack);
+            
+            if (shouldSwitch)
+            {
+                // Переключаем атаку
+                _isUsingPrimaryAttack = !_isUsingPrimaryAttack;
+                
+                // Пересоздаем состояние атаки
+                var newAttackState = CreateAttackState();
+                _states[AIStateType.Attack] = newAttackState;
+                
+                // Перезаходим в состояние атаки с новым типом
+                _currentState?.Exit();
+                _currentState = newAttackState;
+                _currentState.Enter();
+            }
         }
 
         private void SubscribeToEvents()
@@ -160,12 +150,33 @@ namespace Enemy.State
                 _healthController.OnDeath += OnDeath;
             
             if (_vision != null)
+            {
                 _vision.OnTargetDetected += OnTargetDetected;
+                _vision.OnTargetLost += OnTargetLost;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_healthController != null)
+                _healthController.OnDeath -= OnDeath;
+            
+            if (_vision != null)
+            {
+                _vision.OnTargetDetected -= OnTargetDetected;
+                _vision.OnTargetLost -= OnTargetLost;
+            }
         }
 
         private void Update()
         {
             _currentState?.Update();
+            
+            // Обновляем таймер для случайного переключения
+            if (_currentStateType == AIStateType.Attack)
+            {
+                _attackTransitionLogic?.UpdateTimer(Time.deltaTime);
+            }
             
             // Update rest timer
             if (_currentStateType != AIStateType.Rest)
@@ -199,28 +210,55 @@ namespace Enemy.State
             _currentState?.Exit();
             _currentStateType = newStateType;
             
-            // Determine attack type when switching to attack
+            // Определяем тип атаки при входе в атаку
             if (newStateType == AIStateType.Attack)
             {
-                DetermineAttackType();
+                DetermineAttackTypeOnEnter();
             }
             
             _currentState = _states[newStateType];
             _currentState.Enter();
         }
         
+        /// <summary>
+        /// Переключение атаки по запросу из AIAggressionState
+        /// </summary>
+        public void DetermineAttackTypeForAggression()
+        {
+            if (_attackTransitionLogic == null) return;
+            
+            _isUsingPrimaryAttack = _attackTransitionLogic.DetermineAttackOnEnter(_isUsingPrimaryAttack);
+            _states[AIStateType.Attack] = CreateAttackState();
+        }
+        
         public StrategyData GetCurrentStrategy()
         {
-            if (_enemyWeaponController != null)
+            if (_weaponProvider != null)
             {
-                return _isUsingPrimaryAttack 
-                    ? _enemyWeaponController.GetStrategy(true)
-                    : _enemyWeaponController.GetStrategy(false);
+                return _weaponProvider.GetStrategy(_isUsingPrimaryAttack);
             }
             return null;
         }
         
-        public bool IsUsingPrimaryAttack => _isUsingPrimaryAttack;
+        public StrategyData GetPrimaryStrategy()
+        {
+            return _weaponProvider?.GetStrategy(true);
+        }
+        
+        public StrategyData GetSecondaryStrategy()
+        {
+            return _weaponProvider?.GetStrategy(false);
+        }
+        
+        public EnemyType GetPrimaryWeaponType()
+        {
+            return _weaponProvider?.GetWeaponType(true) ?? EnemyType.Melee;
+        }
+        
+        public EnemyType GetSecondaryWeaponType()
+        {
+            return _weaponProvider?.GetWeaponType(false) ?? EnemyType.Melee;
+        }
 
         private void OnDeath()
         {
@@ -232,6 +270,14 @@ namespace Enemy.State
             if (_currentStateType != AIStateType.Dead && _currentStateType != AIStateType.Flee)
             {
                 SwitchState(AIStateType.Aggression);
+            }
+        }
+        
+        private void OnTargetLost()
+        {
+            if (_currentStateType == AIStateType.Aggression || _currentStateType == AIStateType.Attack)
+            {
+                SwitchState(AIStateType.Search);
             }
         }
         

@@ -21,24 +21,35 @@ namespace Enemy.State
             _outOfSightTimer = 0f;
         }
 
-        protected bool ShouldExitAttack()
+        public override void Update()
         {
+            // Проверяем, не нужно ли переключить тип атаки
+            _stateMachine.CheckAttackSwitchDuring();
+            
+            // Проверяем потерю цели
             if (!_stateMachine.Vision.HasTarget)
             {
                 _outOfSightTimer += Time.deltaTime;
-                return _outOfSightTimer >= OUT_OF_SIGHT_THRESHOLD;
+                
+                if (_outOfSightTimer >= OUT_OF_SIGHT_THRESHOLD)
+                {
+                    _stateMachine.SwitchState(AIStateType.Search);
+                }
+                return;
             }
             
             _outOfSightTimer = 0f;
-            return false;
         }
 
-        protected void HandleTargetLost()
+        protected bool ShouldReturnToAggression(float distanceToTarget, float aggressionRange)
         {
-            if (ShouldExitAttack())
-            {
-                _stateMachine.SwitchState(AIStateType.Patrol);
-            }
+            return distanceToTarget > aggressionRange;
+        }
+
+        public override void Exit()
+        {
+            _stateMachine.Navigation.ClearPath();
+            _stateMachine.InputMapper.SetShouldRun(false);
         }
     }
 }

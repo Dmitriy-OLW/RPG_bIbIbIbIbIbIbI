@@ -128,7 +128,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e549374f6a3cdd640af6b65c838c0606, type: 2}
     - target: {fileID: 2496070005486841420, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
       propertyPath: _projectileSpeed
-      value: 24
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2496070005486841420, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
       propertyPath: _projectilePrefab

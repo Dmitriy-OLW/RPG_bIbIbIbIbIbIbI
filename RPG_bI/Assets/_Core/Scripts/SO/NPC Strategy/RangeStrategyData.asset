@@ -15,4 +15,4 @@ MonoBehaviour:
   _aggressionRange: 15
   _attackRange: 12
   _preferredDistance: 8
-  _attackCooldown: 10
+  _attackCooldown: 6

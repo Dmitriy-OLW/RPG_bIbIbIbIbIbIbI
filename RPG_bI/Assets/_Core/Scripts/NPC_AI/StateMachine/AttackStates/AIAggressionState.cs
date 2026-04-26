@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using Enemy.Navigation;
+using Enemy.Strategies;
+using Weapons;
 
 namespace Enemy.State
 {
@@ -25,22 +26,41 @@ namespace Enemy.State
 
             Transform target = _stateMachine.Vision.CurrentTarget;
             float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
-            var strategyData = _stateMachine.GetCurrentStrategy();
             
-            if (strategyData == null) return;
+            // Получаем дистанции атаки для primary и secondary
+            StrategyData primaryStrategy = _stateMachine.GetPrimaryStrategy();
+            StrategyData secondaryStrategy = _stateMachine.GetSecondaryStrategy();
             
-            if (distanceToTarget <= strategyData.AttackRange)
+            float primaryAttackRange = primaryStrategy != null ? primaryStrategy.AttackRange : 0f;
+            float secondaryAttackRange = secondaryStrategy != null ? secondaryStrategy.AttackRange : 0f;
+            
+            // Получаем стратегию для определения aggression range
+            // Используем primary стратегию как основную для аггрессии
+            StrategyData currentStrategy = _stateMachine.GetCurrentStrategy();
+            
+            if (currentStrategy == null) return;
+            
+            // Проверяем, может ли враг атаковать хоть чем-то
+            bool canAttackWithPrimary = distanceToTarget <= primaryAttackRange;
+            bool canAttackWithSecondary = distanceToTarget <= secondaryAttackRange;
+            
+            // Если можем атаковать любым оружием - переходим в атаку
+            if (canAttackWithPrimary || canAttackWithSecondary)
             {
+                // Определяем тип атаки перед переходом
+                _stateMachine.DetermineAttackTypeForAggression();
                 _stateMachine.SwitchState(AIStateType.Attack);
                 return;
             }
             
-            if (distanceToTarget > strategyData.AggressionRange)
+            // Если вне зоны агрессии - уходим в поиск
+            if (distanceToTarget > currentStrategy.AggressionRange)
             {
                 _stateMachine.SwitchState(AIStateType.Search);
                 return;
             }
 
+            // Продолжаем движение к цели
             _stateMachine.Navigation.SetDestination(target.position);
         }
 

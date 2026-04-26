@@ -6,7 +6,7 @@ namespace Enemy.Weapons
 {
     public interface IEnemyWeaponProvider
     {
-        EnemyType GetWeaponType(WeaponStateActive weaponSlot);
+        EnemyType GetWeaponType(bool isPrimary);
         StrategyData GetStrategy(bool isPrimary);
         AttackPriority PreferredAttack { get; }
     }
