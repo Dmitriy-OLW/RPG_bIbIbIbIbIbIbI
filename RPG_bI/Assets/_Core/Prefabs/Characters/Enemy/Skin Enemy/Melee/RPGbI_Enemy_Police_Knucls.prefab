@@ -343,6 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89587e4b6e7c446d96e4810586ce2fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objectToActivateOnFirstHit: {fileID: 4614339429081153483}
   _healthController: {fileID: 4291275983898775685}
   _animator: {fileID: 7325898458501420296}
   _speedMultiplierParam: SpeedMultiplier
@@ -359,6 +360,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502422b0f7a44e9cb8c4f1d7204b844c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4614339429081153483 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8339910295514999652, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+  m_PrefabInstance: {fileID: 3725670383014024367}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &7325898458501420296 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6205657561085084071, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}

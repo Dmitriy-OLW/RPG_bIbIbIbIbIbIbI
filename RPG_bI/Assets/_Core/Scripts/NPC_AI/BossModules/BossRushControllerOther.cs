@@ -3,8 +3,9 @@ using Health;
 
 namespace Enemy.Animation
 {
-    public class HealthAnimationSpeedController : MonoBehaviour
+    public class BossRushControllerOther : MonoBehaviour
     {
+        [SerializeField] private GameObject _objectToActivateOnFirstHit;
         [SerializeField] private HealthController _healthController;
         [SerializeField] private Animator _animator;
         [SerializeField] private string _speedMultiplierParam = "SpeedMultiplier";
@@ -12,16 +13,23 @@ namespace Enemy.Animation
         [SerializeField] private float _lowHealthSpeed = 2f;
         
         private int _speedMultiplierHash;
+        private bool _hasActivated;
         
         private void Awake()
         {
             _speedMultiplierHash = Animator.StringToHash(_speedMultiplierParam);
+            
+            if (_objectToActivateOnFirstHit != null)
+            {
+                _objectToActivateOnFirstHit.SetActive(false);
+            }
         }
         
         private void OnEnable()
         {
             if (_healthController != null)
             {
+                _healthController.OnHit += OnFirstHit;
                 _healthController.OnHit += OnHealthChanged;
                 _healthController.OnHeal += OnHealthChanged;
                 _healthController.OnDeath += OnDeath;
@@ -32,6 +40,7 @@ namespace Enemy.Animation
         {
             if (_healthController != null)
             {
+                _healthController.OnHit -= OnFirstHit;
                 _healthController.OnHit -= OnHealthChanged;
                 _healthController.OnHeal -= OnHealthChanged;
                 _healthController.OnDeath -= OnDeath;
@@ -51,6 +60,21 @@ namespace Enemy.Animation
         {
             if (_animator != null)
                 _animator.SetFloat(_speedMultiplierHash, 1f);
+        }
+        
+        private void OnFirstHit()
+        {
+            if (_hasActivated)
+                return;
+            
+            _hasActivated = true;
+            
+            if (_objectToActivateOnFirstHit != null)
+            {
+                _objectToActivateOnFirstHit.SetActive(true);
+            }
+            
+            _healthController.OnHit -= OnFirstHit;
         }
     }
 }
