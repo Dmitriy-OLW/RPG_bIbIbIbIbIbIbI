@@ -1,7 +1,7 @@
 using UnityEngine;
 using Enemy.Navigation;
 
-namespace Enemy.Strategies
+namespace Weapons
 {
     public enum EnemyType
     {

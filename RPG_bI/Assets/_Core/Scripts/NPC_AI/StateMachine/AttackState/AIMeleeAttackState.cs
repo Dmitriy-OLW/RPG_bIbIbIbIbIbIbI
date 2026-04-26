@@ -1,0 +1,82 @@
+using UnityEngine;
+using Enemy.Navigation;
+using Enemy.Strategies;
+
+namespace Enemy.State
+{
+    public class AIMeleeAttackState : AIBaseAttackState
+    {
+        private float _sideStepTimer;
+        private int _sideStepDirection = 1;
+        private const float MELEE_HOLD_DISTANCE = 3f;
+
+        public AIMeleeAttackState(AIStateMachine stateMachine) : base(stateMachine)
+        {
+        }
+
+        public override void Enter()
+        {
+            base.Enter();
+            _sideStepTimer = 0f;
+        }
+
+        public override void Update()
+        {
+            if (!_stateMachine.Vision.HasTarget)
+            {
+                HandleTargetLost();
+                return;
+            }
+
+            Transform target = _stateMachine.Vision.CurrentTarget;
+            float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
+            var strategyData = _stateMachine.StrategyData;
+            
+            _attackTimer -= Time.deltaTime;
+
+            if (distanceToTarget > strategyData.AttackRange)
+            {
+                if (distanceToTarget > strategyData.AggressionRange)
+                {
+                    _stateMachine.SwitchState(AIStateType.Patrol);
+                }
+                else
+                {
+                    _stateMachine.SwitchState(AIStateType.Aggression);
+                }
+                return;
+            }
+            
+            UpdateMeleeBehavior(target, strategyData);
+        }
+
+        private void UpdateMeleeBehavior(Transform target, StrategyData strategyData)
+        {
+            float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
+            bool shouldAttack = distanceToTarget <= strategyData.AttackRange;
+            
+            if (distanceToTarget > MELEE_HOLD_DISTANCE)
+            {
+                _stateMachine.Navigation.SetDestination(target.position);
+                _stateMachine.InputMapper.SetShouldRun(true);
+            }
+            else
+            {
+                _stateMachine.Navigation.SetDestination(target.position);
+                _stateMachine.InputMapper.SetShouldRun(false);
+            }
+            
+            if (shouldAttack && _attackTimer <= 0f)
+            {
+                _stateMachine.InputMapper.InputReader.PerformPrimaryAttack();
+                _attackTimer = strategyData.AttackCooldown;
+            }
+        }
+
+        public override void Exit()
+        {
+            _stateMachine.Navigation.ClearPath();
+            _stateMachine.InputMapper.SetShouldRun(false);
+        }
+    }
+}

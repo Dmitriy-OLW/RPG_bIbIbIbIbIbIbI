@@ -47,6 +47,7 @@ public class WeaponController : MonoBehaviour
         }
     }
     
+    // Метод для вызова из анаматора
     public void OnDamageFrame()
     {
         if(_currentWeaponState == WeaponStateActive.PrimaryActive)
@@ -55,6 +56,32 @@ public class WeaponController : MonoBehaviour
             _secondaryWeapon.Attack();
         
         _currentWeaponState = WeaponStateActive.Deactive;
+    }
+    
+    public EnemyType GetWeaponType(WeaponStateActive weaponSlot)
+    {
+        switch (weaponSlot)
+        {
+            case WeaponStateActive.PrimaryActive:
+                return _primaryWeapon != null ? _primaryWeapon.EnemyType : EnemyType.Melee;
+            case WeaponStateActive.SecondaryActive:
+                return _secondaryWeapon != null ? _secondaryWeapon.EnemyType : EnemyType.Melee;
+            default:
+                return EnemyType.Melee;
+        }
+    }
+    
+    public void SetWeapon(WeaponStateActive weaponSlot, WeaponBase weapon)
+    {
+        switch (weaponSlot)
+        {
+            case WeaponStateActive.PrimaryActive:
+                _primaryWeapon = weapon;
+                break;
+            case WeaponStateActive.SecondaryActive:
+                _secondaryWeapon = weapon;
+                break;
+        }
     }
 
     private void OnPrimaryAttack()

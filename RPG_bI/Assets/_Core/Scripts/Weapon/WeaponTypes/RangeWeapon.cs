@@ -4,6 +4,7 @@ namespace Weapons
 {
     public class RangeWeapon : WeaponBase
     {
+        [SerializeField] private EnemyType _enemyType = EnemyType.Ranged;
         [SerializeField] private Projectile _projectilePrefab;
         [SerializeField] private Transform _shootPoint;
         [SerializeField] private float _projectileSpeed = 20f;
@@ -12,6 +13,7 @@ namespace Weapons
         private float _currentChargeTimer = 10;
         private bool _isCharged;
         public float CurrentChargeProgress => _currentChargeTimer / _chargeTime;
+        public override EnemyType EnemyType => _enemyType;
         
         private void FixedUpdate()
         {

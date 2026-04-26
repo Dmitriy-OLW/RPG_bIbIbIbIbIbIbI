@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Enemy.Navigation;
 using Enemy.Strategies;
+using Weapons;
 
 namespace Enemy.State
 {

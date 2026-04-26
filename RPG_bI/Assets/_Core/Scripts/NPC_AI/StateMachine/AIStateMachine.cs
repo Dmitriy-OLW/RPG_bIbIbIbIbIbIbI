@@ -6,6 +6,7 @@ using Character.Targeting;
 using Health;
 using Pooling;
 using System;
+using Weapons;
 
 namespace Enemy.State
 {
@@ -28,6 +29,7 @@ namespace Enemy.State
         
         [Header("AI Settings")]
         [SerializeField] private EnemyType _enemyType;
+        [SerializeField] private StrategyData _strategyData;
         
         [SerializeField] private Transform[] _patrolPoints;
 
@@ -44,6 +46,7 @@ namespace Enemy.State
         public AINavigationController Navigation => _navigation;
         public AIVisionController Vision => _vision;
         public Targeting Targeting => _targeting;
+        public StrategyData StrategyData => _strategyData;
         public IEnemyBehaviorStrategy BehaviorStrategy => _behaviorStrategy;
         public Transform[] PatrolPoints => _patrolPoints;
         public AIStateType CurrentStateType => _currentStateType;

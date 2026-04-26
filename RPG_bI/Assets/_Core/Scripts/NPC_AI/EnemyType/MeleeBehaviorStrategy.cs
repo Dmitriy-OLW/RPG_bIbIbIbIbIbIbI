@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Enemy.Navigation;
+using Weapons;
 
 namespace Enemy.Strategies
 {

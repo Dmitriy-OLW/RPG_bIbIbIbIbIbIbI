@@ -25,15 +25,15 @@ namespace Enemy.State
 
             Transform target = _stateMachine.Vision.CurrentTarget;
             float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
-            var strategy = _stateMachine.BehaviorStrategy;
+            var strategyData = _stateMachine.StrategyData;
             
-            if (distanceToTarget <= strategy.AttackRange)
+            if (distanceToTarget <= strategyData.AttackRange)
             {
                 _stateMachine.SwitchState(AIStateType.Attack);
                 return;
             }
             
-            if (distanceToTarget > strategy.AggressionRange)
+            if (distanceToTarget > strategyData.AggressionRange)
             {
                 _stateMachine.SwitchState(AIStateType.Patrol);
                 return;
