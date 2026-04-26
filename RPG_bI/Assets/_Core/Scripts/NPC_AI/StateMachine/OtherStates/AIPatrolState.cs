@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Enemy.Navigation;
 
 namespace Enemy.State
 {
@@ -30,7 +29,6 @@ namespace Enemy.State
 
         public override void Update()
         {
-            // Check if should rest
             if (_stateMachine.CanRest() && !_isWaiting)
             {
                 _stateMachine.SwitchState(AIStateType.Rest);

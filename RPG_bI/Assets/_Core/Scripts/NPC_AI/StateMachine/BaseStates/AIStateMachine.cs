@@ -52,8 +52,7 @@ namespace Enemy.State
 
         private IEnemyWeaponProvider _weaponProvider;
         private AttackTransitionLogic _attackTransitionLogic;
-        
-        // Какую атаку используем сейчас
+
         private bool _isUsingPrimaryAttack = true;
 
         public event Action<IPoolable> OnReturnToPool;
@@ -115,9 +114,6 @@ namespace Enemy.State
             return new AIMeleeAttackState(this);
         }
         
-        /// <summary>
-        /// Определяет тип атаки при входе в состояние атаки
-        /// </summary>
         private void DetermineAttackTypeOnEnter()
         {
             if (_attackTransitionLogic == null) return;
@@ -129,9 +125,6 @@ namespace Enemy.State
             _states[AIStateType.Attack] = CreateAttackState();
         }
         
-        /// <summary>
-        /// Проверяет нужно ли переключить атаку во время боя
-        /// </summary>
         public void CheckAttackSwitchDuring()
         {
             if (_attackTransitionLogic == null) return;
@@ -140,14 +133,11 @@ namespace Enemy.State
             
             if (shouldSwitch)
             {
-                // Переключаем атаку
                 _isUsingPrimaryAttack = !_isUsingPrimaryAttack;
                 
-                // Пересоздаем состояние атаки
                 var newAttackState = CreateAttackState();
                 _states[AIStateType.Attack] = newAttackState;
                 
-                // Перезаходим в состояние атаки с новым типом
                 _currentState?.Exit();
                 _currentState = newAttackState;
                 _currentState.Enter();
@@ -187,20 +177,17 @@ namespace Enemy.State
         private void Update()
         {
             _currentState?.Update();
-    
-            // Обновляем таймер для случайного переключения
+            
             if (_currentStateType == AIStateType.Attack)
             {
                 _attackTransitionLogic?.UpdateTimer(Time.deltaTime);
             }
-    
-            // Update rest timer - теперь только когда НЕ в отдыхе
+            
             if (_currentStateType != AIStateType.Rest)
             {
                 _restTimer += Time.deltaTime;
             }
-    
-            // Check for flee condition
+            
             CheckFleeCondition();
         }
         
@@ -229,8 +216,7 @@ namespace Enemy.State
 
             _currentState?.Exit();
             _currentStateType = newStateType;
-            
-            // Определяем тип атаки при входе в атаку
+
             if (newStateType == AIStateType.Attack)
             {
                 DetermineAttackTypeOnEnter();
@@ -240,9 +226,6 @@ namespace Enemy.State
             _currentState.Enter();
         }
         
-        /// <summary>
-        /// Переключение атаки по запросу из AIAggressionState
-        /// </summary>
         public void DetermineAttackTypeForAggression()
         {
             if (_attackTransitionLogic == null) return;

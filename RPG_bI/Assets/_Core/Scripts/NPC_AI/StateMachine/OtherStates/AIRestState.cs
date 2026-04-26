@@ -28,7 +28,6 @@ namespace Enemy.State
 
         public override void Update()
         {
-            // Check if enemy spotted player
             if (_stateMachine.Vision.HasTarget)
             {
                 _stateMachine.SwitchState(AIStateType.Aggression);

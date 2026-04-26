@@ -131,7 +131,6 @@ namespace Enemy.Navigation
             
             _distanceToTarget = distance;
             
-            // Always update last known position when we can see the target
             if (target != null)
             {
                 _lastKnownPosition = target.position;
@@ -142,7 +141,6 @@ namespace Enemy.Navigation
         
         private void ClearTarget()
         {
-            // If we had a target and now lost it, update last known position
             if (_currentTarget != null)
             {
                 _lastKnownPosition = _currentTarget.position;
@@ -176,7 +174,6 @@ namespace Enemy.Navigation
             return Time.time - _lastSeenTime;
         }
         
-        // Свойство для проверки "свежести" последней известной позиции
         public bool IsLastKnownPositionRecent(float maxAge = 30f)
         {
             return _hasLastKnownPosition && (Time.time - _lastSeenTime) <= maxAge;

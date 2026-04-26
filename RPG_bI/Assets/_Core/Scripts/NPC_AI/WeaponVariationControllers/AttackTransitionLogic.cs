@@ -11,6 +11,7 @@ namespace Enemy.State
         private readonly IEnemyWeaponProvider _weaponProvider;
         private readonly AIVisionController _vision;
         
+        // Константы для случайного переключения
         private const float RANDOM_SWITCH_CHANCE_ON_ENTER = 0.2f;
         private const float RANDOM_SWITCH_CHANCE_DURING = 0.1f;
         private const float RANDOM_SWITCH_CHECK_INTERVAL = 2f;
@@ -36,53 +37,69 @@ namespace Enemy.State
             
             AttackPriority preferredAttack = _weaponProvider.PreferredAttack;
             
+            // Получаем типы оружия
             EnemyType primaryType = _weaponProvider.GetWeaponType(true);
             EnemyType secondaryType = _weaponProvider.GetWeaponType(false);
             
+            // Получаем дистанции атаки
             float primaryAttackRange = GetAttackRange(true);
             float secondaryAttackRange = GetAttackRange(false);
             
             float distanceToTarget = _vision.DistanceToTarget;
             
+            // Определяем "свою" и "чужую" атаку
             bool ownIsPrimary = (preferredAttack == AttackPriority.Primary);
             float ownAttackRange = ownIsPrimary ? primaryAttackRange : secondaryAttackRange;
             float otherAttackRange = ownIsPrimary ? secondaryAttackRange : primaryAttackRange;
             
             bool canUseOwn = distanceToTarget <= ownAttackRange;
             bool canUseOther = distanceToTarget <= otherAttackRange;
-
+            
+            // Сценарий A: Своя атака имеет МЕНЬШИЙ радиус чем чужая
             if (ownAttackRange < otherAttackRange)
             {
                 if (canUseOwn)
                 {
+                    // Игрок в радиусе своей атаки - используем свою (приоритетную)
                     return ownIsPrimary;
                 }
                 else if (canUseOther)
                 {
+                    // Игрок только в радиусе чужой атаки - используем чужую
                     return !ownIsPrimary;
                 }
                 else
                 {
+                    // Игрок вне всех радиусов - используем свою (будем сближаться)
                     return ownIsPrimary;
                 }
             }
+            // Сценарий B: Своя атака имеет БОЛЬШИЙ радиус чем чужая
             else if (ownAttackRange > otherAttackRange)
             {
                 if (canUseOther)
                 {
+                    // Игрок в радиусе чужой атаки - используем чужую (она ближняя)
                     return !ownIsPrimary;
                 }
                 else
                 {
+                    // Игрок дальше чужой атаки - используем свою (дальнюю)
                     return ownIsPrimary;
                 }
             }
+            // Равные радиусы
             else
             {
+                // Просто используем предпочтительную
                 return ownIsPrimary;
             }
         }
-
+        
+        /// <summary>
+        /// Определяет, нужно ли переключить атаку во время боя
+        /// Возвращает true если нужно сменить, false если оставить текущую
+        /// </summary>
         public bool ShouldSwitchDuringAttack(bool currentlyUsingPrimary)
         {
             if (_weaponProvider == null || !_vision.HasTarget)
@@ -95,6 +112,7 @@ namespace Enemy.State
             
             float distanceToTarget = _vision.DistanceToTarget;
             
+            // Определяем "свою" и "чужую" атаку
             bool ownIsPrimary = (preferredAttack == AttackPriority.Primary);
             float ownAttackRange = ownIsPrimary ? primaryAttackRange : secondaryAttackRange;
             float otherAttackRange = ownIsPrimary ? secondaryAttackRange : primaryAttackRange;
@@ -105,7 +123,8 @@ namespace Enemy.State
             bool canUseCurrent = currentlyUsingPrimary ? 
                 (distanceToTarget <= primaryAttackRange) : 
                 (distanceToTarget <= secondaryAttackRange);
-
+            
+            // Сначала проверяем обязательные условия по дистанции
             bool mustSwitch = CheckMandatorySwitch(
                 ownAttackRange, otherAttackRange, 
                 ownIsPrimary, canUseOwn, canUseOther, 
@@ -114,6 +133,7 @@ namespace Enemy.State
             if (mustSwitch)
                 return true;
             
+            // Если обе атаки доступны - проверяем случайный шанс
             if (canUseOwn && canUseOther)
             {
                 return CheckRandomSwitch();

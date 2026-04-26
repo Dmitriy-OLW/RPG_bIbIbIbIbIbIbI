@@ -22,7 +22,6 @@ namespace Enemy.State
 
         public override void Update()
         {
-            // Базовые проверки (потеря цели, переключение атаки)
             base.Update();
             
             if (!_stateMachine.Vision.HasTarget)
@@ -31,29 +30,24 @@ namespace Enemy.State
             Transform target = _stateMachine.Vision.CurrentTarget;
             float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
             
-            // Получаем текущую стратегию (она уже правильная после CheckAttackSwitchDuring)
             var strategyData = _stateMachine.GetCurrentStrategy();
             
             if (strategyData == null) return;
             
             _attackTimer -= Time.deltaTime;
-
-            // Проверяем выход из зоны атаки
+            
             if (distanceToTarget > strategyData.AttackRange)
             {
-                // Проверяем, может ли другая атака работать на этой дистанции
                 StrategyData otherStrategy = _stateMachine.IsUsingPrimaryAttack 
                     ? _stateMachine.GetSecondaryStrategy() 
                     : _stateMachine.GetPrimaryStrategy();
                 
                 if (otherStrategy != null && distanceToTarget <= otherStrategy.AttackRange)
                 {
-                    // Другая атака может работать - переключаемся
                     _stateMachine.CheckAttackSwitchDuring();
                     return;
                 }
-                
-                // Возвращаемся в агрессию если вышли из всех зон атаки
+
                 if (distanceToTarget > strategyData.AggressionRange)
                 {
                     _stateMachine.SwitchState(AIStateType.Aggression);
@@ -82,7 +76,6 @@ namespace Enemy.State
             
             if (shouldAttack && _attackTimer <= 0f)
             {
-                // Используем правильный тип атаки в зависимости от оружия
                 if (_stateMachine.IsUsingPrimaryAttack)
                 {
                     _stateMachine.InputMapper.InputReader.PerformPrimaryAttack();

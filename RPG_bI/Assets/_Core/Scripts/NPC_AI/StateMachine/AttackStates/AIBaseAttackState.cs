@@ -23,10 +23,8 @@ namespace Enemy.State
 
         public override void Update()
         {
-            // Проверяем, не нужно ли переключить тип атаки
             _stateMachine.CheckAttackSwitchDuring();
             
-            // Проверяем потерю цели
             if (!_stateMachine.Vision.HasTarget)
             {
                 _outOfSightTimer += Time.deltaTime;
