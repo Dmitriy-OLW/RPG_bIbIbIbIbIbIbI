@@ -130,6 +130,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3087089164302758091, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _primaryStrategy
+      value: 
+      objectReference: {fileID: 11400000, guid: 388c743f51484b547b3aea62be4c6fa6, type: 2}
     - target: {fileID: 3091220009637227927, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -340,17 +344,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthController: {fileID: 4291275983898775685}
-  _healthThreshold: 0.5
   _animator: {fileID: 7325898458501420296}
-  _weaponLayerName: Weapon_Layer
-  _speedMultiplierParameterName: SpeedMultiplier
-  _animationsToSpeedUp:
-  - AnimationStateName: MeleeDamageFrame_1
-    SpeedMultiplier: 2
-  - AnimationStateName: MeleeDamageFrame_2
-    SpeedMultiplier: 2
-  - AnimationStateName: MeleeDamageFrame 0
-    SpeedMultiplier: 2
+  _speedMultiplierParam: SpeedMultiplier
+  _healthThreshold: 0.5
+  _lowHealthSpeed: 2
 --- !u!114 &4291275983898775685 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 592665063635878954, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
