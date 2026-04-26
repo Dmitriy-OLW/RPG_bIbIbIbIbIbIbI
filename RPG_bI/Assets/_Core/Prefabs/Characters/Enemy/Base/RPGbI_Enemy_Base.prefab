@@ -696,6 +696,9 @@ PrefabInstance:
       addedObject: {fileID: 7530984534395371243}
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 3087089164302758091}
+    - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8376049311449788116}
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
@@ -797,6 +800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageDataSO: {fileID: 11400000, guid: 2c5a2c53890ca7445ac46c0c7813e9f8, type: 2}
+  _enemyType: 0
   _targetLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -815,6 +819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageDataSO: {fileID: 11400000, guid: 2c5a2c53890ca7445ac46c0c7813e9f8, type: 2}
+  _enemyType: 1
   _projectilePrefab: {fileID: 7215435939982588545, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
   _shootPoint: {fileID: 1466405188745315996}
   _projectileSpeed: 20
@@ -899,6 +904,22 @@ MonoBehaviour:
   _enemyTransform: {fileID: 71706268855458781}
   _rotationSpeed: 5
   _rotationThreshold: 5
+--- !u!114 &3087089164302758091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843599008491110759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0e1ecda50a4abfb77522a6a8a74c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _primaryStrategy: {fileID: 11400000, guid: a92599e6fc9241345b278a7e33a3868f, type: 2}
+  _secondaryStrategy: {fileID: 11400000, guid: 713e63b00a4d0c84babe567ea94ff0b3, type: 2}
+  _preferredAttack: 0
+  _weaponController: {fileID: 4296301768260088168}
 --- !u!114 &8376049311449788116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,8 +937,12 @@ MonoBehaviour:
   _vision: {fileID: 6610847858592354683}
   _targeting: {fileID: 7069637522365589005}
   _healthController: {fileID: 592665063635878954}
-  _enemyType: 0
+  _enemyWeaponController: {fileID: 3087089164302758091}
   _patrolPoints: []
+  _activateWithOutPool: 0
+  _fleeHealthThreshold: 0.3
+  _restChance: 0.1
+  _restCooldown: 10
 --- !u!114 &367740121737191455
 MonoBehaviour:
   m_ObjectHideFlags: 0

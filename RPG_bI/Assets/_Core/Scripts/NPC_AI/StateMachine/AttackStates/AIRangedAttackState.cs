@@ -29,7 +29,7 @@ namespace Enemy.State
 
             Transform target = _stateMachine.Vision.CurrentTarget;
             float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
-            var strategyData = _stateMachine.StrategyData;
+            var strategyData = _stateMachine.GetCurrentStrategy();;
             
             _attackTimer -= Time.deltaTime;
 

@@ -19,13 +19,15 @@ namespace Enemy.State
         {
             if (!_stateMachine.Vision.HasTarget)
             {
-                _stateMachine.SwitchState(AIStateType.Patrol);
+                _stateMachine.SwitchState(AIStateType.Search);
                 return;
             }
 
             Transform target = _stateMachine.Vision.CurrentTarget;
             float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
-            var strategyData = _stateMachine.StrategyData;
+            var strategyData = _stateMachine.GetCurrentStrategy();
+            
+            if (strategyData == null) return;
             
             if (distanceToTarget <= strategyData.AttackRange)
             {
@@ -35,7 +37,7 @@ namespace Enemy.State
             
             if (distanceToTarget > strategyData.AggressionRange)
             {
-                _stateMachine.SwitchState(AIStateType.Patrol);
+                _stateMachine.SwitchState(AIStateType.Search);
                 return;
             }
 

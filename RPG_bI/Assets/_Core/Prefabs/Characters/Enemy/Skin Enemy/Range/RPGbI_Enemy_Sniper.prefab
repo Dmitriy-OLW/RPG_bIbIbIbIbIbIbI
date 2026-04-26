@@ -278,9 +278,29 @@ PrefabInstance:
       propertyPath: _maxHorizontalAngle
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 2676596049932440597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.057
+      objectReference: {fileID: 0}
     - target: {fileID: 2791058549148951944, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3087089164302758091, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _preferredAttack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898011622461308101, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _damageDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: a296b9928bb6478449c0c4e963463efd, type: 2}
+    - target: {fileID: 3898011622461308101, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _attackBoxSize.y
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898011622461308101, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _attackBoxSize.z
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _damageDataSO

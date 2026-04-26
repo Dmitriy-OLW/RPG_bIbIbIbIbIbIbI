@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Enemy.Strategies
 {
-    [CreateAssetMenu(fileName = "StrategyData", menuName = "AI/Strategy Data")]
+    [CreateAssetMenu(fileName = "StrategyData", menuName = "RPG/Strategy Data")]
     public class StrategyData : ScriptableObject
     {
         [SerializeField] private float _aggressionRange = 10f;

@@ -141,7 +141,7 @@ PrefabInstance:
     - target: {fileID: 3898011622461308101, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _damageDataSO
       value: 
-      objectReference: {fileID: 11400000, guid: 26dbcb175a3631a4fb1a080c9017dc8f, type: 2}
+      objectReference: {fileID: 11400000, guid: 752a9dc479e4ff8499d5387412aeb552, type: 2}
     - target: {fileID: 3912490095580177799, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Color.b
       value: 0.2352941
@@ -166,6 +166,10 @@ PrefabInstance:
       propertyPath: _projectilePrefab
       value: 
       objectReference: {fileID: 2012293445520853485, guid: fc457a61b6fb1d340a86f8f546d127c3, type: 3}
+    - target: {fileID: 6205657561085084071, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6c590e1ed1fdac74290debe08e86aa7a, type: 2}
     - target: {fileID: 6230349065170489899, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Name
       value: RPGbI_Police_Base

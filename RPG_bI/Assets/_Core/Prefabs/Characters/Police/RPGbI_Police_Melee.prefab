@@ -122,6 +122,18 @@ PrefabInstance:
       propertyPath: _enemyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2496070005486841420, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: _damageDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: e549374f6a3cdd640af6b65c838c0606, type: 2}
+    - target: {fileID: 2496070005486841420, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: _projectileSpeed
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 2496070005486841420, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: _projectilePrefab
+      value: 
+      objectReference: {fileID: 4703198258262496046, guid: ba6ba8f7b68c2bb4ba4473e46a1b34f7, type: 3}
     - target: {fileID: 2520161823977043723, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -138,14 +150,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: RPGbI_Police_Melee
       objectReference: {fileID: 0}
+    - target: {fileID: 3753396807327285666, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3782732701879570990, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2da68f0b2f2e6914dae3dce346b794d9, type: 2}
     - target: {fileID: 5135570429386639260, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.773
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239815882917651266, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: _preferredAttack
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5686687353643201228, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6086789849851817804, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: _damageDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 26dbcb175a3631a4fb1a080c9017dc8f, type: 2}
     - target: {fileID: 6086789849851817804, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
       propertyPath: _attackBoxSize.x
       value: 1.4
@@ -161,6 +189,18 @@ PrefabInstance:
     - target: {fileID: 7843572374512800209, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8519029605889004821, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.096
+      objectReference: {fileID: 0}
+    - target: {fileID: 8519029605889004821, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.034
+      objectReference: {fileID: 0}
+    - target: {fileID: 8519029605889004821, guid: f0ae89d214de16b469f2edbb7ba2decd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.023
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
