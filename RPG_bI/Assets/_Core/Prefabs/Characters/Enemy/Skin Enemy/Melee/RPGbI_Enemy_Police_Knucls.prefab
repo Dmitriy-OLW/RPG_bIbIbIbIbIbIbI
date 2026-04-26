@@ -201,7 +201,7 @@ PrefabInstance:
     - target: {fileID: 6205657561085084071, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 6c590e1ed1fdac74290debe08e86aa7a, type: 2}
+      objectReference: {fileID: 9100000, guid: 7d04dc2d60871ed4da82da26c25a2508, type: 2}
     - target: {fileID: 6230349065170489899, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Name
       value: RPGbI_Enemy_Police_Knucls
@@ -279,7 +279,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _canFlee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _enemyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _canSelfHeal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _allowRepeatFlee
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -300,11 +312,59 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5758496395802596376, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       insertIndex: 5
       addedObject: {fileID: 5809178930836480610}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 843599008491110759, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5244206383668575577}
   m_SourcePrefab: {fileID: 100100000, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
 --- !u!4 &3032586253274000112 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1846990797033946719, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+  m_PrefabInstance: {fileID: 3725670383014024367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4035556964036679112 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 843599008491110759, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+  m_PrefabInstance: {fileID: 3725670383014024367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5244206383668575577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035556964036679112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89587e4b6e7c446d96e4810586ce2fa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthController: {fileID: 4291275983898775685}
+  _healthThreshold: 0.5
+  _animator: {fileID: 7325898458501420296}
+  _weaponLayerName: Weapon_Layer
+  _speedMultiplierParameterName: SpeedMultiplier
+  _animationsToSpeedUp:
+  - AnimationStateName: MeleeDamageFrame_1
+    SpeedMultiplier: 2
+  - AnimationStateName: MeleeDamageFrame_2
+    SpeedMultiplier: 2
+  - AnimationStateName: MeleeDamageFrame 0
+    SpeedMultiplier: 2
+--- !u!114 &4291275983898775685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 592665063635878954, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+  m_PrefabInstance: {fileID: 3725670383014024367}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035556964036679112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 502422b0f7a44e9cb8c4f1d7204b844c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &7325898458501420296 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6205657561085084071, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
   m_PrefabInstance: {fileID: 3725670383014024367}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8961728466069274807 stripped

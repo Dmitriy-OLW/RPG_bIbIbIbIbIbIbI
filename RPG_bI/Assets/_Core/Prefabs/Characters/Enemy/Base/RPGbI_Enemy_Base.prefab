@@ -688,6 +688,9 @@ PrefabInstance:
       addedObject: {fileID: 5228369064992375180}
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 3087089164302758091}
+    - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4296301768260088168}
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
@@ -710,9 +713,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7530984534395371243}
-    - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3087089164302758091}
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8376049311449788116}
@@ -789,6 +789,23 @@ MonoBehaviour:
   _rearRayPos: {fileID: 6877308322404699527}
   _frontRayPos: {fileID: 6845956762245195914}
   _targetLockOnPos: {fileID: 7072933291137410577}
+--- !u!114 &3087089164302758091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843599008491110759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0e1ecda50a4abfb77522a6a8a74c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _primaryStrategy: {fileID: 11400000, guid: a92599e6fc9241345b278a7e33a3868f, type: 2}
+  _secondaryStrategy: {fileID: 11400000, guid: 713e63b00a4d0c84babe567ea94ff0b3, type: 2}
+  _preferredAttack: 0
+  _weaponController: {fileID: 4296301768260088168}
+  _onlyPreferredAttack: 0
 --- !u!114 &4296301768260088168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -920,23 +937,6 @@ MonoBehaviour:
   _enemyTransform: {fileID: 71706268855458781}
   _rotationSpeed: 5
   _rotationThreshold: 5
---- !u!114 &3087089164302758091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 843599008491110759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e0e1ecda50a4abfb77522a6a8a74c3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _primaryStrategy: {fileID: 11400000, guid: a92599e6fc9241345b278a7e33a3868f, type: 2}
-  _secondaryStrategy: {fileID: 11400000, guid: 713e63b00a4d0c84babe567ea94ff0b3, type: 2}
-  _preferredAttack: 0
-  _weaponController: {fileID: 4296301768260088168}
-  _onlyPreferredAttack: 0
 --- !u!114 &8376049311449788116
 MonoBehaviour:
   m_ObjectHideFlags: 0
