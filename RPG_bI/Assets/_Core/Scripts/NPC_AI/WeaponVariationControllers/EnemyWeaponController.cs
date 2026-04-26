@@ -20,10 +20,12 @@ namespace Enemy.Weapons
         
         [Header("Attack Settings")]
         [SerializeField] protected AttackPriority _preferredAttack = AttackPriority.Primary;
-        
         [SerializeField] protected WeaponController _weaponController;
+        [SerializeField] private bool _onlyPreferredAttack = false;
+        
         
         public AttackPriority PreferredAttack => _preferredAttack;
+        public bool OnlyPreferredAttack => _onlyPreferredAttack;
 
         public EnemyType GetWeaponType(bool isPrimary)
         {

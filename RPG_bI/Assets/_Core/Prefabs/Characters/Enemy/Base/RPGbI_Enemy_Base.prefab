@@ -104,6 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1466405188745315996}
   - component: {fileID: 1984723254995722709}
+  - component: {fileID: 8201252215813204458}
   m_Layer: 0
   m_Name: ProjectilePoint
   m_TagString: Untagged
@@ -143,6 +144,21 @@ MonoBehaviour:
   _maxHorizontalAngle: 20
   _maxVerticalAngle: 20
   _rotationSpeed: 5
+  _targetHeightOffset: 1
+--- !u!114 &8201252215813204458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5140287515940511980}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289d5f534d30462cb5ec8057ea797731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visionController: {fileID: 6610847858592354683}
+  _shootPoint: {fileID: 1466405188745315996}
   _targetHeightOffset: 1
 --- !u!1 &6840560110625604674
 GameObject:
@@ -916,12 +932,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0e1ecda50a4abfb77522a6a8a74c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _primaryWeapon: {fileID: 0}
   _primaryStrategy: {fileID: 11400000, guid: a92599e6fc9241345b278a7e33a3868f, type: 2}
-  _secondaryWeapon: {fileID: 0}
   _secondaryStrategy: {fileID: 11400000, guid: 713e63b00a4d0c84babe567ea94ff0b3, type: 2}
   _preferredAttack: 0
   _weaponController: {fileID: 4296301768260088168}
+  _onlyPreferredAttack: 0
 --- !u!114 &8376049311449788116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -944,7 +959,9 @@ MonoBehaviour:
   _fleeHealthThreshold: 0.3
   _restChance: 0.1
   _restCooldown: 60
+  _canFlee: 1
   _canSelfHeal: 1
+  _allowRepeatFlee: 0
 --- !u!114 &367740121737191455
 MonoBehaviour:
   m_ObjectHideFlags: 0

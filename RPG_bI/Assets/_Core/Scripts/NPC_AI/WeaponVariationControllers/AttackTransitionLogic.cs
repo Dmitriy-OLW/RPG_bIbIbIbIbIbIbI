@@ -12,165 +12,276 @@ namespace Enemy.State
         private readonly AIVisionController _vision;
         
         // Константы для случайного переключения
-        private const float RANDOM_SWITCH_CHANCE_ON_ENTER = 0.2f;
         private const float RANDOM_SWITCH_CHANCE_DURING = 0.1f;
         private const float RANDOM_SWITCH_CHECK_INTERVAL = 2f;
         
+        // Таймер для обязательного сближения
+        private const float CLOSE_IN_TIMEOUT = 10f;
+        
         private float _randomSwitchTimer;
+        private float _closeInTimer;
+        private bool _isClosingIn;
+        
+        // Отслеживание "запасной" атаки
+        private bool _usingFallbackAttack; // Используем чужую (дальнюю) атаку из-за таймаута
+        private bool _fallbackAttackUsed;  // Запасная атака была выполнена
         
         public AttackTransitionLogic(IEnemyWeaponProvider weaponProvider, AIVisionController vision)
         {
             _weaponProvider = weaponProvider;
             _vision = vision;
             _randomSwitchTimer = 0f;
+            _closeInTimer = 0f;
+            _isClosingIn = false;
+            _usingFallbackAttack = false;
+            _fallbackAttackUsed = false;
         }
         
         public void UpdateTimer(float deltaTime)
         {
             _randomSwitchTimer += deltaTime;
+            
+            if (_isClosingIn)
+            {
+                _closeInTimer += deltaTime;
+            }
         }
         
+        /// <summary>
+        /// Вызывается когда враг выполнил атаку (из WeaponController.OnDamageFrame)
+        /// </summary>
+        public void OnAttackPerformed(bool isPrimaryAttack)
+        {
+            if (_usingFallbackAttack && !_fallbackAttackUsed)
+            {
+                // Это была первая атака из запасного оружия
+                _fallbackAttackUsed = true;
+            }
+        }
+        
+        /// <summary>
+        /// Проверяет, нужно ли сбросить таймер и вернуться к своей атаке после выстрела из запасной
+        /// </summary>
+        public bool ShouldResetAfterFallbackAttack()
+        {
+            if (_usingFallbackAttack && _fallbackAttackUsed)
+            {
+                // Сбрасываем флаги и таймер для новой попытки сближения
+                _usingFallbackAttack = false;
+                _fallbackAttackUsed = false;
+                _isClosingIn = true;
+                _closeInTimer = 0f;
+                return true;
+            }
+            return false;
+        }
+        
+        /// <summary>
+        /// Определяет, какую атаку использовать при входе в состояние атаки
+        /// </summary>
         public bool DetermineAttackOnEnter(bool currentlyUsingPrimary)
         {
             if (_weaponProvider == null || !_vision.HasTarget)
                 return currentlyUsingPrimary;
             
+            if (_weaponProvider.OnlyPreferredAttack)
+            {
+                return _weaponProvider.PreferredAttack == AttackPriority.Primary;
+            }
+            
             AttackPriority preferredAttack = _weaponProvider.PreferredAttack;
             
-            // Получаем типы оружия
-            EnemyType primaryType = _weaponProvider.GetWeaponType(true);
-            EnemyType secondaryType = _weaponProvider.GetWeaponType(false);
-            
-            // Получаем дистанции атаки
             float primaryAttackRange = GetAttackRange(true);
             float secondaryAttackRange = GetAttackRange(false);
-            
             float distanceToTarget = _vision.DistanceToTarget;
             
-            // Определяем "свою" и "чужую" атаку
             bool ownIsPrimary = (preferredAttack == AttackPriority.Primary);
             float ownAttackRange = ownIsPrimary ? primaryAttackRange : secondaryAttackRange;
             float otherAttackRange = ownIsPrimary ? secondaryAttackRange : primaryAttackRange;
             
             bool canUseOwn = distanceToTarget <= ownAttackRange;
-            bool canUseOther = distanceToTarget <= otherAttackRange;
             
-            // Сценарий A: Своя атака имеет МЕНЬШИЙ радиус чем чужая
+            // Сброс состояния запасной атаки при входе
+            _usingFallbackAttack = false;
+            _fallbackAttackUsed = false;
+            
+            // Если своя атака имеет МЕНЬШИЙ радиус (предпочитаем ближний бой)
             if (ownAttackRange < otherAttackRange)
             {
                 if (canUseOwn)
                 {
-                    // Игрок в радиусе своей атаки - используем свою (приоритетную)
+                    _isClosingIn = false;
+                    _closeInTimer = 0f;
                     return ownIsPrimary;
-                }
-                else if (canUseOther)
-                {
-                    // Игрок только в радиусе чужой атаки - используем чужую
-                    return !ownIsPrimary;
                 }
                 else
                 {
-                    // Игрок вне всех радиусов - используем свою (будем сближаться)
+                    _isClosingIn = true;
+                    _closeInTimer = 0f;
                     return ownIsPrimary;
                 }
             }
-            // Сценарий B: Своя атака имеет БОЛЬШИЙ радиус чем чужая
+            // Если своя атака имеет БОЛЬШИЙ радиус (предпочитаем дальний бой)
             else if (ownAttackRange > otherAttackRange)
             {
+                _isClosingIn = false;
+                _closeInTimer = 0f;
+                
+                bool canUseOther = distanceToTarget <= otherAttackRange;
+                
                 if (canUseOther)
                 {
-                    // Игрок в радиусе чужой атаки - используем чужую (она ближняя)
                     return !ownIsPrimary;
                 }
                 else
                 {
-                    // Игрок дальше чужой атаки - используем свою (дальнюю)
                     return ownIsPrimary;
                 }
             }
             // Равные радиусы
             else
             {
-                // Просто используем предпочтительную
+                _isClosingIn = false;
+                _closeInTimer = 0f;
                 return ownIsPrimary;
             }
         }
         
         /// <summary>
         /// Определяет, нужно ли переключить атаку во время боя
-        /// Возвращает true если нужно сменить, false если оставить текущую
         /// </summary>
         public bool ShouldSwitchDuringAttack(bool currentlyUsingPrimary)
         {
             if (_weaponProvider == null || !_vision.HasTarget)
                 return false;
             
+            if (_weaponProvider.OnlyPreferredAttack)
+            {
+                return false;
+            }
+            
             AttackPriority preferredAttack = _weaponProvider.PreferredAttack;
             
             float primaryAttackRange = GetAttackRange(true);
             float secondaryAttackRange = GetAttackRange(false);
-            
             float distanceToTarget = _vision.DistanceToTarget;
             
-            // Определяем "свою" и "чужую" атаку
             bool ownIsPrimary = (preferredAttack == AttackPriority.Primary);
             float ownAttackRange = ownIsPrimary ? primaryAttackRange : secondaryAttackRange;
             float otherAttackRange = ownIsPrimary ? secondaryAttackRange : primaryAttackRange;
             
-            bool currentlyOwn = (currentlyUsingPrimary == ownIsPrimary);
             bool canUseOwn = distanceToTarget <= ownAttackRange;
             bool canUseOther = distanceToTarget <= otherAttackRange;
-            bool canUseCurrent = currentlyUsingPrimary ? 
-                (distanceToTarget <= primaryAttackRange) : 
-                (distanceToTarget <= secondaryAttackRange);
             
-            // Сначала проверяем обязательные условия по дистанции
-            bool mustSwitch = CheckMandatorySwitch(
-                ownAttackRange, otherAttackRange, 
-                ownIsPrimary, canUseOwn, canUseOther, 
-                currentlyUsingPrimary, canUseCurrent, distanceToTarget);
-            
-            if (mustSwitch)
-                return true;
-            
-            // Если обе атаки доступны - проверяем случайный шанс
-            if (canUseOwn && canUseOther)
-            {
-                return CheckRandomSwitch();
-            }
-            
-            return false;
-        }
-        
-        private bool CheckMandatorySwitch(
-            float ownAttackRange, float otherAttackRange,
-            bool ownIsPrimary, bool canUseOwn, bool canUseOther,
-            bool currentlyUsingPrimary, bool canUseCurrent, float distanceToTarget)
-        {
-            // Сценарий A: Своя атака имеет МЕНЬШИЙ радиус
+            // Сценарий: своя атака имеет МЕНЬШИЙ радиус (предпочитаем ближний бой)
             if (ownAttackRange < otherAttackRange)
             {
-                // Если используем чужую (дальнюю), но игрок вошел в радиус своей (ближней) - переключаемся на свою
-                if (!currentlyUsingPrimary == ownIsPrimary && canUseOwn)
-                    return true;
+                // Если мы в запасной атаке и уже выстрелили - возвращаемся к своей
+                if (_usingFallbackAttack && _fallbackAttackUsed)
+                {
+                    // Сбрасываем и начинаем новое сближение
+                    _usingFallbackAttack = false;
+                    _fallbackAttackUsed = false;
+                    _isClosingIn = true;
+                    _closeInTimer = 0f;
+                    
+                    // Переключаемся на свою атаку
+                    if (currentlyUsingPrimary != ownIsPrimary)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
                 
-                // Если используем свою (ближнюю), но игрок вышел из радиуса своей и остался в радиусе чужой - переключаемся на чужую
-                if (currentlyUsingPrimary == ownIsPrimary && !canUseOwn && canUseOther)
-                    return true;
+                if (_isClosingIn)
+                {
+                    if (canUseOwn)
+                    {
+                        _isClosingIn = false;
+                        _closeInTimer = 0f;
+                        
+                        if (currentlyUsingPrimary != ownIsPrimary)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    
+                    if (_closeInTimer >= CLOSE_IN_TIMEOUT)
+                    {
+                        // Время вышло - переключаемся на чужую (дальнюю) атаку
+                        _isClosingIn = false;
+                        _closeInTimer = 0f;
+                        _usingFallbackAttack = true;
+                        _fallbackAttackUsed = false;
+                        
+                        if (canUseOther)
+                        {
+                            return currentlyUsingPrimary == ownIsPrimary;
+                        }
+                        return false;
+                    }
+                    
+                    return false;
+                }
+                else
+                {
+                    if (canUseOwn)
+                    {
+                        if (currentlyUsingPrimary != ownIsPrimary)
+                        {
+                            _usingFallbackAttack = false;
+                            _fallbackAttackUsed = false;
+                            return true;
+                        }
+                    }
+                    
+                    if (!canUseOther && currentlyUsingPrimary != ownIsPrimary)
+                    {
+                        _isClosingIn = true;
+                        _closeInTimer = 0f;
+                        _usingFallbackAttack = false;
+                        _fallbackAttackUsed = false;
+                        return true;
+                    }
+                    
+                    if (canUseOwn && canUseOther && currentlyUsingPrimary != ownIsPrimary)
+                    {
+                        return CheckRandomSwitch();
+                    }
+                    
+                    return false;
+                }
             }
-            // Сценарий B: Своя атака имеет БОЛЬШИЙ радиус
+            // Сценарий: своя атака имеет БОЛЬШИЙ радиус (предпочитаем дальний бой)
             else if (ownAttackRange > otherAttackRange)
             {
-                // Если используем свою (дальнюю), но игрок вошел в радиус чужой (ближней) - переключаемся на чужую
                 if (currentlyUsingPrimary == ownIsPrimary && canUseOther)
+                {
                     return true;
+                }
                 
-                // Если используем чужую (ближнюю), но игрок вышел из радиуса чужой - возвращаемся на свою
-                if (!currentlyUsingPrimary == ownIsPrimary && !canUseOther)
+                if (currentlyUsingPrimary != ownIsPrimary && !canUseOther)
+                {
                     return true;
+                }
+                
+                if (canUseOwn && canUseOther)
+                {
+                    return CheckRandomSwitch();
+                }
+                
+                return false;
             }
-            
-            return false;
+            // Равные радиусы
+            else
+            {
+                if (canUseOwn && canUseOther)
+                {
+                    return CheckRandomSwitch();
+                }
+                return false;
+            }
         }
         
         private bool CheckRandomSwitch()
@@ -206,6 +317,14 @@ namespace Enemy.State
         public void ResetRandomTimer()
         {
             _randomSwitchTimer = 0f;
+        }
+        
+        public void ResetCloseInTimer()
+        {
+            _closeInTimer = 0f;
+            _isClosingIn = false;
+            _usingFallbackAttack = false;
+            _fallbackAttackUsed = false;
         }
     }
 }

@@ -76,23 +76,26 @@ namespace Enemy.State
             }
             
             float distanceToTarget = _stateMachine.Vision.DistanceToTarget;
-            bool shouldAttack = distanceToTarget <= strategyData.AttackRange && distanceToTarget >= 5f;
+            bool shouldAttack = distanceToTarget <= strategyData.AttackRange;
             
-            if (distanceToTarget < 5f)
+            float preferredDistance = strategyData.PreferredDistance;
+            float tooCloseDistance = strategyData.AttackRange * 0.3f; 
+            
+            if (distanceToTarget < tooCloseDistance)
             {
                 Vector3 directionAway = (_stateMachine.transform.position - target.position).normalized;
-                Vector3 retreatPosition = _stateMachine.transform.position + directionAway * 7f;
+                Vector3 retreatPosition = _stateMachine.transform.position + directionAway * preferredDistance;
                 _stateMachine.Navigation.SetDestination(retreatPosition);
                 _stateMachine.InputMapper.SetShouldRun(true);
                 _isAiming = false;
             }
-            else if (distanceToTarget > strategyData.PreferredDistance && distanceToTarget <= 10f)
+            else if (distanceToTarget > preferredDistance && distanceToTarget <= strategyData.AttackRange)
             {
                 _stateMachine.Navigation.SetDestination(target.position);
                 _stateMachine.InputMapper.SetShouldRun(true);
                 _isAiming = false;
             }
-            else if (distanceToTarget > 10f)
+            else if (distanceToTarget > strategyData.AttackRange)
             {
                 _stateMachine.Navigation.SetDestination(target.position);
                 _stateMachine.InputMapper.SetShouldRun(true);
@@ -114,6 +117,8 @@ namespace Enemy.State
                 {
                     _stateMachine.InputMapper.InputReader.PerformSecondaryAttack();
                 }
+                
+                _stateMachine.OnAttackPerformed();
                 
                 _attackTimer = strategyData.AttackCooldown;
             }

@@ -114,9 +114,29 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _rotationSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _maxVerticalAngle
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _maxHorizontalAngle
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 2791058549148951944, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3087089164302758091, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _onlyPreferredAttack
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3091220009637227927, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -229,6 +249,10 @@ PrefabInstance:
     - target: {fileID: 8155259869951285710, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8201252215813204458, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8443647286821552628, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive

@@ -272,11 +272,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _maxVerticalAngle
-      value: 30
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: _maxHorizontalAngle
-      value: 30
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 2676596049932440597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_LocalPosition.z

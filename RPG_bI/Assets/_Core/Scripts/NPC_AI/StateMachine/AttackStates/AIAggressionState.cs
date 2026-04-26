@@ -13,6 +13,7 @@ namespace Enemy.State
         public override void Enter()
         {
             base.Enter();
+            // Сразу начинаем бежать к цели
             _stateMachine.InputMapper.SetShouldRun(true);
         }
 
@@ -37,6 +38,10 @@ namespace Enemy.State
             
             if (currentStrategy == null) return;
             
+            // ВАЖНО: Сначала двигаемся к цели, потом проверяем атаку
+            _stateMachine.Navigation.SetDestination(target.position);
+            _stateMachine.InputMapper.SetShouldRun(true);
+            
             bool canAttackWithPrimary = distanceToTarget <= primaryAttackRange;
             bool canAttackWithSecondary = distanceToTarget <= secondaryAttackRange;
             
@@ -52,8 +57,6 @@ namespace Enemy.State
                 _stateMachine.SwitchState(AIStateType.Search);
                 return;
             }
-            
-            _stateMachine.Navigation.SetDestination(target.position);
         }
 
         public override void Exit()

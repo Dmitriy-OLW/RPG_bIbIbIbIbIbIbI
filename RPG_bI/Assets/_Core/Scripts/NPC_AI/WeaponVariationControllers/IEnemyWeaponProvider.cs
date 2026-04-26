@@ -1,3 +1,4 @@
+using UnityEngine;
 using Weapons;
 using Enemy.Strategies;
 
@@ -8,5 +9,6 @@ namespace Enemy.Weapons
         EnemyType GetWeaponType(bool isPrimary);
         StrategyData GetStrategy(bool isPrimary);
         AttackPriority PreferredAttack { get; }
+        bool OnlyPreferredAttack { get; } // Новое свойство
     }
 }

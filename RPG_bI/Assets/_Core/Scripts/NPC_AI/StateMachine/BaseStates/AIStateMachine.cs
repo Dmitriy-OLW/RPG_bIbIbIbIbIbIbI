@@ -213,15 +213,20 @@ namespace Enemy.State
         {
             if (!_states.ContainsKey(newStateType))
                 return;
+            
+            if (_currentStateType == AIStateType.Attack && newStateType != AIStateType.Attack)
+            {
+                _attackTransitionLogic?.ResetCloseInTimer();
+            }
 
             _currentState?.Exit();
             _currentStateType = newStateType;
-
+    
             if (newStateType == AIStateType.Attack)
             {
                 DetermineAttackTypeOnEnter();
             }
-            
+    
             _currentState = _states[newStateType];
             _currentState.Enter();
         }
@@ -282,6 +287,12 @@ namespace Enemy.State
                 SwitchState(AIStateType.Flee);
             }
         }
+
+        public void OnAttackPerformed()
+        {
+            _attackTransitionLogic?.OnAttackPerformed(_isUsingPrimaryAttack);
+        }
+        
         
         private void OnTargetDetected(Transform target)
         {
