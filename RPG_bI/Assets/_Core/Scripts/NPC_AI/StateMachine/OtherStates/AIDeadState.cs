@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Pooling;
 
 namespace Enemy.State
 {
@@ -25,10 +24,7 @@ namespace Enemy.State
         {
             yield return new WaitForSeconds(_destroyDelay);
             
-            if (_stateMachine is IPoolable poolable)
-            {
-                _stateMachine.OnDespawn();
-            }
+            _stateMachine.OnDespawn();
         }
 
         public override void Update()

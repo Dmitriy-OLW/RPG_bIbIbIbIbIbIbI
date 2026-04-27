@@ -4,7 +4,6 @@ using Enemy.Navigation;
 using Enemy.Strategies;
 using Character.Targeting;
 using Health;
-using Pooling;
 using System;
 using Weapons;
 using Enemy.Weapons;
@@ -23,7 +22,7 @@ namespace Enemy.State
         Dead
     }
     
-    public class AIStateMachine : MonoBehaviour, IPoolable
+    public class AIStateMachine : MonoBehaviour
     {
         [Header("Components")]
         [SerializeField] private AIInputMapper _inputMapper;
@@ -34,7 +33,7 @@ namespace Enemy.State
         
         [Header("AI Settings")]
         [SerializeField] private Transform[] _patrolPoints;
-        [SerializeField] private bool _activateWithOutPool = false;
+        [SerializeField] private bool _activateWithOutSpawner = false;
         [SerializeField] private float _fleeHealthThreshold = 0.3f;
         [SerializeField] private float _restChance = 0.1f;
         [SerializeField] private float _restCooldown = 10f;
@@ -54,8 +53,6 @@ namespace Enemy.State
         private AttackTransitionLogic _attackTransitionLogic;
 
         private bool _isUsingPrimaryAttack = true;
-
-        public event Action<IPoolable> OnReturnToPool;
 
         public AIInputMapper InputMapper => _inputMapper;
         public AINavigationController Navigation => _navigation;
@@ -100,7 +97,7 @@ namespace Enemy.State
                 { AIStateType.Dead, new AIDeadState(this) }
             };
 
-            if (_activateWithOutPool)
+            if (_activateWithOutSpawner)
                 OnSpawn(transform.parent.position);
         }
 
@@ -325,7 +322,7 @@ namespace Enemy.State
         public void OnDespawn()
         {
             gameObject.transform.parent.gameObject.SetActive(false);
-            OnReturnToPool?.Invoke(this);
+            Destroy(gameObject.transform.parent.gameObject);
         }
     }
 }
