@@ -719,6 +719,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 367740121737191455}
+    - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7882825688870581161}
   m_SourcePrefab: {fileID: 100100000, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
 --- !u!4 &71706268855458781 stripped
 Transform:
@@ -955,7 +958,7 @@ MonoBehaviour:
   _targeting: {fileID: 7069637522365589005}
   _healthController: {fileID: 592665063635878954}
   _patrolPoints: []
-  _activateWithOutPool: 0
+  _activateWithOutSpawner: 0
   _fleeHealthThreshold: 0.3
   _restChance: 0.1
   _restCooldown: 60
@@ -978,6 +981,19 @@ MonoBehaviour:
   _pathUpdateRate: 0.1
   _drawDebugPath: 1
   _agent: {fileID: 9164672045241844528}
+--- !u!114 &7882825688870581161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843599008491110759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dce198e3c8a05b4eb13f855fbccac16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointsToAward: 1
 --- !u!4 &1846990797033946719 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5234292598949528594, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}

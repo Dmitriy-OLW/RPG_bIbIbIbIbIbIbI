@@ -8,7 +8,7 @@ namespace Utilities
         [SerializeField] private GameObject _objectToDisable;
         [SerializeField] private int _maxCount = 25;
         
-        private void Update()
+        private void FixedUpdate()
         {
             if (_parent == null || _objectToDisable == null)
                 return;
