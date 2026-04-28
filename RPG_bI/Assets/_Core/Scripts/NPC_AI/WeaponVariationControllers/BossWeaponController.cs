@@ -11,6 +11,9 @@ namespace Enemy.Weapons
     {
         public WeaponBase Weapon;
         public StrategyData StrategyData;
+        public GameObject WeaponVisualObject;
+        public bool CanBePrimary = true;
+        public bool CanBeSecondary = true;
     }
     
     public class BossWeaponController : EnemyWeaponController
@@ -21,33 +24,82 @@ namespace Enemy.Weapons
         [Header("Boss Settings")]
         [SerializeField] private bool _initializeFromConfigList = false;
         
+        private GameObject _currentPrimaryVisual;
+        private GameObject _currentSecondaryVisual;
+        
+        private void Start()
+        {
+            DisableAllVisualObjects();
+            SetupWeapons();
+        }
+        
+        private void DisableAllVisualObjects()
+        {
+            foreach (var config in _weaponConfigs)
+            {
+                if (config.WeaponVisualObject != null)
+                    config.WeaponVisualObject.SetActive(false);
+            }
+        }
+        
         protected void SetupWeapons()
         {
             if (_initializeFromConfigList && _weaponConfigs.Count >= 2)
             {
-                SetPrimaryWeapon(_weaponConfigs[0].Weapon, _weaponConfigs[0].StrategyData);
-                SetSecondaryWeapon(_weaponConfigs[1].Weapon, _weaponConfigs[1].StrategyData);
+                WeaponConfig validPrimary = GetFirstValidConfig(true);
+                WeaponConfig validSecondary = GetFirstValidConfig(false);
+                
+                if (validPrimary != null && validSecondary != null)
+                {
+                    SetPrimaryWeapon(validPrimary.Weapon, validPrimary.StrategyData, validPrimary.WeaponVisualObject);
+                    SetSecondaryWeapon(validSecondary.Weapon, validSecondary.StrategyData, validSecondary.WeaponVisualObject);
+                }
             }
         }
         
-        public void SetPrimaryWeapon(WeaponBase weapon, StrategyData strategyData = null)
+        private WeaponConfig GetFirstValidConfig(bool isPrimary)
+        {
+            foreach (var config in _weaponConfigs)
+            {
+                if (isPrimary && config.CanBePrimary)
+                    return config;
+                if (!isPrimary && config.CanBeSecondary)
+                    return config;
+            }
+            return null;
+        }
+        
+        public void SetPrimaryWeapon(WeaponBase weapon, StrategyData strategyData = null, GameObject visualObject = null)
         {
             if (strategyData != null)
                 _primaryStrategy = strategyData;
             
+            if (visualObject != null)
+            {
+                DisableAllVisualObjects();
+                _currentPrimaryVisual = visualObject;
+                _currentPrimaryVisual.SetActive(true);
+            }
             
             _weaponController?.SetWeapon(WeaponStateActive.PrimaryActive, weapon);
         }
         
-        public void SetSecondaryWeapon(WeaponBase weapon, StrategyData strategyData = null)
+        public void SetSecondaryWeapon(WeaponBase weapon, StrategyData strategyData = null, GameObject visualObject = null)
         {
             if (strategyData != null)
                 _secondaryStrategy = strategyData;
             
+            if (visualObject != null)
+            {
+                if (_currentSecondaryVisual != null)
+                    _currentSecondaryVisual.SetActive(false);
+                    
+                _currentSecondaryVisual = visualObject;
+                _currentSecondaryVisual.SetActive(true);
+            }
             
             _weaponController?.SetWeapon(WeaponStateActive.SecondaryActive, weapon);
         }
-        
         
         public void SetWeaponFromConfig(int configIndex, bool isPrimary)
         {
@@ -56,13 +108,19 @@ namespace Enemy.Weapons
             
             var config = _weaponConfigs[configIndex];
             
+            if (isPrimary && !config.CanBePrimary)
+                return;
+            
+            if (!isPrimary && !config.CanBeSecondary)
+                return;
+            
             if (isPrimary)
             {
-                SetPrimaryWeapon(config.Weapon, config.StrategyData);
+                SetPrimaryWeapon(config.Weapon, config.StrategyData, config.WeaponVisualObject);
             }
             else
             {
-                SetSecondaryWeapon(config.Weapon, config.StrategyData);
+                SetSecondaryWeapon(config.Weapon, config.StrategyData, config.WeaponVisualObject);
             }
         }
         
@@ -76,7 +134,20 @@ namespace Enemy.Weapons
             if (index >= 0 && index < _weaponConfigs.Count)
                 return _weaponConfigs[index];
 
-                return null;
+            return null;
+        }
+        
+        public List<int> GetValidConfigIndices(bool isPrimary)
+        {
+            List<int> validIndices = new List<int>();
+            for (int i = 0; i < _weaponConfigs.Count; i++)
+            {
+                if (isPrimary && _weaponConfigs[i].CanBePrimary)
+                    validIndices.Add(i);
+                else if (!isPrimary && _weaponConfigs[i].CanBeSecondary)
+                    validIndices.Add(i);
+            }
+            return validIndices;
         }
     }
 }

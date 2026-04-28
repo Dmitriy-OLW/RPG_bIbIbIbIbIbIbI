@@ -91,7 +91,21 @@ namespace Enemy.Boss
         
         private bool CanSwitch()
         {
-            return !_isSwitching && _currentSwitchTimer <= 0f && _weaponController.GetConfigCount() >= 2;
+            return !_isSwitching && _currentSwitchTimer <= 0f && GetAvailableConfigCount() >= 2;
+        }
+        
+        private int GetAvailableConfigCount()
+        {
+            if (_weaponController == null) return 0;
+            
+            int count = 0;
+            for (int i = 0; i < _weaponController.GetConfigCount(); i++)
+            {
+                var config = _weaponController.GetConfig(i);
+                if (config != null && (config.CanBePrimary || config.CanBeSecondary))
+                    count++;
+            }
+            return count;
         }
         
         private void OnHitReceived()
@@ -143,7 +157,7 @@ namespace Enemy.Boss
         
         private void PerformRandomSwitch()
         {
-            if (_weaponController.GetConfigCount() < 2) return;
+            if (_weaponController == null) return;
             
             _isSwitching = true;
             
@@ -155,7 +169,8 @@ namespace Enemy.Boss
                 int currentPrimaryIndex = GetCurrentPrimaryConfigIndex();
                 int currentSecondaryIndex = GetCurrentSecondaryConfigIndex();
                 
-                if (currentPrimaryIndex >= 0 && currentSecondaryIndex >= 0)
+                if (currentPrimaryIndex >= 0 && currentSecondaryIndex >= 0 && 
+                    CanBePrimary(currentSecondaryIndex) && CanBeSecondary(currentPrimaryIndex))
                 {
                     primaryConfigIndex = currentSecondaryIndex;
                     secondaryConfigIndex = currentPrimaryIndex;
@@ -164,24 +179,30 @@ namespace Enemy.Boss
             
             if (primaryConfigIndex == -1 && _useRandomConfigForPrimary)
             {
-                primaryConfigIndex = Random.Range(0, _weaponController.GetConfigCount());
+                primaryConfigIndex = GetRandomValidConfigIndex(true);
             }
             
             if (secondaryConfigIndex == -1 && _useRandomConfigForSecondary)
             {
-                do
+                secondaryConfigIndex = GetRandomValidConfigIndex(false);
+                
+                if (secondaryConfigIndex == primaryConfigIndex)
                 {
-                    secondaryConfigIndex = Random.Range(0, _weaponController.GetConfigCount());
-                } 
-                while (secondaryConfigIndex == primaryConfigIndex);
+                    int attempts = 0;
+                    while (secondaryConfigIndex == primaryConfigIndex && attempts < 10)
+                    {
+                        secondaryConfigIndex = GetRandomValidConfigIndex(false);
+                        attempts++;
+                    }
+                }
             }
             
-            if (primaryConfigIndex >= 0)
+            if (primaryConfigIndex >= 0 && CanBePrimary(primaryConfigIndex))
             {
                 _weaponController.SetWeaponFromConfig(primaryConfigIndex, true);
             }
             
-            if (secondaryConfigIndex >= 0 && secondaryConfigIndex != primaryConfigIndex)
+            if (secondaryConfigIndex >= 0 && secondaryConfigIndex != primaryConfigIndex && CanBeSecondary(secondaryConfigIndex))
             {
                 _weaponController.SetWeaponFromConfig(secondaryConfigIndex, false);
             }
@@ -190,18 +211,38 @@ namespace Enemy.Boss
             _isSwitching = false;
         }
         
+        private bool CanBePrimary(int configIndex)
+        {
+            var config = _weaponController.GetConfig(configIndex);
+            return config != null && config.CanBePrimary;
+        }
+        
+        private bool CanBeSecondary(int configIndex)
+        {
+            var config = _weaponController.GetConfig(configIndex);
+            return config != null && config.CanBeSecondary;
+        }
+        
+        private int GetRandomValidConfigIndex(bool isPrimary)
+        {
+            List<int> validIndices = _weaponController.GetValidConfigIndices(isPrimary);
+            if (validIndices.Count == 0) return -1;
+            return validIndices[Random.Range(0, validIndices.Count)];
+        }
+        
         public void SwitchToSpecificConfigs(int primaryIndex, int secondaryIndex)
         {
             if (!CanSwitch()) return;
             
             _isSwitching = true;
             
-            if (primaryIndex >= 0 && primaryIndex < _weaponController.GetConfigCount())
+            if (primaryIndex >= 0 && primaryIndex < _weaponController.GetConfigCount() && CanBePrimary(primaryIndex))
             {
                 _weaponController.SetWeaponFromConfig(primaryIndex, true);
             }
             
-            if (secondaryIndex >= 0 && secondaryIndex < _weaponController.GetConfigCount() && secondaryIndex != primaryIndex)
+            if (secondaryIndex >= 0 && secondaryIndex < _weaponController.GetConfigCount() && 
+                secondaryIndex != primaryIndex && CanBeSecondary(secondaryIndex))
             {
                 _weaponController.SetWeaponFromConfig(secondaryIndex, false);
             }
@@ -218,15 +259,25 @@ namespace Enemy.Boss
             int currentPrimaryIndex = GetCurrentPrimaryConfigIndex();
             int currentSecondaryIndex = GetCurrentSecondaryConfigIndex();
             
-            int newPrimaryIndex = (currentPrimaryIndex + 1) % configCount;
-            int newSecondaryIndex = (currentSecondaryIndex + 1) % configCount;
+            int newPrimaryIndex = GetNextValidConfig(currentPrimaryIndex, true);
+            int newSecondaryIndex = GetNextValidConfig(currentSecondaryIndex, false);
             
             if (newSecondaryIndex == newPrimaryIndex)
             {
-                newSecondaryIndex = (newSecondaryIndex + 1) % configCount;
+                newSecondaryIndex = GetNextValidConfig(newSecondaryIndex, false);
             }
             
             SwitchToSpecificConfigs(newPrimaryIndex, newSecondaryIndex);
+        }
+        
+        private int GetNextValidConfig(int currentIndex, bool isPrimary)
+        {
+            List<int> validIndices = _weaponController.GetValidConfigIndices(isPrimary);
+            if (validIndices.Count == 0) return -1;
+            
+            int currentPos = validIndices.IndexOf(currentIndex);
+            int nextPos = (currentPos + 1) % validIndices.Count;
+            return validIndices[nextPos];
         }
         
         private int GetCurrentPrimaryConfigIndex()
@@ -237,7 +288,7 @@ namespace Enemy.Boss
             for (int i = 0; i < _weaponController.GetConfigCount(); i++)
             {
                 WeaponConfig config = _weaponController.GetConfig(i);
-                if (config != null && config.Weapon == currentWeapon)
+                if (config != null && config.Weapon == currentWeapon && config.CanBePrimary)
                 {
                     return i;
                 }
@@ -253,7 +304,7 @@ namespace Enemy.Boss
             for (int i = 0; i < _weaponController.GetConfigCount(); i++)
             {
                 WeaponConfig config = _weaponController.GetConfig(i);
-                if (config != null && config.Weapon == currentWeapon)
+                if (config != null && config.Weapon == currentWeapon && config.CanBeSecondary)
                 {
                     return i;
                 }
