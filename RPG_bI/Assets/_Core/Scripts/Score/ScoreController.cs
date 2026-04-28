@@ -9,6 +9,7 @@ namespace Score
         public ScoreController(ScoreView view)
         {
             _view = view;
+            ScoreManager.ResetScore();
             ScoreManager.OnScoreChanged += UpdateScore;
             UpdateScore(ScoreManager.CurrentScore);
         }
