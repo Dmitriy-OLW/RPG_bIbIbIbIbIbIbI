@@ -76,7 +76,7 @@ namespace Enemy.Boss
                 _currentSwitchTimer -= Time.deltaTime;
             }
             
-            if (_enableTimerSwitch)
+            if (_enableTimerSwitch && _hasReceivedFirstHit)
             {
                 _nextTimerSwitch -= Time.deltaTime;
                 

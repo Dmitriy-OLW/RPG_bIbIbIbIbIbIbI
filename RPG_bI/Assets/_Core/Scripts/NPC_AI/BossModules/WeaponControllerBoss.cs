@@ -9,7 +9,6 @@ namespace Weapons
         {
             if (_currentWeaponState == WeaponStateActive.Deactive)
             {
-                Debug.Log("VAR");
                 SetRandomAnimationBasedOnWeaponType(WeaponStateActive.PrimaryActive);
                 _animator.SetTrigger(PrimaryAttack);
                 _currentWeaponState = WeaponStateActive.PrimaryActive;
@@ -20,7 +19,6 @@ namespace Weapons
         {
             if (_currentWeaponState == WeaponStateActive.Deactive)
             {
-                Debug.Log("324424234123421`32134");
                 SetRandomAnimationBasedOnWeaponType(WeaponStateActive.SecondaryActive);
                 _animator.SetTrigger(SecondaryAttack);
                 _currentWeaponState = WeaponStateActive.SecondaryActive;
@@ -33,12 +31,10 @@ namespace Weapons
             
             if (weaponType == EnemyType.Melee)
             {
-                Debug.Log("11111111111111111111");
                 _animator.SetBool(RandomAttack, false);
             }
             else if (weaponType == EnemyType.Ranged)
             {
-                Debug.Log("22222222222222222222222222222222");
                 _animator.SetBool(RandomAttack, true);
             }
         }
