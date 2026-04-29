@@ -48,6 +48,8 @@ namespace EntryPoint.Entrypoints
                 _audioSettingsController,
                 _graphicsSettingsController
             );
+            
+            audioSaveService.LoadSettings();
         }
 
 
