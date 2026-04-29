@@ -12,16 +12,16 @@ namespace Weapons
     }
     public class WeaponController : MonoBehaviour
     {
-        [Header("Weapons")] [SerializeField] private WeaponBase _primaryWeapon;
-        [SerializeField] private WeaponBase _secondaryWeapon;
+        [Header("Weapons")] [SerializeField] protected WeaponBase _primaryWeapon;
+        [SerializeField] protected WeaponBase _secondaryWeapon;
 
-        private Animator _animator;
-        private BaseInputReader _inputReader;
-        private WeaponStateActive _currentWeaponState = WeaponStateActive.Deactive;
+        protected Animator _animator;
+        protected BaseInputReader _inputReader;
+        protected WeaponStateActive _currentWeaponState = WeaponStateActive.Deactive;
 
-        private static readonly int PrimaryAttack = Animator.StringToHash("PrimaryAttack");
-        private static readonly int SecondaryAttack = Animator.StringToHash("SecondaryAttack");
-        private static readonly int RandomAttack = Animator.StringToHash("RandomAttack");
+        protected static readonly int PrimaryAttack = Animator.StringToHash("PrimaryAttack");
+        protected static readonly int SecondaryAttack = Animator.StringToHash("SecondaryAttack");
+        protected static readonly int RandomAttack = Animator.StringToHash("RandomAttack");
 
         private void Awake()
         {
@@ -84,7 +84,7 @@ namespace Weapons
             }
         }
 
-        private void OnPrimaryAttack()
+        protected virtual void OnPrimaryAttack()
         {
             if (_currentWeaponState == WeaponStateActive.Deactive)
             {
@@ -94,7 +94,7 @@ namespace Weapons
             }
         }
 
-        private void OnSecondaryAttack()
+        protected virtual void OnSecondaryAttack()
         {
             if (_currentWeaponState == WeaponStateActive.Deactive)
             {

@@ -24,12 +24,12 @@ namespace Enemy.Weapons
         [Header("Boss Settings")]
         [SerializeField] private bool _initializeFromConfigList = false;
         
-        private GameObject _currentPrimaryVisual;
-        private GameObject _currentSecondaryVisual;
+        [SerializeField] private GameObject _currentPrimaryVisual;
+        [SerializeField] private GameObject _currentSecondaryVisual;
         
         private void Start()
         {
-            DisableAllVisualObjects();
+            //DisableAllVisualObjects();
             SetupWeapons();
         }
         
@@ -44,7 +44,10 @@ namespace Enemy.Weapons
         
         protected void SetupWeapons()
         {
-            if (_initializeFromConfigList && _weaponConfigs.Count >= 2)
+            if (!_initializeFromConfigList)
+                return;
+            
+            if (_weaponConfigs.Count >= 2)
             {
                 WeaponConfig validPrimary = GetFirstValidConfig(true);
                 WeaponConfig validSecondary = GetFirstValidConfig(false);
@@ -76,7 +79,10 @@ namespace Enemy.Weapons
             
             if (visualObject != null)
             {
-                DisableAllVisualObjects();
+                if (_currentPrimaryVisual != null)
+                    _currentPrimaryVisual.SetActive(false);
+                
+                // DisableAllVisualObjects();
                 _currentPrimaryVisual = visualObject;
                 _currentPrimaryVisual.SetActive(true);
             }
@@ -95,7 +101,7 @@ namespace Enemy.Weapons
                     _currentSecondaryVisual.SetActive(false);
                     
                 _currentSecondaryVisual = visualObject;
-                _currentSecondaryVisual.SetActive(true);
+                _currentSecondaryVisual.SetActive(false);
             }
             
             _weaponController?.SetWeapon(WeaponStateActive.SecondaryActive, weapon);

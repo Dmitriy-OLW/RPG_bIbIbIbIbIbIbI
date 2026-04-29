@@ -35,6 +35,7 @@ namespace Enemy.Boss
         private bool _hasTriggeredThresholdSwitch;
         private List<float> _triggeredThresholds = new List<float>();
         private bool _isSwitching;
+        private bool _hasReceivedFirstHit;
         
         private void Awake()
         {
@@ -50,6 +51,7 @@ namespace Enemy.Boss
             if (_healthController != null)
             {
                 _healthController.OnHit += OnHitReceived;
+                _healthController.OnHit += OnFirstHitHandler;
             }
         }
         
@@ -58,6 +60,7 @@ namespace Enemy.Boss
             if (_healthController != null)
             {
                 _healthController.OnHit -= OnHitReceived;
+                _healthController.OnHit -= OnFirstHitHandler;
             }
         }
         
@@ -90,8 +93,8 @@ namespace Enemy.Boss
         }
         
         private bool CanSwitch()
-        {
-            return !_isSwitching && _currentSwitchTimer <= 0f && GetAvailableConfigCount() >= 2;
+        {   
+            return _hasReceivedFirstHit && !_isSwitching && _currentSwitchTimer <= 0f && GetAvailableConfigCount() >= 2;
         }
         
         private int GetAvailableConfigCount()
@@ -116,6 +119,14 @@ namespace Enemy.Boss
             if (Random.value < _hitSwitchChance)
             {
                 PerformRandomSwitch();
+            }
+        }
+        
+        private void OnFirstHitHandler()
+        {
+            if (!_hasReceivedFirstHit)
+            {
+                _hasReceivedFirstHit = true;
             }
         }
         
