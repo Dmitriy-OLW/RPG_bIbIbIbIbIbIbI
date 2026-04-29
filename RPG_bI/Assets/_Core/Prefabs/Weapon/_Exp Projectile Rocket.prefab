@@ -221,8 +221,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7607970831399229636, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7607970831399229636, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
       propertyPath: m_AngularDrag
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -7607970831399229636, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2602262076824087006, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
       propertyPath: m_Enabled
@@ -314,7 +322,7 @@ MonoBehaviour:
   _explosionDelay: 3
   _targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   _explosionEffect: {fileID: 1056904543853562, guid: c3f8a0eb9666544488f4c8c249d98294, type: 3}
   _effectDuration: 5
   _impactEffect: {fileID: 0}

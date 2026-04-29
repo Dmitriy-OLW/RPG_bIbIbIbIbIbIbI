@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a22409ddc77d4dad9b34f9b51e89d5ca, type: 3}
   m_Name: RangeStrategyData_Boss_Exp
   m_EditorClassIdentifier: 
-  _aggressionRange: 20
-  _attackRange: 15
-  _preferredDistance: 12
+  _aggressionRange: 15
+  _attackRange: 10
+  _preferredDistance: 8
   _attackCooldown: 10

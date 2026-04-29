@@ -818,7 +818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageDataSO: {fileID: 11400000, guid: e549374f6a3cdd640af6b65c838c0606, type: 2}
   _enemyType: 1
-  _projectilePrefab: {fileID: 4703198258262496046, guid: d1022b74841ad704e92d6ccaca7ac465, type: 3}
+  _projectilePrefab: {fileID: 4703198258262496046, guid: ba6ba8f7b68c2bb4ba4473e46a1b34f7, type: 3}
   _shootPoint: {fileID: 6698988956909391671}
   _projectileSpeed: 10
   _chargeTime: 2
