@@ -2,7 +2,7 @@
 using Weapons;
 using Character.InputController;
 
-public class WeaponController : MonoBehaviour
+namespace Weapons
 {
     public enum WeaponStateActive
     {
@@ -10,76 +10,104 @@ public class WeaponController : MonoBehaviour
         PrimaryActive,
         SecondaryActive
     }
-    
-    [Header("Weapons")]
-    [SerializeField] private WeaponBase _primaryWeapon;
-    [SerializeField] private WeaponBase _secondaryWeapon;
-    
-    private Animator _animator;
-    private BaseInputReader _inputReader;
-    private WeaponStateActive _currentWeaponState = WeaponStateActive.Deactive;
-
-    private static readonly int PrimaryAttack = Animator.StringToHash("PrimaryAttack");
-    private static readonly int SecondaryAttack = Animator.StringToHash("SecondaryAttack");
-    private static readonly int RandomAttack = Animator.StringToHash("RandomAttack");
-
-    private void Awake()
+    public class WeaponController : MonoBehaviour
     {
-        _inputReader = GetComponent<BaseInputReader>();
-        _animator = GetComponent<Animator>();
-    }
+        [Header("Weapons")] [SerializeField] protected WeaponBase _primaryWeapon;
+        [SerializeField] protected WeaponBase _secondaryWeapon;
 
-    private void OnEnable()
-    {
-        if (_inputReader != null)
+        protected Animator _animator;
+        protected BaseInputReader _inputReader;
+        protected WeaponStateActive _currentWeaponState = WeaponStateActive.Deactive;
+
+        protected static readonly int PrimaryAttack = Animator.StringToHash("PrimaryAttack");
+        protected static readonly int SecondaryAttack = Animator.StringToHash("SecondaryAttack");
+        protected static readonly int RandomAttack = Animator.StringToHash("RandomAttack");
+
+        private void Awake()
         {
-            _inputReader.OnPrimaryAttackActivated += OnPrimaryAttack;
-            _inputReader.OnSecondaryAttackActivated += OnSecondaryAttack;
+            _inputReader = GetComponent<BaseInputReader>();
+            _animator = GetComponent<Animator>();
         }
-    }
 
-    private void OnDisable()
-    {
-        if (_inputReader != null)
+        private void OnEnable()
         {
-            _inputReader.OnPrimaryAttackActivated -= OnPrimaryAttack;
-            _inputReader.OnSecondaryAttackActivated -= OnSecondaryAttack;
+            if (_inputReader != null)
+            {
+                _inputReader.OnPrimaryAttackActivated += OnPrimaryAttack;
+                _inputReader.OnSecondaryAttackActivated += OnSecondaryAttack;
+            }
         }
-    }
-    
-    public void OnDamageFrame()
-    {
-        if(_currentWeaponState == WeaponStateActive.PrimaryActive)
-            _primaryWeapon.Attack();
-        else if(_currentWeaponState == WeaponStateActive.SecondaryActive)
-            _secondaryWeapon.Attack();
-        
-        _currentWeaponState = WeaponStateActive.Deactive;
-    }
 
-    private void OnPrimaryAttack()
-    {
-        if (_currentWeaponState == WeaponStateActive.Deactive)
+        private void OnDisable()
         {
-            SetRandomAnimation();
-            _animator.SetTrigger(PrimaryAttack);
-            _currentWeaponState = WeaponStateActive.PrimaryActive;
+            if (_inputReader != null)
+            {
+                _inputReader.OnPrimaryAttackActivated -= OnPrimaryAttack;
+                _inputReader.OnSecondaryAttackActivated -= OnSecondaryAttack;
+            }
         }
-    }
 
-    private void OnSecondaryAttack()
-    {
-        if (_currentWeaponState == WeaponStateActive.Deactive)
+        // Метод для вызова из анаматора
+        public void OnDamageFrame()
         {
-            SetRandomAnimation();
-            _animator.SetTrigger(SecondaryAttack);
-            _currentWeaponState = WeaponStateActive.SecondaryActive;
-        }
-    }
+            if (_currentWeaponState == WeaponStateActive.PrimaryActive)
+                _primaryWeapon.Attack();
+            else if (_currentWeaponState == WeaponStateActive.SecondaryActive)
+                _secondaryWeapon.Attack();
 
-    private void SetRandomAnimation()
-    {
-        bool randomAttackValue = Random.value > 0.5f;
-        _animator.SetBool(RandomAttack, randomAttackValue);
+            _currentWeaponState = WeaponStateActive.Deactive;
+        }
+
+        public EnemyType GetWeaponType(WeaponStateActive weaponSlot)
+        {
+            switch (weaponSlot)
+            {
+                case WeaponStateActive.PrimaryActive:
+                    return _primaryWeapon != null ? _primaryWeapon.EnemyType : EnemyType.Melee;
+                case WeaponStateActive.SecondaryActive:
+                    return _secondaryWeapon != null ? _secondaryWeapon.EnemyType : EnemyType.Melee;
+                default:
+                    return EnemyType.Melee;
+            }
+        }
+
+        public void SetWeapon(WeaponStateActive weaponSlot, WeaponBase weapon)
+        {
+            switch (weaponSlot)
+            {
+                case WeaponStateActive.PrimaryActive:
+                    _primaryWeapon = weapon;
+                    break;
+                case WeaponStateActive.SecondaryActive:
+                    _secondaryWeapon = weapon;
+                    break;
+            }
+        }
+
+        protected virtual void OnPrimaryAttack()
+        {
+            if (_currentWeaponState == WeaponStateActive.Deactive)
+            {
+                SetRandomAnimation();
+                _animator.SetTrigger(PrimaryAttack);
+                _currentWeaponState = WeaponStateActive.PrimaryActive;
+            }
+        }
+
+        protected virtual void OnSecondaryAttack()
+        {
+            if (_currentWeaponState == WeaponStateActive.Deactive)
+            {
+                SetRandomAnimation();
+                _animator.SetTrigger(SecondaryAttack);
+                _currentWeaponState = WeaponStateActive.SecondaryActive;
+            }
+        }
+
+        private void SetRandomAnimation()
+        {
+            bool randomAttackValue = Random.value > 0.5f;
+            _animator.SetBool(RandomAttack, randomAttackValue);
+        }
     }
 }

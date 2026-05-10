@@ -8,6 +8,7 @@ namespace Weapons
     {
         [SerializeField] protected DamageDataSO _damageDataSO;
         
+        public abstract EnemyType EnemyType { get; }
         public abstract void Attack();
     }
 }

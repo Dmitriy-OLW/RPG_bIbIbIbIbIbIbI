@@ -5,10 +5,12 @@ namespace Weapons
 {
     public class MeleeWeapon : WeaponBase
     {
+        [SerializeField] private EnemyType _enemyType = EnemyType.Melee;
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private Vector3 _attackBoxSize = Vector3.one;
         [SerializeField] private Transform _attackPoint;
 
+        public override EnemyType EnemyType => _enemyType;
         public override void Attack()
         {
             if (_attackPoint == null || _damageDataSO.DamageList == null || _damageDataSO.DamageList.Count == 0)

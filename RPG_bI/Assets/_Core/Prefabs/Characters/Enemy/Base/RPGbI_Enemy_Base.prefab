@@ -104,6 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1466405188745315996}
   - component: {fileID: 1984723254995722709}
+  - component: {fileID: 8201252215813204458}
   m_Layer: 0
   m_Name: ProjectilePoint
   m_TagString: Untagged
@@ -143,6 +144,21 @@ MonoBehaviour:
   _maxHorizontalAngle: 20
   _maxVerticalAngle: 20
   _rotationSpeed: 5
+  _targetHeightOffset: 1
+--- !u!114 &8201252215813204458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5140287515940511980}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289d5f534d30462cb5ec8057ea797731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visionController: {fileID: 6610847858592354683}
+  _shootPoint: {fileID: 1466405188745315996}
   _targetHeightOffset: 1
 --- !u!1 &6840560110625604674
 GameObject:
@@ -672,6 +688,9 @@ PrefabInstance:
       addedObject: {fileID: 5228369064992375180}
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 3087089164302758091}
+    - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4296301768260088168}
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
@@ -700,6 +719,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 367740121737191455}
+    - targetCorrespondingSourceObject: {fileID: 6536752684156091178, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7882825688870581161}
   m_SourcePrefab: {fileID: 100100000, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}
 --- !u!4 &71706268855458781 stripped
 Transform:
@@ -770,6 +792,23 @@ MonoBehaviour:
   _rearRayPos: {fileID: 6877308322404699527}
   _frontRayPos: {fileID: 6845956762245195914}
   _targetLockOnPos: {fileID: 7072933291137410577}
+--- !u!114 &3087089164302758091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843599008491110759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0e1ecda50a4abfb77522a6a8a74c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _primaryStrategy: {fileID: 11400000, guid: a92599e6fc9241345b278a7e33a3868f, type: 2}
+  _secondaryStrategy: {fileID: 11400000, guid: 713e63b00a4d0c84babe567ea94ff0b3, type: 2}
+  _preferredAttack: 0
+  _weaponController: {fileID: 4296301768260088168}
+  _onlyPreferredAttack: 0
 --- !u!114 &4296301768260088168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,6 +836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageDataSO: {fileID: 11400000, guid: 2c5a2c53890ca7445ac46c0c7813e9f8, type: 2}
+  _enemyType: 0
   _targetLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -815,6 +855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageDataSO: {fileID: 11400000, guid: 2c5a2c53890ca7445ac46c0c7813e9f8, type: 2}
+  _enemyType: 1
   _projectilePrefab: {fileID: 7215435939982588545, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
   _shootPoint: {fileID: 1466405188745315996}
   _projectileSpeed: 20
@@ -916,8 +957,14 @@ MonoBehaviour:
   _vision: {fileID: 6610847858592354683}
   _targeting: {fileID: 7069637522365589005}
   _healthController: {fileID: 592665063635878954}
-  _enemyType: 0
   _patrolPoints: []
+  _activateWithOutSpawner: 0
+  _fleeHealthThreshold: 0.3
+  _restChance: 0.1
+  _restCooldown: 60
+  _canFlee: 1
+  _canSelfHeal: 1
+  _allowRepeatFlee: 0
 --- !u!114 &367740121737191455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,6 +981,19 @@ MonoBehaviour:
   _pathUpdateRate: 0.1
   _drawDebugPath: 1
   _agent: {fileID: 9164672045241844528}
+--- !u!114 &7882825688870581161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843599008491110759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dce198e3c8a05b4eb13f855fbccac16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointsToAward: 1
 --- !u!4 &1846990797033946719 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5234292598949528594, guid: 8e120e0631295bf4d8304ebac8213d2f, type: 3}

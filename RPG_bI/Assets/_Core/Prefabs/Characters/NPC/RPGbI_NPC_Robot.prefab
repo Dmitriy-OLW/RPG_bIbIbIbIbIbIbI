@@ -404,6 +404,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6054521463128377125, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
+      propertyPath: _canSelfHeal
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8525008697616563162, guid: 8ba90eb7324edd449aee610e51a2de9b, type: 3}
       propertyPath: m_Name
       value: RPGbI_NPC_Robot

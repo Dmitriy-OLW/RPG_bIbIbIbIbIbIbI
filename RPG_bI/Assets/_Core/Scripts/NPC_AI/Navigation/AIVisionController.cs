@@ -18,12 +18,21 @@ namespace Enemy.Navigation
         
         private Transform _currentTarget;
         private float _distanceToTarget;
+        private Vector3 _lastKnownPosition;
+        private float _lastSeenTime;
+        private bool _hasLastKnownPosition;
+        private Transform _lastSeenTarget;
 
         public Action<Transform> OnTargetDetected;
+        public Action OnTargetLost;
         
         public Transform CurrentTarget => _currentTarget;
         public float DistanceToTarget => _distanceToTarget;
         public bool HasTarget => _currentTarget != null;
+        public Vector3 LastKnownPosition => _lastKnownPosition;
+        public bool HasLastKnownPosition => _hasLastKnownPosition;
+        public float LastSeenTime => _lastSeenTime;
+        public Transform LastSeenTarget => _lastSeenTarget;
 
         private void Update()
         {
@@ -114,16 +123,36 @@ namespace Enemy.Navigation
 
         private void SetTarget(Transform target, float distance)
         {
-            if (_currentTarget != target)
+            bool isNewTarget = _currentTarget != target;
+            
+            if (isNewTarget)
             {
                 _currentTarget = target;
                 OnTargetDetected?.Invoke(target);
             }
+            
             _distanceToTarget = distance;
+            
+            if (target != null)
+            {
+                _lastKnownPosition = target.position;
+                _lastSeenTime = Time.time;
+                _hasLastKnownPosition = true;
+                _lastSeenTarget = target;
+            }
         }
         
         private void ClearTarget()
         {
+            if (_currentTarget != null)
+            {
+                _lastKnownPosition = _currentTarget.position;
+                _lastSeenTime = Time.time;
+                _hasLastKnownPosition = true;
+                
+                OnTargetLost?.Invoke();
+            }
+            
             _currentTarget = null;
             _distanceToTarget = float.MaxValue;
         }
@@ -131,6 +160,32 @@ namespace Enemy.Navigation
         public bool IsTargetInRange(float range)
         {
             return HasTarget && _distanceToTarget <= range;
+        }
+        
+        public void ClearLastKnownPosition()
+        {
+            _hasLastKnownPosition = false;
+            _lastKnownPosition = Vector3.zero;
+            _lastSeenTime = 0f;
+            _lastSeenTarget = null; 
+        }
+        
+        public void ClearLastSeenTarget()
+        {
+            _lastSeenTarget = null;
+        }
+        
+        public float GetTimeSinceLastSeen()
+        {
+            if (!_hasLastKnownPosition)
+                return float.MaxValue;
+                
+            return Time.time - _lastSeenTime;
+        }
+        
+        public bool IsLastKnownPositionRecent(float maxAge = 30f)
+        {
+            return _hasLastKnownPosition && (Time.time - _lastSeenTime) <= maxAge;
         }
         
 #if UNITY_EDITOR
@@ -156,6 +211,17 @@ namespace Enemy.Navigation
             
             UnityEditor.Handles.color = new Color(1, 1, 0, 0.1f);
             UnityEditor.Handles.DrawSolidArc(_visionPoint.position, Vector3.up, viewAngle01, _viewAngle, _viewRadius);
+            
+            // Draw last known position
+            if (_hasLastKnownPosition)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawWireSphere(_lastKnownPosition, 0.5f);
+                Gizmos.DrawLine(_visionPoint.position, _lastKnownPosition);
+                
+                UnityEditor.Handles.Label(_lastKnownPosition + Vector3.up * 0.5f, 
+                    $"Last Seen: {Time.time - _lastSeenTime:F1}s ago");
+            }
             
             Collider[] targetsInRadius = Physics.OverlapSphere(_visionPoint.position, _viewRadius, _targetMask);
             

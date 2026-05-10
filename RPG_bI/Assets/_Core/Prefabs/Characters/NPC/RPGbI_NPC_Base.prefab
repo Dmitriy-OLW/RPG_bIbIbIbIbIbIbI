@@ -116,6 +116,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7882825688870581161, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _pointsToAward
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 7944778956682594172, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -163,6 +167,22 @@ PrefabInstance:
     - target: {fileID: 8155259869951285710, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _canSelfHeal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _restCooldown
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _allowRepeatFlee
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376049311449788116, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _fleeHealthThreshold
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 8443647286821552628, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive

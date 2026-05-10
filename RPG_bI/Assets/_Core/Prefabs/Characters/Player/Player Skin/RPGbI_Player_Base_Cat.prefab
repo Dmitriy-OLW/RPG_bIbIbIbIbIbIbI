@@ -71,6 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5208765841939597781}
+  - component: {fileID: 8361009905589822165}
   m_Layer: 0
   m_Name: ProjectilePoint
   m_TagString: Untagged
@@ -93,6 +94,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1925645503585961664}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8361009905589822165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065039197306263763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b08b92efa34f298ee99237f67a391a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lookTransform: {fileID: 5208765841939597781}
+  _entityLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _detectionRadius: 20
+  _maxHorizontalAngle: 30
+  _maxVerticalAngle: 30
+  _rotationSpeed: 1000
+  _targetHeightOffset: 1
+  _useSmoothRotation: 1
+  _showDebugGizmos: 1
+  _coneColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _verticalConeColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1 &8940989429207748609
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,6 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageDataSO: {fileID: 11400000, guid: a296b9928bb6478449c0c4e963463efd, type: 2}
+  _enemyType: 0
   _targetLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -676,6 +703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageDataSO: {fileID: 11400000, guid: c927bf6f7eeb9894c94c1c9ab296f3ba, type: 2}
+  _enemyType: 1
   _projectilePrefab: {fileID: 7215435939982588545, guid: a05aac402a37c1442a77fddfab01f2f2, type: 3}
   _shootPoint: {fileID: 5208765841939597781}
   _projectileSpeed: 20

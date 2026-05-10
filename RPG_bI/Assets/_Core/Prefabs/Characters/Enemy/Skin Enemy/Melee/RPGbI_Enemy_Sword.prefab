@@ -98,12 +98,44 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1466405188745315996, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.108
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466405188745315996, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.034
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466405188745315996, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.042
+      objectReference: {fileID: 0}
     - target: {fileID: 1612257107443620490, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _rotationSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _maxVerticalAngle
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984723254995722709, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _maxHorizontalAngle
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 2791058549148951944, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3087089164302758091, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _onlyPreferredAttack
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3091220009637227927, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
@@ -126,10 +158,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _damageDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: dc9f2907b244620468a8b9ea1c944051, type: 2}
+    - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _projectileSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4666795209713286597, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: _projectilePrefab
+      value: 
+      objectReference: {fileID: 4703198258262496046, guid: 82d4164bf2e53a641b9c312a17213971, type: 3}
     - target: {fileID: 5482141332262890313, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6205657561085084071, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6c590e1ed1fdac74290debe08e86aa7a, type: 2}
     - target: {fileID: 6230349065170489899, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_Name
       value: RPGbI_Enemy_Sword
@@ -201,6 +249,10 @@ PrefabInstance:
     - target: {fileID: 8155259869951285710, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8201252215813204458, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8443647286821552628, guid: 1bfb8c52fbbd8b74d850f69545601853, type: 3}
       propertyPath: m_IsActive

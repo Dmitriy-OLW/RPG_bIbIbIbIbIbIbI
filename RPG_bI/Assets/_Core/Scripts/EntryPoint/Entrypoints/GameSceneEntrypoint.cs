@@ -4,6 +4,7 @@ using EntryPoint.Entrypoints;
 using SceneManagement;
 using SaveSystem.MVC;
 using SaveSystem;
+using UnityEngine.SceneManagement;
 
 namespace EntryPoint.Entrypoints
 {
@@ -24,7 +25,7 @@ namespace EntryPoint.Entrypoints
             var global = GlobalEntrypoint.Instance;
             if (global == null) return;
 
-            string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            string sceneName = SceneManager.GetActiveScene().name;
             
             InitializeLevelData(global, sceneName);
             
