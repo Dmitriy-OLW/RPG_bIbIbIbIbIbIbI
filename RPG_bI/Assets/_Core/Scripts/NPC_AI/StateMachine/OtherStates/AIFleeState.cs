@@ -15,8 +15,7 @@ namespace Enemy.State
         private bool _hasReachedDestination;
         private float _waitTimer;
         private bool _isWaiting;
-        private bool _hasFledOnce; 
-        
+
         public AIFleeState(AIStateMachine stateMachine) : base(stateMachine)
         {
         }
@@ -125,7 +124,6 @@ namespace Enemy.State
                 
                 if (_waitTimer <= 0f)
                 {
-                    _hasFledOnce = true; 
                     _stateMachine.SwitchState(AIStateType.Patrol);
                 }
             }

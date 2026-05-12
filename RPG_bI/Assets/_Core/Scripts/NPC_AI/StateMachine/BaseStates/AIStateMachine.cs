@@ -42,7 +42,6 @@ namespace Enemy.State
         [SerializeField] private bool _canSelfHeal = false;
         [SerializeField] private bool _allowRepeatFlee = false;
         
-        private Dictionary<AIStateType, AIBaseState> _states;
         private AIBaseState _currentState;
         private AIStateType _currentStateType;
         private float _restTimer = 0f;
@@ -57,20 +56,11 @@ namespace Enemy.State
         public AIInputMapper InputMapper => _inputMapper;
         public AINavigationController Navigation => _navigation;
         public AIVisionController Vision => _vision;
-        public Targeting Targeting => _targeting;
         public Transform[] PatrolPoints => _patrolPoints;
-        public AIStateType CurrentStateType => _currentStateType;
-        public float FleeHealthThreshold => _fleeHealthThreshold;
-        public float RestChance => _restChance;
-        public float RestCooldown => _restCooldown;
-        public IEnemyWeaponProvider WeaponProvider => _weaponProvider;
         public bool IsUsingPrimaryAttack => _isUsingPrimaryAttack;
         public bool CanSelfHeal => _canSelfHeal;
         public HealthController HealthController => _healthController;
-        public bool HasFledOnce => _hasFledOnce;
-        public bool AllowRepeatFlee => _allowRepeatFlee;
-        public bool CanFlee => _canFlee;
-        
+
         private void Awake()
         {
             _weaponProvider = GetComponent<IEnemyWeaponProvider>();
@@ -80,25 +70,33 @@ namespace Enemy.State
                 _attackTransitionLogic = new AttackTransitionLogic(_weaponProvider, _vision);
             }
             
-            InitializeStates();
             SubscribeToEvents();
-        }
-
-        private void InitializeStates()
-        {
-            _states = new Dictionary<AIStateType, AIBaseState>
-            {
-                { AIStateType.Patrol, new AIPatrolState(this) },
-                { AIStateType.Rest, new AIRestState(this) },
-                { AIStateType.Aggression, new AIAggressionState(this) },
-                { AIStateType.Attack, CreateAttackState() },
-                { AIStateType.Search, new AISearchState(this) },
-                { AIStateType.Flee, new AIFleeState(this) },
-                { AIStateType.Dead, new AIDeadState(this) }
-            };
 
             if (_activateWithOutSpawner)
                 OnSpawn(transform.parent.position);
+        }
+
+        private AIBaseState CreateState(AIStateType stateType)
+        {
+            switch (stateType)
+            {
+                case AIStateType.Patrol:
+                    return new AIPatrolState(this);
+                case AIStateType.Rest:
+                    return new AIRestState(this);
+                case AIStateType.Aggression:
+                    return new AIAggressionState(this);
+                case AIStateType.Attack:
+                    return CreateAttackState();
+                case AIStateType.Search:
+                    return new AISearchState(this);
+                case AIStateType.Flee:
+                    return new AIFleeState(this);
+                case AIStateType.Dead:
+                    return new AIDeadState(this);
+                default:
+                    return null;
+            }
         }
 
         private AIBaseState CreateAttackState()
@@ -117,8 +115,6 @@ namespace Enemy.State
             
             _attackTransitionLogic.ResetRandomTimer();
             _isUsingPrimaryAttack = _attackTransitionLogic.DetermineAttackOnEnter(_isUsingPrimaryAttack);
-            
-            _states[AIStateType.Attack] = CreateAttackState();
         }
         
         public void CheckAttackSwitchDuring()
@@ -131,11 +127,10 @@ namespace Enemy.State
             {
                 _isUsingPrimaryAttack = !_isUsingPrimaryAttack;
                 
-                var newAttackState = CreateAttackState();
-                _states[AIStateType.Attack] = newAttackState;
-                
                 _currentState?.Exit();
-                _currentState = newAttackState;
+                _currentState = null;
+                
+                _currentState = CreateAttackState();
                 _currentState.Enter();
             }
         }
@@ -195,7 +190,7 @@ namespace Enemy.State
             if (!_canFlee)
                 return;
             
-            if (_hasFledOnce)
+            if (_hasFledOnce && !_allowRepeatFlee)
                 return;
         
             if (_healthController != null && _healthController.HealthPercentage <= _fleeHealthThreshold)
@@ -207,15 +202,17 @@ namespace Enemy.State
 
         public void SwitchState(AIStateType newStateType)
         {
-            if (!_states.ContainsKey(newStateType))
-                return;
-            
             if (_currentStateType == AIStateType.Attack && newStateType != AIStateType.Attack)
             {
                 _attackTransitionLogic?.ResetCloseInTimer();
             }
 
-            _currentState?.Exit();
+            if (_currentState != null)
+            {
+                _currentState.Exit();
+                _currentState = null;
+            }
+            
             _currentStateType = newStateType;
     
             if (newStateType == AIStateType.Attack)
@@ -223,8 +220,8 @@ namespace Enemy.State
                 DetermineAttackTypeOnEnter();
             }
     
-            _currentState = _states[newStateType];
-            _currentState.Enter();
+            _currentState = CreateState(newStateType);
+            _currentState?.Enter();
         }
         
         public void DetermineAttackTypeForAggression()
@@ -232,7 +229,6 @@ namespace Enemy.State
             if (_attackTransitionLogic == null) return;
             
             _isUsingPrimaryAttack = _attackTransitionLogic.DetermineAttackOnEnter(_isUsingPrimaryAttack);
-            _states[AIStateType.Attack] = CreateAttackState();
         }
         
         public StrategyData GetCurrentStrategy()
@@ -321,6 +317,12 @@ namespace Enemy.State
         
         public void OnDespawn()
         {
+            if (_currentState != null)
+            {
+                _currentState.Exit();
+                _currentState = null;
+            }
+
             gameObject.transform.parent.gameObject.SetActive(false);
             Destroy(gameObject.transform.parent.gameObject);
         }

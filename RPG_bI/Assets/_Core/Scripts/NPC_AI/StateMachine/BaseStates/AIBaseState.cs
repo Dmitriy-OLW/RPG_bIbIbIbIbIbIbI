@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using System;
 
 namespace Enemy.State
 {
-    public abstract class AIBaseState
+    public abstract class AIBaseState : IDisposable
     {
         protected AIStateMachine _stateMachine;
         protected float _stateEnterTime;
@@ -19,6 +20,10 @@ namespace Enemy.State
         
         public virtual void Update() { }
         public virtual void Exit() { }
+
+        public virtual void Dispose()
+        {
+        }
         
         protected float StateDuration => Time.time - _stateEnterTime;
     }
